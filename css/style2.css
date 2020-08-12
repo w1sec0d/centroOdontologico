@@ -5,6 +5,8 @@ body{
     background: #4FB4BE;
     text-align: center;
     min-width: 100vh;
+    width: 100vw;
+    height: 100vh;
 }
 .content{
     display: block;
@@ -13,7 +15,7 @@ body{
     box-sizing: border-box;
     margin: auto;
     padding: 15px;
-    margin-top:60px;
+    margin-top:20px;
     border-radius: 20px;
     background: white;
 }
@@ -206,3 +208,10 @@ footer{
         display: inline-block;
         width: 40%;
     }
+
+.table-responsive-lg{
+    max-height: 85vh;
+    margin: 1em;
+    overflow: auto;
+    background: rgba(255, 255, 255, 0.8)
+}

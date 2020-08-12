@@ -16,40 +16,36 @@
 </head>
 
 <?php
-$rolUsuario = $_REQUEST["rolUsuario"];
-
+    $rolUsuario = $_REQUEST["rolUsuario"];
 ?>
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
-    <a class="navbar-brand" href="index_logged.php">Centro Odontológico Mundo Oral</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNavDropdown">
-        <ul class="navbar-nav">
-            <li class="nav-item active">
-                <a class="nav-link" href="index_logged.php"><i class="fas fa-home"></i></a>
-            </li>
-            <?php
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top w-90">
+        <a class="navbar-brand" href="index_logged.php">Centro Odontológico Mundo Oral</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="index_logged.php"><i class="fas fa-home"></i></a>
+                </li>
+                <?php
 
-            if ($rolUsuario == "Secretaria") {
-                echo
-                    "
-                <li class='nav-item dropdown' id='users_menu'>
-                    <a class='nav-link dropdown-toggle' href='' id='navbarDropdownMenuLink' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
+                if ($rolUsuario == 1) {
+                    echo
+                        "
+                <li class='nav-item' id='users_menu'>
+                    <a class='nav-link' href='user_crud.php?rolUsuario=1'>
                         <i class='fas fa-users'></i>Usuarios
                     </a>
-                    <div class='dropdown-menu' aria-labelledby='navbarDropdownMenuLink'>
-                        <a class='dropdown-item' href='registrar_usuario.php'>Registrar Usuario</a>
-                        <a class='dropdown-item' href='gestionar_usuario.php'>Gestionar Usuario</a>
-                    </div>
                 </li>
                 ";
-            };
+                };
 
-            if ($rolUsuario == "Medico") {
-                echo
-                    "
+                if ($rolUsuario == 2) {
+                    echo
+                        "
                 <li class='nav-item dropdown' id='doctor'>
                     <a class='nav-link dropdown-toggle' href='#' id='navbarDropdownMenuLink' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
                         <i class='fas fa-book'></i>Agenda Médica
@@ -60,52 +56,52 @@ $rolUsuario = $_REQUEST["rolUsuario"];
                     </div>
                 </li>
                 ";
-            };
-            ?>
+                };
+                ?>
 
-            <li class='nav-item drop'>
-                <a class='nav-link' href='#'>
-                    <i class='fas fa-user-nurse'></i>Citas
-                </a>
-            </li>
+                <li class='nav-item drop'>
+                    <a class='nav-link' href='#'>
+                        <i class='fas fa-user-nurse'></i>Citas
+                    </a>
+                </li>
 
-            <li class='nav-item dropdown'>
-                <a class='nav-link dropdown-toggle' href='#' id='navbarDropdownMenuLink' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
-                    <i class='fas fa-clinic-medical'></i>Historia Clínica
-                </a>
-                <div class='dropdown-menu' aria-labelledby='navbarDropdownMenuLink'>
-                    <?php
-                    if ($rolUsuario == "Secretaria" or $rolUsuario == "Medico") {
-                        echo
-                            "
+                <li class='nav-item dropdown'>
+                    <a class='nav-link dropdown-toggle' href='#' id='navbarDropdownMenuLink' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
+                        <i class='fas fa-clinic-medical'></i>Historia Clínica
+                    </a>
+                    <div class='dropdown-menu' aria-labelledby='navbarDropdownMenuLink'>
+                        <?php
+                        if ($rolUsuario == 1 or $rolUsuario == 2) {
+                            echo
+                                "
                         <a class='dropdown-item' href='registrar_historia.php' id='create_history'>Apertura Historia</a>
                         ";
-                    }
-                    ?>
-                    <a class='dropdown-item' href='consultar_historia.php' id='search_history'>Consultar Historia</a>
-                </div>
-            </li>
-            <li class='nav-item dropdown'>
-                <a class='nav-link dropdown-toggle' href='#' id='navbarDropdownMenuLink' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
-                    <i class='fas fa-syringe'></i>Exámenes de Laboratorio
-                </a>
-                <div class='dropdown-menu' aria-labelledby='navbarDropdownMenuLink'>
-                    <?php
-                    if($rolUsuario == "Secretaria" or $rolUsuario == "Medico"){
-                        echo
-                        "
+                        }
+                        ?>
+                        <a class='dropdown-item' href='consultar_historia.php' id='search_history'>Consultar Historia</a>
+                    </div>
+                </li>
+                <li class='nav-item dropdown'>
+                    <a class='nav-link dropdown-toggle' href='#' id='navbarDropdownMenuLink' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
+                        <i class='fas fa-syringe'></i>Exámenes de Laboratorio
+                    </a>
+                    <div class='dropdown-menu' aria-labelledby='navbarDropdownMenuLink'>
+                        <?php
+                        if ($rolUsuario == 1 or $rolUsuario == 2) {
+                            echo
+                                "
                             <a class='dropdown-item' href='registrar_examen.php' id='register_exam'>Registrar Exámen</a>
                         ";
-                    }
-                    ?>
-                    <a class='dropdown-item' href='consultar_examen.php'>Consultar Exámen</a>
-                </div>
-            </li>
-            <?php
+                        }
+                        ?>
+                        <a class='dropdown-item' href='consultar_examen.php'>Consultar Exámen</a>
+                    </div>
+                </li>
+                <?php
 
-            if($rolUsuario == "Secretaria"){
-                echo
-                "
+                if ($rolUsuario == 1) {
+                    echo
+                        "
                 <li class='nav-item dropdown' id='reports'>
                     <a class='nav-link dropdown-toggle' href='#' id='navbarDropdownMenuLink' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
                         <i class='fas fa-chart-bar'></i>Reportes
@@ -118,15 +114,17 @@ $rolUsuario = $_REQUEST["rolUsuario"];
                     </div>
                 </li>
                 ";
-            }
-            ?>
-            <a href='../index.php'>
-                <button class='btn btn-primary'><i class='fas fa-sign-out-alt'></i></button>
-            </a>
-        </ul>
-    </div>
-</nav>
+                }
+                ?>
+                <a href='../index.php'>
+                    <button class='btn btn-primary'><i class='fas fa-sign-out-alt'></i></button>
+                </a>
+            </ul>
+        </div>
+    </nav>
 
-<?php
-require 'index_body.php';
-?>
+    <?php
+    if (isset($_REQUEST["index"])) {
+        require 'index_body.php';
+    }
+    ?>

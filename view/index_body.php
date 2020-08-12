@@ -1,4 +1,3 @@
-<body>
     <div class="content">
         <div class="row">
             <header>
@@ -101,9 +100,7 @@
                 <div class="map_container">
                     <h1 class="title">NUESTRA UBICACIÓN <i class="fas fa-map-marked-alt"></i></h1>
                     <div class="map-responsive">
-                        <iframe
-                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3976.8421202253944!2d-74.17204138541888!3d4.622241296642179!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e3f9ff830f0b35f%3A0xecf906ecf70f72e3!2sCentro+Odontologico+Mundo+Oral!5e0!3m2!1ses-419!2sco!4v1560218557606!5m2!1ses-419!2sco"
-                            frameborder="0" style="border:0" allowfullscreen class="mapa"></iframe>
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3976.8421202253944!2d-74.17204138541888!3d4.622241296642179!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e3f9ff830f0b35f%3A0xecf906ecf70f72e3!2sCentro+Odontologico+Mundo+Oral!5e0!3m2!1ses-419!2sco!4v1560218557606!5m2!1ses-419!2sco" frameborder="0" style="border:0" allowfullscreen class="mapa"></iframe>
                     </div>
                 </div>
             </div>
@@ -120,9 +117,7 @@
                 <div class="row">
                     <p class="btn btn-info" id="paragraph"><em>Teléfono: 311 2180112</em></p>
                 </div>
-                <a class="fb-ic"
-                    href="https://www.facebook.com/Centro-odontologico-mundo-oral-1400646953307029/?ref=br_rs"
-                    target="_blank">
+                <a class="fb-ic" href="https://www.facebook.com/Centro-odontologico-mundo-oral-1400646953307029/?ref=br_rs" target="_blank">
                     <i class="fab fa-facebook-f"></i>
                 </a>
             </div>
@@ -135,11 +130,7 @@
                 <p>Copyright &copy; Sena 2019</p>
             </div>
             <div class="col">
-                <div>Icons made by <a href="https://www.flaticon.es/autores/freepik" title="Freepik">Freepik and <a
-                            href="https://www.flaticon.es/autores/monkik" title="monkik">monkik</a> </a> from <a
-                        href="https://www.flaticon.es/" title="Flaticon">www.flaticon.com</a> is licensed by <a
-                        href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0"
-                        target="_blank">CC 3.0 BY</a></div>
+                <div>Icons made by <a href="https://www.flaticon.es/autores/freepik" title="Freepik">Freepik and <a href="https://www.flaticon.es/autores/monkik" title="monkik">monkik</a> </a> from <a href="https://www.flaticon.es/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
             </div>
         </div>
     </footer>
