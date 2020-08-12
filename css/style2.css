@@ -17,14 +17,7 @@ body{
     border-radius: 20px;
     background: white;
 }
-.navbar{
-    width: 100%;
-    padding: 0;
-    position: fixed;
-    top: 0;
-    z-index: 100;
-    background: lightgray;
-}
+
 .navbar-brand{
     padding: 10px;
 }
@@ -132,9 +125,7 @@ i{
         max-height: 500px;
         position:absolute;
     }
-#search_history, #manage_dates_doctor, #patient_view, #doctor_view, #secretary_view{
-    display: none;
-}
+
 #paragraph{
     width: 80%;
     margin: auto;
