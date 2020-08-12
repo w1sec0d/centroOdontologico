@@ -1,0 +1,217 @@
+body{
+    font-family: 'PT Sans', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #4FB4BE;
+    text-align: center;
+    min-width: 100vh;
+}
+.content{
+    display: block;
+    width: 98%;
+    min-height: 80vh;
+    box-sizing: border-box;
+    margin: auto;
+    padding: 15px;
+    margin-top:60px;
+    border-radius: 20px;
+    background: white;
+}
+.navbar{
+    width: 100%;
+    padding: 0;
+    position: fixed;
+    top: 0;
+    z-index: 100;
+    background: lightgray;
+}
+.navbar-brand{
+    padding: 10px;
+}
+a:hover{
+    text-decoration: none;
+}
+header{
+    display: block;
+    margin: auto;
+    width: 100%;
+    height: auto; 
+    margin-bottom: 20px;
+}
+    .header_img{
+        display: inline-block;
+        width: 35%;
+        height: auto;
+        margin: auto; 
+        border-radius: 20px;
+    }
+    .header_content{
+        width: 80%;
+        margin: auto;
+    }
+.slogan{   
+    display: inline-block; 
+    font-weight: bolder;
+    font-size: 200%;
+    text-align: center; 
+    margin: auto;
+}
+.carousel{
+    margin: auto;
+    margin-left: 10px;
+    margin-bottom: 20px;
+    width: 80vh;
+    display: inline-block;
+}
+    .carousel-caption{
+        background: rgba(0, 0, 0, 0.6);
+    }
+    .carousel img{
+        width: 40vh;
+    }
+img{
+    border-radius: 20px;
+}
+.title{
+    font-weight: bold;
+    font-size: 5vh;
+    color: #367C88;
+    text-align: center;
+}
+i{
+    margin: 5px;
+}
+.services{
+    background: #B8DEDF;
+    margin: 10px;
+    border-radius: 20px;
+    padding: 10px;
+}
+    .services_img{
+        width: 35%;
+    }
+    .services_p{
+        font-size: 200%;
+        font-weight: bold;
+    }
+#services_section{
+    display: inline-block;
+    min-width: 70vh;
+}
+.contact{
+    display: inline-block;
+    margin-top: 35px;
+    width: 40vw;
+    min-width: 400px;
+    box-sizing: border-box;
+}
+.mapa{
+    width: 40vw;
+    display: block;
+    margin: auto;
+}
+.map-container{
+    display: block;
+    width: 40vw;
+    max-width: 50px;
+    box-sizing: border-box;
+    margin-top: 30px;
+    margin-left: 10px;
+}
+    .map-responsive{
+        overflow:hidden;
+        padding-bottom:56.25%;
+        position:relative;
+        height:0;
+    }
+    .map-responsive iframe{
+        left:0;
+        top:0;
+        height: 60vw;
+        width: 80vw;
+        max-height: 500px;
+        position:absolute;
+    }
+#search_history, #manage_dates_doctor, #patient_view, #doctor_view, #secretary_view{
+    display: none;
+}
+#paragraph{
+    width: 80%;
+    margin: auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border-radius: 20px;
+    font-size: 4vh;
+}
+form{
+    margin: 15px;
+    box-shadow: 0 0 2px 0px;
+    padding: 15px;
+    border-radius: 20px;
+    background: lightgray;
+}
+.form-row{
+    margin-bottom: 10px;
+}
+.form-cita{
+    margin: 0;
+    padding: 0;
+}
+.crud-title{
+    font-weight: bold;
+    margin-bottom: 25px;
+}
+.crud-buttons{
+    display: inline-block;
+}
+.crud-input{
+    display: inline-block;
+    width: 30%;
+}
+.register-form{
+    margin-top: 40px;
+    margin-left: 30px;
+}
+.register-form2{
+    margin-top: 80px;
+    margin-left: 30px;
+}
+.register-form3{
+    margin-top: 100px;
+    margin-left: 30px;
+}
+.register-img{
+    width: 60%;
+    min-width: 500px;
+}
+@keyframes icon-resize{
+    from{transform: scale(1);}
+    to{transform: scale(1.10);}
+}
+
+.fa-facebook-f{
+    background: #3B5998;
+    color: white;
+    padding: 20px;
+    font-size: 60px;
+    width: 100px;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 100%;
+}
+.fa-facebook-f:hover{
+    animation: icon-resize 1s linear infinite alternate;
+    color: white;
+}                                        
+footer{
+    background: #3E4551;
+    color: white;
+    padding: 15px;
+    padding-top: 25px;
+    font-weight: bold;
+    margin-top: 15px;
+}
+    .col-footer{
+        display: inline-block;
+        width: 40%;
+    }
