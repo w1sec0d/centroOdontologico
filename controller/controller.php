@@ -80,7 +80,6 @@ if (isset($_REQUEST["create"])) {
 
     $query = "INSERT INTO USUARIO(idUsuario, nombreUsuario, apellidoUsuario, correoUsuario, telefonoUsuario, direccionUsuario, passwordUsuario, rolUsuario, estadoUsuario) VALUES ('$idUsuario', '$nombreUsuario', '$apellidoUsuario', '$correoUsuario', $telefonoUsuario, '$direccionUsuario', '$passwordUsuario', '$rolUsuario', $estadoUsuario);";
     $result = mysqli_query($conection, $query);
-    echo($query);
 
     if ($result) {
         echo ("
