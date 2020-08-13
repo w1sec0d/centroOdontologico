@@ -213,5 +213,8 @@ footer{
     max-height: 85vh;
     margin: 1em;
     overflow: auto;
-    background: rgba(255, 255, 255, 0.8)
+    background: rgba(255, 255, 255, 0.8);
+}
+form{
+    background:rgba(255, 255, 255, 0.8);
 }

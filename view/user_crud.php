@@ -6,6 +6,9 @@ require_once 'navbar.php';
     <div class="container-fluid w-100 h-100">
 
         <div class="row w-100 h-100 justify-content-center align-items-center">
+        <h1>
+            
+        </h1>
             <div class="table-responsive-lg">
                 <table class="table table-striped">
                     <thead class="thead-dark">
@@ -44,16 +47,16 @@ require_once 'navbar.php';
                                 <td><?php echo $mostrar["telefonoUsuario"] ?></td>
                                 <td><?php echo $mostrar["direccionUsuario"] ?></td>
                                 <td><?php echo $mostrar["rolUsuario"] ?></td>
-                                <td><?php echo $mostrar["estadoUsuario"] ?></td>
+                                <td><?php echo $mostrar["estadoUsuario"] ? 'Activo' : 'Inactivo' ?></td>
                                 <td class="bg-info">
-                                    <a href="user_update.php?action=3&ID=<?php echo $mostrar["ID"] ?>&NOMBRE=<?php echo $mostrar["NOMBRE"] ?>&PRECIO=<?php echo $mostrar["PRECIO"] ?>&CANTIDAD=<?php echo $mostrar["CANTIDAD"] ?>">
+                                    <a href="user_update.php?rolUsuario=<?php echo $mostrar["rolUsuario"]?>&action=3&estadoUsuario=<?php echo $mostrar["estadoUsuario"] == 1 ? true : "false" ?>&idUsuario=<?php echo $mostrar["idUsuario"] ?>&nombreUsuario=<?php echo $mostrar["nombreUsuario"] ?>&apellidoUsuario=<?php echo $mostrar["apellidoUsuario"] ?>&correoUsuario=<?php echo $mostrar["correoUsuario"] ?>&telefonoUsuario=<?php echo $mostrar["telefonoUsuario"] ?>&direccionUsuario=<?php echo $mostrar["direccionUsuario"] ?>">
                                         <span style="color: White;">
                                             <i class="fas fa-edit"></i>
                                         </span>
                                     </a>
                                 </td>
                                 <td class="bg-danger">
-                                    <a href="../controller/controller.php?rolUsuario=1&action=4&idUsuario=<?php echo $mostrar["idUsuario"] ?>">
+                                    <a href="../controller/controller.php?eliminar=true&idUsuario=<?php echo $mostrar["idUsuario"] ?>">
                                         <span style="color: White;">
                                             <i class="fas fa-trash-alt"></i>
                                         </span>

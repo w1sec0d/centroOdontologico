@@ -1,3 +1,6 @@
+<?php 
+    require 'navbar.php';
+?>
     <div class="content">
         <div class="row">
             <header>
@@ -134,13 +137,13 @@
             </div>
         </div>
     </footer>
-</body>
+    </body>
 
-<script>
-    //Modifica cambio del slider
-    $('.carousel').carousel({
-        interval: 5000
-    })
-</script>
+    <script>
+        //Modifica cambio del slider
+        $('.carousel').carousel({
+            interval: 5000
+        })
+    </script>
 
-</html>
+    </html>

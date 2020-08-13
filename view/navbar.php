@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html>
 
@@ -15,9 +18,6 @@
     <title>Centro Odontológico Mundo Oral</title>
 </head>
 
-<?php
-    $rolUsuario = $_REQUEST["rolUsuario"];
-?>
 
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top w-90">
@@ -31,31 +31,12 @@
                     <a class="nav-link" href="index_logged.php"><i class="fas fa-home"></i></a>
                 </li>
                 <?php
-
-                if ($rolUsuario == 1) {
-                    echo
-                        "
-                <li class='nav-item' id='users_menu'>
-                    <a class='nav-link' href='user_crud.php?rolUsuario=1'>
-                        <i class='fas fa-users'></i>Usuarios
-                    </a>
-                </li>
-                ";
+                if($_SESSION["rolUsuarioNavegando"]  == 1){
+                echo "<li class='nav-item' id='users_menu'><a class='nav-link' href='user_crud.php'><i class='fas fa-users'></i>Usuarios</a></li>";
                 };
 
-                if ($rolUsuario == 2) {
-                    echo
-                        "
-                <li class='nav-item dropdown' id='doctor'>
-                    <a class='nav-link dropdown-toggle' href='#' id='navbarDropdownMenuLink' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
-                        <i class='fas fa-book'></i>Agenda Médica
-                    </a>
-                    <div class='dropdown-menu' aria-labelledby='navbarDropdownMenuLink'>
-                        <a class='dropdown-item' href='registrar_agenda.php'>Registrar Agenda</a>
-                        <a class='dropdown-item' href='gestionar_agenda.php'>Gestionar Agenda</a>
-                    </div>
-                </li>
-                ";
+                if ($_SESSION["rolUsuarioNavegando"]  == 2) {
+                echo "<li class='nav-item dropdown' id='doctor'><a class='nav-link dropdown-toggle' href='#' id='navbarDropdownMenuLink' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'><i class='fas fa-book'></i>Agenda Médica</a><div class='dropdown-menu' aria-labelledby='navbarDropdownMenuLink'><a class='dropdown-item' href='registrar_agenda.php'>Registrar Agenda</a><a class='dropdown-item' href='gestionar_agenda.php'>Gestionar Agenda</a></div></li>";
                 };
                 ?>
 
@@ -70,15 +51,12 @@
                         <i class='fas fa-clinic-medical'></i>Historia Clínica
                     </a>
                     <div class='dropdown-menu' aria-labelledby='navbarDropdownMenuLink'>
-                        <?php
-                        if ($rolUsuario == 1 or $rolUsuario == 2) {
-                            echo
-                                "
-                        <a class='dropdown-item' href='registrar_historia.php' id='create_history'>Apertura Historia</a>
-                        ";
-                        }
-                        ?>
-                        <a class='dropdown-item' href='consultar_historia.php' id='search_history'>Consultar Historia</a>
+                    <?php
+                    if ($_SESSION["rolUsuarioNavegando"]  == 1 or $_SESSION["rolUsuarioNavegando"]  == 2) {
+                    echo "<a class='dropdown-item' href='registrar_historia.php' id='create_history'>Apertura Historia</a>";
+                    }
+                    ?>
+                    <a class='dropdown-item' href='consultar_historia.php' id='search_history'>Consultar Historia</a>
                     </div>
                 </li>
                 <li class='nav-item dropdown'>
@@ -86,45 +64,20 @@
                         <i class='fas fa-syringe'></i>Exámenes de Laboratorio
                     </a>
                     <div class='dropdown-menu' aria-labelledby='navbarDropdownMenuLink'>
-                        <?php
-                        if ($rolUsuario == 1 or $rolUsuario == 2) {
-                            echo
-                                "
-                            <a class='dropdown-item' href='registrar_examen.php' id='register_exam'>Registrar Exámen</a>
-                        ";
-                        }
-                        ?>
-                        <a class='dropdown-item' href='consultar_examen.php'>Consultar Exámen</a>
-                    </div>
-                </li>
-                <?php
 
-                if ($rolUsuario == 1) {
-                    echo
-                        "
-                <li class='nav-item dropdown' id='reports'>
-                    <a class='nav-link dropdown-toggle' href='#' id='navbarDropdownMenuLink' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
-                        <i class='fas fa-chart-bar'></i>Reportes
-                    </a>
-                    <div class='dropdown-menu' aria-labelledby='navbarDropdownMenuLink'>
-                        <a class='dropdown-item' href='#'>Citas por médico</a>
-                        <a class='dropdown-item' href='#'>Asistencia pacientes</a>
-                        <a class='dropdown-item' href='#'>Historia Clínica</a>
-                        <a class='dropdown-item' href='#'>Estado de Citas</a>
+                    <?php
+                    if($_SESSION["rolUsuarioNavegando"]  == 1 or $_SESSION["rolUsuarioNavegando"]  == 2){
+                    echo "<a class='dropdown-item' href='registrar_examen.php' id='register_exam'>Registrar Exámen</a>";
+                    }
+                    ?>
+
+                    <a class='dropdown-item' href='consultar_examen.php'>Consultar Exámen</a>
                     </div>
                 </li>
-                ";
-                }
-                ?>
+                <?php if($_SESSION["rolUsuarioNavegando"] ==1){echo("<li class='nav-item dropdown' id='reports'><a class='nav-link dropdown-toggle' href='#' id='navbarDropdownMenuLink' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'><i class='fas fa-chart-bar'></i>Reportes</a><div class='dropdown-menu' aria-labelledby='navbarDropdownMenuLink'><a class='dropdown-item' href='#'>Citas por médico</a><a class='dropdown-item' href='#'>Asistencia pacientes</a><a class='dropdown-item' href='#'>Historia Clínica</a><a class='dropdown-item' href='#'>Estado de Citas</a></div></li>");};?>
                 <a href='../index.php'>
                     <button class='btn btn-primary'><i class='fas fa-sign-out-alt'></i></button>
                 </a>
             </ul>
         </div>
     </nav>
-
-    <?php
-    if (isset($_REQUEST["index"])) {
-        require 'index_body.php';
-    }
-    ?>
