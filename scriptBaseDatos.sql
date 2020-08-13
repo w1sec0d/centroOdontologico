@@ -1,5 +1,5 @@
--- CREATE DATABASE CONSULTORIO;
--- USE CONSULTORIO;
+CREATE DATABASE CONSULTORIO;
+USE CONSULTORIO;
 
 CREATE TABLE USUARIO(
 	idUsuario NVARCHAR(12) UNIQUE,
@@ -635,3 +635,4 @@ INSERT INTO `consultorio`.`USUARIO` (`idUsuario`, `nombreUsuario`, `apellidoUsua
 INSERT INTO `consultorio`.`USUARIO` (`idUsuario`, `nombreUsuario`, `apellidoUsuario`, `correoUsuario`, `telefonoUsuario`, `direccionUsuario`, `passwordUsuario`, `rolUsuario`, `estadoUsuario`) VALUES ('002', 'Medico', 'Caicedo', 'granmedico@gmail.com', '3265488945', 'Calle 24', '12345', 'Medico', true);
 INSERT INTO `consultorio`.`USUARIO` (`idUsuario`, `nombreUsuario`, `apellidoUsuario`, `correoUsuario`, `telefonoUsuario`, `direccionUsuario`, `passwordUsuario`, `rolUsuario`, `estadoUsuario`) VALUES ('003', 'Paciente', 'David', 'granpaciente@gmail.com', '2645646598', 'Calle 24', '12345', 'Paciente', true);
 
+SELECT * FROM USUARIO;

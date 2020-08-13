@@ -28,7 +28,7 @@ if (isset($_REQUEST["login"])) {       //En caso de hacer login
     header("Location: ../view/index_body.php");
 }
 
-if (isset($_REQUEST["eliminar"])) {     //En caso de Eliminar
+if (isset($_REQUEST["eliminar"])) {       //En caso de Eliminar
     $idUsuario = $_REQUEST["idUsuario"];
     $fk_check = "SET FOREIGN_KEY_CHECKS=0";
     $query1 = "DELETE FROM PACIENTE WHERE idPaciente = $idUsuario";
@@ -40,5 +40,54 @@ if (isset($_REQUEST["eliminar"])) {     //En caso de Eliminar
     $result2 = mysqli_query($conection, $query2);
     $result3 = mysqli_query($conection, $query3);
 
-    header("Location: ../view/user_crud.php");  
+    header("Location: ../view/user_crud.php");
 }
+
+if (isset($_REQUEST["update"])) {
+    $idUsuarioOld = $_REQUEST["idUsuarioOld"];
+    $idUsuario = $_REQUEST["idUsuario"];
+    $nombreUsuario = $_REQUEST["nombreUsuario"];
+    $apellidoUsuario = $_REQUEST["apellidoUsuario"];
+    $correoUsuario = $_REQUEST["correoUsuario"];
+    $telefonoUsuario = $_REQUEST["telefonoUsuario"];
+    $direccionUsuario = $_REQUEST["direccionUsuario"];
+    $passwordUsuario = $_REQUEST["passwordUsuario"];
+    $rolUsuario = $_REQUEST["rolUsuario"];
+    $estadoUsuario = $_REQUEST["estadoUsuario"];
+
+    $query = "UPDATE USUARIO SET idUsuario = '$idUsuario', nombreUsuario = '$nombreUsuario', apellidoUsuario = '$apellidoUsuario', correoUsuario = '$correoUsuario', telefonoUsuario = $telefonoUsuario, direccionUsuario = '$direccionUsuario',passwordUsuario = '$passwordUsuario', rolUsuario = '$rolUsuario', estadoUsuario = $estadoUsuario WHERE (idUsuario = '$idUsuarioOld')";
+    $result = mysqli_query($conection, $query);
+
+    if ($result) {
+        echo ("
+            <a href='user_crud.php'>
+                <p style='margin: 0;' class='btn btn-success btn-lg'>Información actualizada, toca para volver a la sección usuarios<p>
+            </a>    
+            ");
+    }
+}
+
+if (isset($_REQUEST["create"])) {
+    $idUsuario = $_REQUEST["idUsuario"];
+    $nombreUsuario = $_REQUEST["nombreUsuario"];
+    $apellidoUsuario = $_REQUEST["apellidoUsuario"];
+    $correoUsuario = $_REQUEST["correoUsuario"];
+    $telefonoUsuario = $_REQUEST["telefonoUsuario"];
+    $direccionUsuario = $_REQUEST["direccionUsuario"];
+    $passwordUsuario = $_REQUEST["passwordUsuario"];
+    $rolUsuario = $_REQUEST["rolUsuario"];
+    $estadoUsuario = $_REQUEST["estadoUsuario"];
+
+    $query = "INSERT INTO USUARIO(idUsuario, nombreUsuario, apellidoUsuario, correoUsuario, telefonoUsuario, direccionUsuario, passwordUsuario, rolUsuario, estadoUsuario) VALUES ('$idUsuario', '$nombreUsuario', '$apellidoUsuario', '$correoUsuario', $telefonoUsuario, '$direccionUsuario', '$passwordUsuario', '$rolUsuario', $estadoUsuario);";
+    $result = mysqli_query($conection, $query);
+    echo($query);
+
+    if ($result) {
+        echo ("
+            <a href='user_crud.php'>
+                <p style='margin: 0;' class='btn btn-success btn-lg'>Información registrada, toca para volver a la sección usuarios<p>
+            </a>    
+            ");
+    }
+}
+?>

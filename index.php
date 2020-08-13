@@ -33,7 +33,7 @@
                 <li class="nav-item active">
                     <a class="nav-link" href="#"><i class="fas fa-home"></i>Inicio</a>
                 </li>
-                <a href="./modulos/login.php">
+                <a href="./view/login.php">
                     <button class="btn btn-primary"><i class="fas fa-sign-in-alt"></i>Iniciar sesión</button>
                 </a>
             </ul>
