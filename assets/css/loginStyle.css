@@ -1,55 +1,53 @@
-/*
-font-family: 'PT Sans', sans-serif;
-font-family: 'Josefin Sans', sans-serif;
-all-free-download.com
-*/
-
 body{
     margin: 0;
     padding: 0;
-    overflow: hidden;
     width: 100vw;
     height: 100vh;
-    background: url(../img/fondo2.jpg) no-repeat center top;
+    background: url(../img/loginBackground.png) no-repeat;
     background-size: cover;
-    font-family: 'Roboto', sans-serif;
-    font-size: em;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 1em;
     text-align: center;
 }
 h1, h2 , h3{
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Alata', sans-serif;
+    font-size: 1.5em;
     font-weight: bold;
     text-align: center;
-    margin: 0;
-    padding: 0;
 }
 .btn{
     display: block;
     width: 100%;
     margin-top: 2vh;
 }
+
 .login-form{
-    min-width: 320px;
+    width: 80vw;
+    height: 60vh;
+    max-width: 400px;
+    max-height: 300px;
     position: absolute;
     top:50%;
     left:50%;
-    padding: 4vh 2vw 4vh 2vw;
+    padding: 10px;
     transform: translate(-50%,-50%);
     background: rgba(255, 255, 255, 0.85);
     box-shadow: 0px 0px 6px 1px rgba(0,0,0,0.63);
 }
-    .login_title{
+    #login-title{
         margin-top: 2vh;
         margin-bottom: 1vh;
     }
-    .login-icon{
+    #login-icon{
         width: 100px;
         height: 100px;
         border-radius: 50%;
         position: absolute;
-        top: -7vh;
-        left: calc(50% - 50px);
+        top: -10%;
+        left: 50%;
+        transform: translate(-50%,-50%);
         box-shadow: 0px 0px 6px 1px rgba(0,0,0,0.63);
+        z-index: 100;
     }
         .login-icon:hover{
             animation: icon-resize 2s;
