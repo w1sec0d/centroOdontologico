@@ -5,33 +5,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="../img/favicon.ico">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&family=Roboto&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="../css/style.css">
+    <link rel="icon" href="../assets/img/brandIcon.ico">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Alata&family=Open+Sans&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/loginStyle.css">
     <title>Login</title>
 </head>
 
 <body>
-    <form class="login-form" method="$_POST">
-        <h1 class="login_title text-center">Inicio de sesión</h1>
-        <img src="../img/form-icon.png" alt="Ícono Centro Odontológico" class="login-icon">
+    <form class="login-form" id="login-form" method="$_POST">
+        <img src="../assets/img/loginIcon.png" alt="Mundo Oral" id="login-icon">
+        <h1 class="text-nowrap" id="login-title">INICIO DE SESIÓN</h1>
         <div class="form-group">
-            <label for="idUsuario text-center">Ingresa tu documento:</label>
-            <input type="text" name="idUsuario" id="input_user" class="form-control" placeholder="Usuario" required autofocus>
+            <label for="idUsuario" class="text-nowrap">Ingresa tu documento:</label>
+            <input type="text" name="idUsuario" class="form-control" placeholder="Usuario" required autofocus>
         </div>
         <div class="form-group">
-            <label for="passwordUsuario text-center">Ingresa tu contraseña:</label>
-            <input type="password" name="passwordUsuario" id="input_password" class="form-control" placeholder="Contraseña" required>
+            <label for="passwordUsuario text-center" class="text-nowrap">Ingresa tu contraseña:</label>
+            <input type="password" name="passwordUsuario" class="form-control" placeholder="Contraseña" required>
         </div>
         <input type="submit" value="Continuar" name="login" class="btn btn-primary">
     </form>
+    <footer class="bg-dark fixed-bottom">
+        <p>
+            Fondo creado por <a href="https://www.freepik.es/vectores/personas">pch.vector</a> - www.freepik.es
+        </p>
+    </footer>
     <?php
         require_once '../controller/controller.php';
     ?>
-    <script>
-        localStorage.clear();
-    </script>
 </body>
-
 </html>

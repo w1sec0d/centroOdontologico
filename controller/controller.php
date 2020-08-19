@@ -25,7 +25,7 @@ if (isset($_REQUEST["login"])) {       //En caso de hacer login
     if (isset($_SESSION["rolUsuarioNavegando"])) {
         echo $_SESSION["rolUsuarioNavegando"];
     }
-    header("Location: ../view/index_body.php");
+    header("Location: ../view/index.php");
 }
 
 if (isset($_REQUEST["eliminar"])) {       //En caso de Eliminar
@@ -80,6 +80,7 @@ if (isset($_REQUEST["create"])) {
 
     $query = "INSERT INTO USUARIO(idUsuario, nombreUsuario, apellidoUsuario, correoUsuario, telefonoUsuario, direccionUsuario, passwordUsuario, rolUsuario, estadoUsuario) VALUES ('$idUsuario', '$nombreUsuario', '$apellidoUsuario', '$correoUsuario', $telefonoUsuario, '$direccionUsuario', '$passwordUsuario', '$rolUsuario', $estadoUsuario);";
     $result = mysqli_query($conection, $query);
+    echo($query);
 
     if ($result) {
         echo ("

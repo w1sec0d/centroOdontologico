@@ -1,9 +1,8 @@
 <?php
-require_once 'navbar.php';
+require 'header.php';
+require 'navbar.php';
 ?>
-
-<body class="w-100 h-100" style="background: url('../img/users_back.jpg'); background-size: cover; background-repeat: no-repeat">
-    <div class="container-fluid w-100 h-100">
+    <div class="container-fluid w-100 h-100" style="background: url('../assets/img/users_back.jpg'); background-size: cover; background-repeat: no-repeat">
 
         <div class="row w-100 h-100 justify-content-center align-items-center">
             <div class="row">
@@ -27,7 +26,7 @@ require_once 'navbar.php';
                                         </span>
                                     </a>
                                 </th>
-                                <th scope="col" class="bg-success">Crear Usuario</th>
+                                <th scope="col" class="bg-success">Crear</th>
                             </tr>
                         </thead>
                         <tbody>
