@@ -73,7 +73,6 @@ if (isset($_REQUEST["update"])) {
 
 if (isset($_REQUEST["create"])) {
     $idUsuario = $_REQUEST["idUsuario"];
-    echo($idUsuario);
     $nombreUsuario = $_REQUEST["nombreUsuario"];
     $apellidoUsuario = $_REQUEST["apellidoUsuario"];
     $correoUsuario = $_REQUEST["correoUsuario"];
