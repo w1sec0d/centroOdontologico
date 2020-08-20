@@ -1,33 +1,14 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="../img/favicon.ico">
-    <link href="https://fonts.googleapis.com/css?family=Josefin+Sans|PT+Sans&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css" integrity="sha384-KA6wR/X5RY4zFAHpv/CnoG2UW1uogYfdnP67Uv7eULvTveboZJg0qUpmJZb5VqzN" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="../css/style2.css">
-    <title>Centro Odontológico Mundo Oral</title>
-</head>
-
-<body>
-    <?php
+<?php
+    require_once 'header.php';
     require_once 'navbar.php';
     ?>
 
-    <div class="content">
-        <div class="row">
-            <div class="col register-form2">
-                <h1 class="title">Gestionar Cita <i class="fas fa-user-nurse"></i></h1>
+    <div class="container-fluid w-100 h-100 form-container">
+        <div class="row w-100 h-100 justify-content-center align-items-center">
+            <div class="col register-form">
+                <h1>Gestionar Cita <i class="fas fa-clinic-medical"></i></h1>
                 <form>
-                    <h2 class="crud-title">Puedes gestionar una agenda médica en específico, buscandola por un determinado
-                        atributo</h2>
-                    <div class="form-row">
+                    <div class="form">
                         <div class="col">
                             <label for="id">Id:</label><br>
                             <input type="number" name="id" class="form-control crud-input" autocomplete="off" autofocus>
@@ -46,8 +27,6 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="form-row">
                         <div class="col">
                             <label for="date">Fecha:</label><br>
                             <input type="date" name="date" class="form-control crud-input" autocomplete="off">
@@ -69,9 +48,6 @@
                     </div>
                 </form>
             </div>
-            <div class="col">
-                <img src="../img/citas.jpg" alt="" class="register-img">
-            </div>
         </div>
     </div>
 
@@ -85,8 +61,6 @@
             </div>
         </div>
     </footer>
+    </body>
 
-    
-</body>
-
-</html>
+    </html>

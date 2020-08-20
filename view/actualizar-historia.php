@@ -3,37 +3,33 @@
     require_once 'navbar.php';
     ?>
 
-    <div class="content">
-        <div class="row">
-            <div class="col register-form2">
-                <h1 class="title">Actualizar Historia Clínica <i class="fas fa-clinic-medical"></i></h1>
+    <div class="container-fluid w-100 h-100 form-container">
+        <div class="row w-100 h-100 justify-content-center align-items-center">
+            <div class="col register-form">
+                <h1>Actualizar Historia Clínica <i class="fas fa-clinic-medical"></i></h1>
                 <form>
-                    <div class="form-row">
+                    <div class="form">
                         <div class="col">
-                            <h2 class="crud-title">Para actualizar historial clínico, seleccione su historial a editar
-                                por medio de su ID</h2>
+                            <p>Para actualizar historial clínico, seleccione su historial a editar por medio de su ID</p>
                             <label for="id">Id:</label><br>
                             <input type="number" name="id" class="form-control crud-input" autocomplete="off" autofocus>
                             <div class="crud-buttons">
-                                <div class="btn btn-primary" id="search">
+                                <div class="btn btn-primary">
                                     <i class="fas fa-search"></i>
                                 </div>
-                                <div class="btn btn-secondary" id="update">
+                                <div class="btn btn-secondary">
                                     <i class="fas fa-sync"></i>
                                 </div>
-                                <div class="btn btn-danger" id="delete">
+                                <div class="btn btn-danger">
                                     <i class="fas fa-user-minus"></i>
                                 </div>
-                                <div class="btn btn-success" id="check">
+                                <div class="btn btn-success">
                                     <i class="fas fa-check"></i>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </form>
-            </div>
-            <div class="col">
-                <img src="../img/historia.png" alt="" class="register-img">
             </div>
         </div>
     </div>

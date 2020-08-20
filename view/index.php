@@ -1,6 +1,6 @@
 <?php
-require 'header.php';
-require 'navbar.php';
+require_once 'header.php';
+require_once 'navbar.php';
 ?>
 <div class="container-fluid">
     <div id="carouselExampleCaptions" class="carousel slide carousel-fade" data-ride="carousel">
@@ -9,6 +9,7 @@ require 'navbar.php';
             <li data-target="#carouselExampleCaptions" data-slide-to="1"></li>
             <li data-target="#carouselExampleCaptions" data-slide-to="2"></li>
             <li data-target="#carouselExampleCaptions" data-slide-to="3"></li>
+            <li data-target="#carouselExampleCaptions" data-slide-to="4"></li>
         </ol>
         <div class="carousel-inner">
             <div class="carousel-item active">
@@ -16,12 +17,15 @@ require 'navbar.php';
                 <div class="carousel-caption d-none d-sm-block">
                     <h1>Centro Odontológico Mundo Oral</h1>
                     <p>Tu mejor experiencia en clínica dental</p>
-                    <a href="login.php" class="btn btn-outline-light btn-lg" id="date"><b>¡Agenda ya tu cita!</b></a>
+                    <a href="./registrar_citas.php" class="btn btn-outline-primary btn-lg" id="date">
+                        <p>¡Agenda ya tu cita!</p>
+                    </a>
                 </div>
             </div>
             <div class="carousel-item">
                 <img src="../assets/img/clinic4.png" class="d-block w-100" alt="...">
                 <div class="carousel-caption d-none d-sm-block">
+                    <h1>¡No dudes en contactarnos!</h1>
                     <p>Damos el mejor servicio por tu salud dental</p>
                 </div>
             </div>

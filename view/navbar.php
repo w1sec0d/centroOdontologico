@@ -3,8 +3,8 @@ session_start();
 ?>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a href="index.php" class="navbar-brand">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
+        <a href="../index.php" class="navbar-brand">
             <img src="../assets/img/brandLogo.png" alt="Centro Odontológico Mundo Oral" class="img-responsive" id="navbarBrandImg" width="100" height="30">
         </a>
         <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapsableMenu">
@@ -13,31 +13,31 @@ session_start();
         <div class="collapse navbar-collapse" id="navbarCollapsableMenu">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="index.php"><i class="fas fa-home"></i></a>
+                    <a class="nav-link" href="../index.php"><i class="fas fa-home"></i></a>
                 </li>
                 <?php
                 if ($_SESSION["rolUsuarioNavegando"]  == 1) {
-                    echo "<li class='nav-item' id='users_menu'><a class='nav-link' href='user_crud.php'><i class='fas fa-users'></i> Usuarios </a></li>";
+                    echo "<li class='nav-item' id='users_menu'><a class='nav-link' href='user-crud.php'><i class='fas fa-users'></i> Usuarios </a></li>";
                 };
 
                 if ($_SESSION["rolUsuarioNavegando"]  == 2) {
-                    echo "<li class='nav-item' id='doctor'><a class='nav-link' href='gestionar_cita_medico.php'><i class='fas fa-book'></i> Agenda Médica </a></li>";
+                    echo "<li class='nav-item' id='doctor'><a class='nav-link' href='gestionar-cita-medico.php'><i class='fas fa-book'></i> Agenda Médica </a></li>";
                 };
                 ?>
 
                 <li class='nav-item drop'>
-                    <a class='nav-link' href='gestionar_cita.php'>
+                    <a class='nav-link' href='gestionar-cita.php'>
                         <i class='fas fa-user-nurse'></i> Citas
                     </a>
                 </li>
 
                 <li class='nav-item'>
-                    <a class='nav-link' href='registrar_historia.php'>
+                    <a class='nav-link' href='registrar-historia.php'>
                         <i class='fas fa-clinic-medical'></i> Historia Clínica
                     </a>
                 </li>
                 <li class='nav-item'>
-                    <a class='nav-link' href="registrar_examen.php">
+                    <a class='nav-link' href="registrar-examen.php">
                         <i class='fas fa-syringe'></i> Exámenes de Laboratorio
                     </a>
                 </li>

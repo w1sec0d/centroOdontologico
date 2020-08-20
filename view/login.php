@@ -13,7 +13,7 @@
 </head>
 
 <body>
-    <form class="login-form" id="login-form" method="$_POST">
+    <form class="login-form" id="login-form" method="post">
         <img src="../assets/img/loginIcon.png" alt="Mundo Oral" id="login-icon">
         <h1 class="text-nowrap" id="login-title">INICIO DE SESIÓN</h1>
         <div class="form-group">
@@ -26,13 +26,13 @@
         </div>
         <input type="submit" value="Continuar" name="login" class="btn btn-primary">
     </form>
+    <?php
+        require_once '../controller/controller.php';
+    ?>
     <footer class="bg-dark fixed-bottom">
         <p>
             Fondo creado por <a href="https://www.freepik.es/vectores/personas">pch.vector</a> - www.freepik.es
         </p>
     </footer>
-    <?php
-        require_once '../controller/controller.php';
-    ?>
 </body>
 </html>
