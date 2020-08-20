@@ -17,7 +17,7 @@ require_once 'navbar.php';
                 <div class="carousel-caption d-none d-sm-block">
                     <h1>Centro Odontológico Mundo Oral</h1>
                     <p>Tu mejor experiencia en clínica dental</p>
-                    <a href="./registrar_citas.php" class="btn btn-outline-primary btn-lg" id="date">
+                    <a href="./registrar-citas.php" class="btn btn-outline-primary btn-lg" id="date">
                         <p>¡Agenda ya tu cita!</p>
                     </a>
                 </div>
