@@ -4,7 +4,7 @@ body {
     margin: 0;
     padding: 0;
     font-family: 'Open Sans', sans-serif;
-    font-size: 1em;
+    font-size: 1.5em;
     text-align: center;
     overflow-x: hidden;
 }
@@ -15,7 +15,7 @@ h3,
 h4,
 h5 {
     font-family: 'Alata', sans-serif;
-    font-size: 1.5em;
+    font-size: 2em;
     font-weight: bold;
     text-align: center;
 }
@@ -104,7 +104,6 @@ h5 {
     transform: translate(-50%, -50%);
     width: 30%;
     height: fit-content;
-    font-size: 100%;
     text-shadow: -1px 1px 2px #23430C, 1px 1px 2px #23430C, 1px -1px 0 #23430C, -1px -1px 0 #23430C;
 }
 
@@ -138,13 +137,15 @@ h5 {
 .jumbotron {
     margin: 0;
 }
-
-.services {
+.services-section{
+    min-width: 300px;
+}
+.services {     
     border: black 1px solid;
     box-shadow: 0px 0px 7px 0px rgba(0, 0, 0, 0.75);
     width: 10vw;
-    height: 10vw;
     margin: auto;
+    padding: .5vw;
     border-radius: 20px;
     margin-top: 2vh;
     background: #51AFBC;
@@ -153,6 +154,22 @@ h5 {
     font-size: 100%;
     min-width: 105px;
     min-height: 105px;
+}
+
+.services-left{
+    margin-right: -6vw;
+}
+
+.services p{
+    display: block;
+    font-family: 'Alata', sans-serif;
+    font-weight: bolder;
+    font-size: 85%;
+}
+
+.services img{
+    display: block;
+    width: 80%;
 }
 
 .image-responsive {

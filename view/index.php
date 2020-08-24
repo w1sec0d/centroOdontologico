@@ -17,8 +17,8 @@ require_once 'navbar.php';
                 <div class="carousel-caption d-none d-sm-block">
                     <h1>Centro Odontológico Mundo Oral</h1>
                     <p>Tu mejor experiencia en clínica dental</p>
-                    <a href="./registrar-citas.php" class="btn btn-outline-primary btn-lg" id="date">
-                        <p>¡Agenda ya tu cita!</p>
+                    <a href="registrar-citas.php" class="btn btn-outline-primary btn-lg" id="date">
+                        <p>¡Agenda tu cita!</p>
                     </a>
                 </div>
             </div>
@@ -32,22 +32,22 @@ require_once 'navbar.php';
             <div class="carousel-item">
                 <img src="../assets/img/clinic1.png" class="d-block w-100" alt="...">
                 <div class="carousel-caption d-none d-sm-block">
-                    <h5><b>Estamos cerca de ti</b></h5>
-                    <p>Ubicados en el centro de Britalia</p>
+                    <h1><b>Estamos cerca de ti</b></h5>
+                        <p>Ubicados en el centro de Britalia</p>
                 </div>
             </div>
             <div class="carousel-item">
                 <img src="../assets/img/clinic2.png" class="d-block w-100" alt="...">
                 <div class="carousel-caption d-none d-sm-block">
-                    <h5><b>Cada día buscamos mejorar</b></h5>
-                    <p>Para brindarte el mejor servicio</p>
+                    <h1><b>Cada día buscamos mejorar</b></h5>
+                        <p>Para brindarte el mejor servicio</p>
                 </div>
             </div>
             <div class="carousel-item">
                 <img src="../assets/img/clinic3.png" class="d-block w-100" alt="...">
                 <div class="carousel-caption d-none d-sm-block">
-                    <h5><b>¡No esperes más!</b></h5>
-                    <p>Reserva tu cita ahora mismo</p>
+                    <h1><b>¡No esperes más!</b></h5>
+                        <p>Reserva tu cita ahora mismo</p>
                 </div>
             </div>
         </div>
@@ -63,36 +63,35 @@ require_once 'navbar.php';
 
     <div class="jumbotron">
         <div class="row">
-            <div class="col-5">
+            <div class="col-5" id="services-section">
                 <h1>En nuestro centro odontológico encontrarás</h1>
                 <div class="row">
-                    <div class="col">
-                        <div class="services row justify-content-center align-items-center">
-                            <p class="services_p">Extracción</p>
-                            <img src="../assets/img/dental/013-tooth-3.png" class="image-responsive" width="80">
-                        </div>
+
+                    <div class="services services-left row justify-content-center">
+                        <p>Extracción</p><br>
+                        <img src="../assets/img/dental/013-tooth-3.png">
                     </div>
-                    <div class="col">
-                        <div class="services row justify-content-center align-items-center">
-                            <p class="services_p">Limpieza</p>
-                            <img src="../assets/img/dental/007-tooth-cleaning.png" class="image-responsive" width="80">
-                        </div>
+
+                    <div class="services row justify-content-center">
+                        <p>Limpieza</p><br>
+                        <img src="../assets/img/dental/007-tooth-cleaning.png">
+                    </div>
+
+                </div>
+                <div class="row">
+
+                    <div class="services services-left row justify-content-center">
+                        <p>Implantes</p><br>
+                        <img src="../assets/img/dental/012-tooth-4.png">
+                    </div>
+
+
+                    <div class="services  row justify-content-center">
+                        <p>Ortodoncia</p><br>
+                        <img src="../assets/img/dental/010-smile.png">
                     </div>
                 </div>
-                <div class="row ">
-                    <div class="col">
-                        <div class="services row justify-content-center align-items-center">
-                            <p class="services_p">Implantes</p>
-                            <img src="../assets/img/dental/012-tooth-4.png" class="image-responsive" width="80">
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="services row justify-content-center align-items-center">
-                            <p class="services_p">Ortodoncia</p>
-                            <img src="../assets/img/dental/010-smile.png" class="image-responsive" width="80">
-                        </div>
-                    </div>
-                </div>
+
             </div>
             <div class="col-7">
                 <p>Somos reconocidos en el sector de Britalia por prestar un servicio
