@@ -10,24 +10,27 @@ if (isset($_REQUEST["login"])) {       //En caso de hacer login
     $result = mysqli_query($conection, $query);
     $resultArray = $result->fetch_assoc();
 
-    if ($resultArray) {
-        $_SESSION["rolUsuarioNavegando"] = $resultArray["rolUsuario"];
-        switch ($_SESSION["rolUsuarioNavegando"]) {
-            case 'Secretaria':
-                $_SESSION["rolUsuarioNavegando"] = 1;
-                break;
-            case 'Medico':
-                $_SESSION["rolUsuarioNavegando"] = 2;
-                break;
-            case 'Paciente':
-                $_SESSION["rolUsuarioNavegando"] = 3;
-                break;
+
+        if($resultArray){
+            $_SESSION["rolUsuarioNavegando"] = $resultArray["rolUsuario"];
+            switch ($_SESSION["rolUsuarioNavegando"]) 
+            {
+                case 'Secretaria':
+                    $_SESSION["rolUsuarioNavegando"] = 1;
+                    break;
+                case 'Medico':
+                    $_SESSION["rolUsuarioNavegando"] = 2;
+                    break;
+                case 'Paciente':
+                    $_SESSION["rolUsuarioNavegando"] = 3;
+                    break;
+            }
+            $_SESSION["showIndex"] = true;
+            header("Location: index.php");
+        }else{
+            echo "<p class='btn btn-danger'>Tu usuario o contraseña es incorrecto</p>";
         }
-        $_SESSION["showIndex"] = true;
-        header("Location: index.php");
-    } else {
-        echo "<p class='btn btn-danger'>Tu usuario o contraseña es incorrecto</p>";
-    }
+    
 }
 
 if (isset($_REQUEST["eliminar"])) {       //En caso de Eliminar
@@ -89,7 +92,8 @@ if (isset($_REQUEST["create"])) {
                 <p style='margin: 0;' class='btn btn-success btn-lg'>Información registrada, toca para volver a la sección usuarios<p>
             </a>    
             ");
-    } else {
+    }else{
         echo $query;
     }
 }
+?>
