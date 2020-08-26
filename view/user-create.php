@@ -66,7 +66,6 @@ require_once 'navbar.php';
     </div>
 
 </div>
-</body>
 <footer class="sticky-bottom">
     <div class="row">
         <div class="col">
@@ -77,5 +76,6 @@ require_once 'navbar.php';
         </div>
     </div>
 </footer>
+</body>
 
 </html>

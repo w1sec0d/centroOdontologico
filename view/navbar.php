@@ -13,7 +13,7 @@ session_start();
         <div class="collapse navbar-collapse" id="navbarCollapsableMenu">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="../index.php"><i class="fas fa-home"></i></a>
+                    <a class="nav-link" href="index.php"><i class="fas fa-home"></i></a>
                 </li>
                 <?php
                 if ($_SESSION["rolUsuarioNavegando"]  == 1) {

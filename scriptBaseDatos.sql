@@ -492,6 +492,7 @@ INSERT INTO `consultorio`.`nuevos_usuarios` (`idUsuario`, `nombreUsuario`, `apel
 
 -- Agrega los datos de la tabla creada anteriormente a la tabla usuarios
 SELECT * FROM USUARIO UNION SELECT * FROM NUEVOS_USUARIOS;
+DROP TABLE NUEVOS_USUARIOS;
 
 -- VISTAS
 CREATE OR REPLACE VIEW VISTA_MEDICO_PACIENTES AS
@@ -630,8 +631,15 @@ BEGIN
 END //
 DELIMITER ;
 
+DROP TABLE PACIENTE_INACTIVO;
+DROP TABLE MEDICO_INACTIVO;
+DROP TABLE USUARIO_INACTIVO;
+
 -- Registros para realizar pruebas
 
 INSERT INTO `consultorio`.`USUARIO` (`idUsuario`, `nombreUsuario`, `apellidoUsuario`, `correoUsuario`, `telefonoUsuario`, `direccionUsuario`, `passwordUsuario`, `rolUsuario`, `estadoUsuario`) VALUES ('001', 'Admin', 'Alcachofa', 'granadmon@gmail.com', '3564984808', 'Calle 24', '12345', 'Secretaria', true);
 INSERT INTO `consultorio`.`USUARIO` (`idUsuario`, `nombreUsuario`, `apellidoUsuario`, `correoUsuario`, `telefonoUsuario`, `direccionUsuario`, `passwordUsuario`, `rolUsuario`, `estadoUsuario`) VALUES ('002', 'Medico', 'Caicedo', 'granmedico@gmail.com', '3265488945', 'Calle 24', '12345', 'Medico', true);
 INSERT INTO `consultorio`.`USUARIO` (`idUsuario`, `nombreUsuario`, `apellidoUsuario`, `correoUsuario`, `telefonoUsuario`, `direccionUsuario`, `passwordUsuario`, `rolUsuario`, `estadoUsuario`) VALUES ('003', 'Paciente', 'David', 'granpaciente@gmail.com', '2645646598', 'Calle 24', '12345', 'Paciente', true);
+USE CONSULTORIO;
+SELECT * FROM USUARIO AS u INNER JOIN MEDICO AS m WHERE u.idUsuario = m.idUsuarioFK;
+SELECT * FROM US	UARIO;

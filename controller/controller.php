@@ -8,8 +8,9 @@ if (isset($_REQUEST["login"])) {       //En caso de hacer login
 
     $query = "SELECT rolUsuario FROM USUARIO WHERE idUsuario = " . $_SESSION["idUsuario"] . " && passwordUsuario = " . $_SESSION["passwordUsuario"] . "";
     $result = mysqli_query($conection, $query);
-    if($result){
-        $resultArray = $result->fetch_assoc();
+    $resultArray = $result->fetch_assoc();
+
+    if ($resultArray) {
         $_SESSION["rolUsuarioNavegando"] = $resultArray["rolUsuario"];
         switch ($_SESSION["rolUsuarioNavegando"]) {
             case 'Secretaria':
@@ -23,11 +24,8 @@ if (isset($_REQUEST["login"])) {       //En caso de hacer login
                 break;
         }
         $_SESSION["showIndex"] = true;
-        if (isset($_SESSION["rolUsuarioNavegando"])) {
-            echo $_SESSION["rolUsuarioNavegando"];
-        }
         header("Location: index.php");
-    }else{
+    } else {
         echo "<p class='btn btn-danger'>Tu usuario o contraseña es incorrecto</p>";
     }
 }
@@ -91,8 +89,7 @@ if (isset($_REQUEST["create"])) {
                 <p style='margin: 0;' class='btn btn-success btn-lg'>Información registrada, toca para volver a la sección usuarios<p>
             </a>    
             ");
-    }else{
+    } else {
         echo $query;
     }
 }
-?>

@@ -2,14 +2,13 @@
 require 'header.php';
 require 'navbar.php';
 ?>
-<div class="container-fluid w-100 h-100 form-container" id="crud-back">
+<div class="container-fluid" id="crud-back">
 
     <div class="row w-100 h-100 justify-content-center align-items-center">
 
         <h1 class="crud-title">Gestión de usuarios</h1>
-
-        <div class="table-responsive-lg">
-            <table class="table table-striped">
+        <div class="table-responsive">
+            <table class="table table-striped table-hover table-condensed">
                 <thead class="thead-dark">
                     <tr>
                         <th scope="col">Identificación</th>
@@ -36,7 +35,7 @@ require 'navbar.php';
                     require_once '../model/database.php';
                     $sql = "SELECT * FROM USUARIO WHERE estadoUsuario = true";
                     $result = mysqli_query($conection, $sql);
-
+    
                     while ($mostrar = mysqli_fetch_array($result)) {
                     ?>
                         <tr>
@@ -63,7 +62,7 @@ require 'navbar.php';
                                     </span>
                                 </a>
                             </td>
-
+    
                         </tr>
                     <?php
                     }
@@ -71,12 +70,14 @@ require 'navbar.php';
                 </tbody>
             </table>
         </div>
-
     </div>
 
 </div>
 
-</body>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+
 <footer class="sticky-bottom ">
     <div class="row">
         <div class="col">
@@ -87,5 +88,6 @@ require 'navbar.php';
         </div>
     </div>
 </footer>
+</body>
 
 </html>

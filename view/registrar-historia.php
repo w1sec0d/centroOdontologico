@@ -3,7 +3,7 @@ require_once 'header.php';
 require_once 'navbar.php';
 ?>
 
-<div class="container-fluid w-100 h-100 form-container" id="crud-back">
+<div class="container-fluid w-100 h-130 form-container">
     <div class="row w-100 h-100 justify-content-center align-items-center">
         <div class="col register-form">
             <h1>Formulario Registro Historia Clínica <i class="fas fa-hospital"></i></h1>
@@ -44,7 +44,7 @@ require_once 'navbar.php';
     </div>
 </div>
 
-<footer class="page-footer font-small teal pt-4 fixed-bottom">
+<footer class="page-footer font-small teal pt-4">
     <div class="row">
         <div class="col">
             <p>Copyright &copy; Sena 2019</p>

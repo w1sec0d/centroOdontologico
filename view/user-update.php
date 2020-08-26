@@ -1,6 +1,5 @@
 <?php
 require_once '../model/database.php';
-
 require_once 'header.php';
 require_once 'navbar.php';
 
@@ -52,8 +51,8 @@ if (isset($_REQUEST["estadoUsuario"])) {
 }
 ?>
 
-<body class="w-100 h-100" id="crud-back">
-    <div class="container-fluid w-100 h-100">
+<body class="w-100 h-100" >
+    <div class="container-fluid w-100 h-100" id="crud-back">
 
         <div class="row w-100 h-100 justify-content-center align-items-center">
             <form method="post" class="w-60 h-70" id="edit-user-form">

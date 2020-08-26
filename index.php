@@ -92,7 +92,7 @@ session_start();
 
         <div class="jumbotron">
             <div class="row">
-                <div class="col-5" id="services-section">
+                <div class="col-lg-5" id="services-section">
                     <h1>En nuestro centro odontológico encontrarás</h1>
                     <div class="row">
 
@@ -116,15 +116,15 @@ session_start();
                         </div>
 
 
-                        <div class="services  row justify-content-center">
+                        <div class="services row justify-content-center">
                             <p>Ortodoncia</p><br>
                             <img src="assets/img/dental/010-smile.png">
                         </div>
                     </div>
 
                 </div>
-                <div class="col-7">
-                    <p>Somos reconocidos en el sector de Britalia por prestar un servicio
+                <div class="col-lg-7">
+                    <p class="default-text">Somos reconocidos en el sector de Britalia por prestar un servicio
                         odontológico de calidad. Contamos con más de 15 años de experiencia</p>
                     <div class="map-responsive">
                         <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3976.8421202253944!2d-74.17204138541888!3d4.622241296642179!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e3f9ff830f0b35f%3A0xecf906ecf70f72e3!2sCentro+Odontologico+Mundo+Oral!5e0!3m2!1ses-419!2sco!4v1560218557606!5m2!1ses-419!2sco" frameborder="0" style="border:0" allowfullscreen class="mapa"></iframe>
