@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 
@@ -8,6 +7,7 @@
     <link rel="icon" href="../assets/img/brandIcon.ico">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css2?family=Alata&family=Open+Sans&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
     <link rel="stylesheet" href="../assets/css/loginStyle.css">
     <title>Login</title>
 </head>
@@ -18,16 +18,16 @@
         <h1 class="text-nowrap" id="login-title">INICIO DE SESIÓN</h1>
         <div class="form-group">
             <label for="idUsuario" class="text-nowrap">Ingresa tu documento:</label>
-            <input type="text" name="idUsuario" class="form-control" placeholder="Usuario" required autofocus>
+            <input type="text" name="idUsuario" class="form-control" id="user" placeholder="Usuario" autofocus>
         </div>
         <div class="form-group">
             <label for="passwordUsuario text-center" class="text-nowrap">Ingresa tu contraseña:</label>
-            <input type="password" name="passwordUsuario" class="form-control" placeholder="Contraseña" required>
+            <input type="password" name="passwordUsuario" class="form-control" id="password" placeholder="Contraseña">
         </div>
         <input type="submit" value="Continuar" name="login" class="btn btn-primary">
     </form>
     <?php
-        require_once '../controller/controller.php';
+    require_once '../controller/controller.php';
     ?>
     <footer class="bg-dark fixed-bottom">
         <p>
@@ -35,4 +35,5 @@
         </p>
     </footer>
 </body>
+
 </html>

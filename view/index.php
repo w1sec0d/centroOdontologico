@@ -100,6 +100,11 @@ require_once 'navbar.php';
                     <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3976.8421202253944!2d-74.17204138541888!3d4.622241296642179!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e3f9ff830f0b35f%3A0xecf906ecf70f72e3!2sCentro+Odontologico+Mundo+Oral!5e0!3m2!1ses-419!2sco!4v1560218557606!5m2!1ses-419!2sco" frameborder="0" style="border:0" allowfullscreen class="mapa"></iframe>
                 </div>
             </div>
+            <div class="row w-100 justify-content-center align-items-center" style="margin-top: 5vh; margin-bottom:1vh">
+                <h1 style="margin-right: 2vw;">¡Siguenos!</h1>
+                <a href="https://www.facebook.com/Centro-odontologico-mundo-oral-1400646953307029" class="fa fa-facebook"></a>
+                <a href="https://www.instagram.com/dradianahermida/" class="fa fa-instagram"></a>
+            </div>
         </div>
     </div>
 </div>
@@ -118,7 +123,35 @@ require_once 'navbar.php';
         </div>
     </div>
 </footer>
+<script>
+    <?php
+    if(isset($_SESSION["shownLoggedAlert"])){
 
+    }else{
+        echo
+        "
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            onOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        })
+    
+        Toast.fire({
+            icon: 'success',
+            title: 'Inicio de Sesión correcto'
+        })
+        $:S
+        ";
+        $_SESSION["shownLoggedAlert"] = true;
+    }
+    ?>
+</script>
 </body>
 
 </html>

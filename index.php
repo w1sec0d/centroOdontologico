@@ -7,6 +7,7 @@
     <link rel="icon" href="assets/img/brandIcon.ico">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css" integrity="sha384-KA6wR/X5RY4zFAHpv/CnoG2UW1uogYfdnP67Uv7eULvTveboZJg0qUpmJZb5VqzN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Alata&family=Open+Sans&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/mainStyle.css">
     <title>Centro Odontológico Mundo Oral</title>
@@ -16,9 +17,9 @@ session_start();
 ?>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
+    <nav class="navbar navbar-expand-md navbar-light bg-light sticky-top">
         <a class="navbar-brand">
-            <img src="assets/img/brandLogo.png" alt="Centro Odontológico Mundo Oral" class="img-responsive" id="navbarBrandImg" width="100" height="30">
+            <img src="assets/img/brandLogoWhite.png" alt="Centro Odontológico Mundo Oral" class="img-responsive" id="navbarBrandImg" width="100" height="30">
         </a>
         <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapsableMenu">
             <span class="navbar-toggler-icon"></span>
@@ -130,6 +131,11 @@ session_start();
                         <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3976.8421202253944!2d-74.17204138541888!3d4.622241296642179!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e3f9ff830f0b35f%3A0xecf906ecf70f72e3!2sCentro+Odontologico+Mundo+Oral!5e0!3m2!1ses-419!2sco!4v1560218557606!5m2!1ses-419!2sco" frameborder="0" style="border:0" allowfullscreen class="mapa"></iframe>
                     </div>
                 </div>
+                <div class="row w-100 justify-content-center align-items-center" style="margin-top: 5vh; margin-bottom:1vh">
+                    <h1 style="margin-right: 2vw;">¡Siguenos!</h1>
+                    <a href="https://www.facebook.com/Centro-odontologico-mundo-oral-1400646953307029" class="fa fa-facebook"></a>
+                    <a href="https://www.instagram.com/dradianahermida/" class="fa fa-instagram"></a>
+                </div>
             </div>
         </div>
     </div>
@@ -139,6 +145,7 @@ session_start();
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
 
     <footer class="bg-dark">
+
         <div class="row">
             <div class="col">
                 <p>Copyright &copy; Sena 2019</p>

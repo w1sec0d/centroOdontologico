@@ -8,13 +8,12 @@ if (isset($_REQUEST["login"])) {       //En caso de hacer login
 
     $query = "SELECT rolUsuario FROM USUARIO WHERE idUsuario = " . $_SESSION["idUsuario"] . " && passwordUsuario = " . $_SESSION["passwordUsuario"] . "";
     $result = mysqli_query($conection, $query);
-    $resultArray = $result->fetch_assoc();
-
-
-        if($resultArray){
+    if ($result) {
+        $resultArray = $result->fetch_assoc();
+        if ($resultArray) 
+        {
             $_SESSION["rolUsuarioNavegando"] = $resultArray["rolUsuario"];
-            switch ($_SESSION["rolUsuarioNavegando"]) 
-            {
+            switch ($_SESSION["rolUsuarioNavegando"]) {
                 case 'Secretaria':
                     $_SESSION["rolUsuarioNavegando"] = 1;
                     break;
@@ -27,10 +26,31 @@ if (isset($_REQUEST["login"])) {       //En caso de hacer login
             }
             $_SESSION["showIndex"] = true;
             header("Location: index.php");
-        }else{
-            echo "<p class='btn btn-danger'>Tu usuario o contraseña es incorrecto</p>";
+        } else {
+            echo
+            "
+            <script type='text/javascript'>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Tu documento o contraseña es incorrecto',
+                    text: 'Porfavor, inténtalo de nuevo',
+                    showCloseButton: true
+                }); 
+            </script>
+            ";
         }
-    
+    } else {
+        echo
+        "
+        <script type='text/javascript'>
+            Swal.fire({
+                icon: 'error',
+                title: 'Tu documento o contraseña es incorrecto',
+                text: 'Porfavor, inténtalo de nuevo',
+            }); 
+        </script>
+        ";
+    }
 }
 
 if (isset($_REQUEST["eliminar"])) {       //En caso de Eliminar
@@ -49,7 +69,6 @@ if (isset($_REQUEST["eliminar"])) {       //En caso de Eliminar
 }
 
 if (isset($_REQUEST["update"])) {
-    $idUsuarioOld = $_REQUEST["idUsuarioOld"];
     $idUsuario = $_REQUEST["idUsuario"];
     $nombreUsuario = $_REQUEST["nombreUsuario"];
     $apellidoUsuario = $_REQUEST["apellidoUsuario"];
@@ -60,15 +79,22 @@ if (isset($_REQUEST["update"])) {
     $rolUsuario = $_REQUEST["rolUsuario"];
     $estadoUsuario = $_REQUEST["estadoUsuario"];
 
-    $query = "UPDATE USUARIO SET idUsuario = '$idUsuario', nombreUsuario = '$nombreUsuario', apellidoUsuario = '$apellidoUsuario', correoUsuario = '$correoUsuario', telefonoUsuario = $telefonoUsuario, direccionUsuario = '$direccionUsuario',passwordUsuario = '$passwordUsuario', rolUsuario = '$rolUsuario', estadoUsuario = $estadoUsuario WHERE (idUsuario = '$idUsuarioOld')";
+    $query = "UPDATE USUARIO SET nombreUsuario = '$nombreUsuario', apellidoUsuario = '$apellidoUsuario', correoUsuario = '$correoUsuario', telefonoUsuario = $telefonoUsuario, direccionUsuario = '$direccionUsuario',passwordUsuario = '$passwordUsuario', rolUsuario = '$rolUsuario', estadoUsuario = $estadoUsuario WHERE (idUsuario = '$idUsuario')";
     $result = mysqli_query($conection, $query);
 
     if ($result) {
-        echo ("
-            <a href='user-crud.php'>
-                <p style='margin: 0;' class='btn btn-success btn-lg'>Información actualizada, toca para volver a la sección usuarios<p>
-            </a>    
-            ");
+        echo("
+        <script type='text/javascript'>
+        Swal.fire({
+            icon: 'success',
+            title: 'Usuario Registrado Correctamente',
+            html:
+            You can use <b>bold text</b>, ' +
+            '<a href='//sweetalert2.github.io>links</a> ' +
+            'and other HTML tags',
+        }); 
+        </script>   
+        ");
     }
 }
 
@@ -92,8 +118,15 @@ if (isset($_REQUEST["create"])) {
                 <p style='margin: 0;' class='btn btn-success btn-lg'>Información registrada, toca para volver a la sección usuarios<p>
             </a>    
             ");
-    }else{
+    } else {
         echo $query;
     }
 }
+
+if(isset($_REQUEST["logout"]))
+{
+    session_destroy();
+    header("location:../view/login.php");
+}
+
 ?>

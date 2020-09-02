@@ -3,9 +3,9 @@ session_start();
 ?>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
+    <nav class="navbar navbar-expand-md navbar-light bg-light sticky-top">
         <a href="../index.php" class="navbar-brand">
-            <img src="../assets/img/brandLogo.png" alt="Centro Odontológico Mundo Oral" class="img-responsive" id="navbarBrandImg" width="100" height="30">
+            <img src="../assets/img/brandLogoWhite.png" alt="Centro Odontológico Mundo Oral" class="img-responsive" id="navbarBrandImg" width="100" height="30">
         </a>
         <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapsableMenu">
             <span class="navbar-toggler-icon"></span>
@@ -47,7 +47,7 @@ session_start();
                 };
                 ?>
                 <a href="login.php">
-                    <button class='btn btn-primary'><i class='fas fa-sign-out-alt'></i></button>
+                    <a class='btn btn-primary' href="../controller/controller.php?logout=true"><i class='fas fa-sign-out-alt'></i></a>
                 </a>
             </ul>
         </div>

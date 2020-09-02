@@ -605,10 +605,10 @@ BEGIN
     old.rolUsuario,old.estadoUsuario);
 END //
 DELIMITER ;
-
 DELETE FROM PACIENTE WHERE nombrePaciente = 'Nach';
 DELETE FROM USUARIO WHERE nombreUsuario = 'Nach';
 SELECT * FROM USUARIO_INACTIVO;
+DROP TRIGGER USUARIO_BD;
 
 DELIMITER //
 CREATE TRIGGER PACIENTE_BD
@@ -619,6 +619,7 @@ BEGIN
     VALUES(old.idPaciente,old.nombrePaciente,old.apellidoPaciente,old.direccionPaciente,old.telefonoPaciente,old.fechaNacimiento,old.estadoPaciente);
 END //
 DELIMITER ;
+DROP TRIGGER PACIENTE_BD;
 
 DELIMITER //
 CREATE TRIGGER MEDICO_BD
@@ -630,6 +631,7 @@ BEGIN
     old.estadoMedico);
 END //
 DELIMITER ;
+DROP TRIGGER MEDICO_BD;
 
 DROP TABLE PACIENTE_INACTIVO;
 DROP TABLE MEDICO_INACTIVO;
@@ -640,6 +642,3 @@ DROP TABLE USUARIO_INACTIVO;
 INSERT INTO `consultorio`.`USUARIO` (`idUsuario`, `nombreUsuario`, `apellidoUsuario`, `correoUsuario`, `telefonoUsuario`, `direccionUsuario`, `passwordUsuario`, `rolUsuario`, `estadoUsuario`) VALUES ('001', 'Admin', 'Alcachofa', 'granadmon@gmail.com', '3564984808', 'Calle 24', '12345', 'Secretaria', true);
 INSERT INTO `consultorio`.`USUARIO` (`idUsuario`, `nombreUsuario`, `apellidoUsuario`, `correoUsuario`, `telefonoUsuario`, `direccionUsuario`, `passwordUsuario`, `rolUsuario`, `estadoUsuario`) VALUES ('002', 'Medico', 'Caicedo', 'granmedico@gmail.com', '3265488945', 'Calle 24', '12345', 'Medico', true);
 INSERT INTO `consultorio`.`USUARIO` (`idUsuario`, `nombreUsuario`, `apellidoUsuario`, `correoUsuario`, `telefonoUsuario`, `direccionUsuario`, `passwordUsuario`, `rolUsuario`, `estadoUsuario`) VALUES ('003', 'Paciente', 'David', 'granpaciente@gmail.com', '2645646598', 'Calle 24', '12345', 'Paciente', true);
-USE CONSULTORIO;
-SELECT * FROM USUARIO AS u INNER JOIN MEDICO AS m WHERE u.idUsuario = m.idUsuarioFK;
-SELECT * FROM US	UARIO;

@@ -51,72 +51,59 @@ if (isset($_REQUEST["estadoUsuario"])) {
 }
 ?>
 
-<body class="w-100 h-100" >
+<body class="w-100 h-100">
     <div class="container-fluid w-100 h-100" id="crud-back">
-
-        <div class="row w-100 h-100 justify-content-center align-items-center">
+        <div class="row w-100 h-100 justify-content-center align-items-center" style="margin:0">
             <form method="post" class="w-60 h-70" id="edit-user-form">
                 <h1 class="font-weight-bold text-center">
                     <?php
                     if ($idUsuarioOld) {
-                        echo "Editar Usuario <b style='color: coral'>$nombreUsuario</b>";
+                        echo "✏️Editar Usuario <b style='color: coral'>$nombreUsuario</b>";
                     } else {
                         echo "Nuevo Usuario";
                     };
                     ?>
                 </h1>
+                <input type="text" name="idUsuario" class="hidden" value="<?php echo $idUsuarioOld ?>" />
                 <div class="row">
-                    <div class="col">
-
-                        <input type="text" name="idUsuarioOld" class="hidden" value="<?php echo $idUsuarioOld ?>" />
-
-                        <div class="form-group">
-                            <label for="idUsuario">ID</label>
-                            <input type="text" name="idUsuario" class="form-control" value="<?php echo $idUsuarioOld ?>" />
-                        </div>
-                        <div class="form-group">
-                            <label for="nombreUsuario">Nombre</label>
-                            <input type="text" name="nombreUsuario" class="form-control" value="<?php echo $nombreUsuario ?>" />
-                        </div>
-                        <div class="form-group">
-                            <label for="apellidoUsuario">Apellido</label>
-                            <input type="text" name="apellidoUsuario" class="form-control" value="<?php echo $apellidoUsuario ?>">
-                        </div>
-                        <div class="form-group">
-
-                            <label for="correoUsuario">Correo</label>
-                            <input type="email" name="correoUsuario" class="form-control" value="<?php echo $correoUsuario ?>">
-                        </div>
+                    <div class="col form-group">
+                        <label for="nombreUsuario">Nombre</label>
+                        <input type="text" name="nombreUsuario" class="form-control" value="<?php echo $nombreUsuario ?>" />
+                        <br>
+                        <label for="apellidoUsuario">Apellido</label>
+                        <input type="text" name="apellidoUsuario" class="form-control" value="<?php echo $apellidoUsuario ?>">
                     </div>
-                    <div class="col">
-                        <div class="form-group">
-                            <label for="telefonoUsuario">Telefono</label>
-                            <input type="text" name="telefonoUsuario" class="form-control" value="<?php echo $telefonoUsuario ?>">
-                        </div>
-                        <div class="form-group">
-                            <label for="direccionUsuario">Direccion</label>
-                            <input type="text" name="direccionUsuario" class="form-control" value="<?php echo $direccionUsuario ?>">
-                        </div>
-                        <div class="form-group">
-                            <label for="rolUsuario">Rol</label>
-                            <select name="rolUsuario" class="form-control">
-                                <option <?php echo $rolUsuario == 'Secretaria' ? 'selected' : ''; ?> value="Secretaria"> Secretaria</option>
-                                <option <?php echo $rolUsuario == 'Medico' ? 'selected' : ''; ?> value="Medico">Medico</option>
-                                <option <?php echo $rolUsuario == 'Paciente' ? 'selected' : ''; ?> value="Paciente">Paciente</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="estadoUsuario">Estado</label>
-                            <select name="estadoUsuario" class="form-control">
-                                <option value="true" <?php echo isset($estadoUsuario) ? 'selected' : ''; ?>>Activo</option>
-                                <option value="false" <?php echo isset($estadoUsuario) ? '' : 'selected'; ?>>Inactivo</option>
-                            </select>
-                        </div>
+                    <div class="col form-group">
+                        <label for="correoUsuario">Correo</label>
+                        <input type="email" name="correoUsuario" class="form-control" value="<?php echo $correoUsuario ?>">
+                        <br>
+                        <label for="telefonoUsuario">Telefono</label>
+                        <input type="text" name="telefonoUsuario" class="form-control" value="<?php echo $telefonoUsuario ?>">
+                    </div>
+                    <div class="col form-group">
+                        <label for="direccionUsuario">Direccion</label>
+                        <input type="text" name="direccionUsuario" class="form-control" value="<?php echo $direccionUsuario ?>">
+                        <br>
+                        <label for="rolUsuario">Rol</label>
+                        <select name="rolUsuario" class="form-control">
+                            <option <?php echo $rolUsuario == 'Secretaria' ? 'selected' : ''; ?> value="Secretaria"> Secretaria</option>
+                            <option <?php echo $rolUsuario == 'Medico' ? 'selected' : ''; ?> value="Medico">Medico</option>
+                            <option <?php echo $rolUsuario == 'Paciente' ? 'selected' : ''; ?> value="Paciente">Paciente</option>
+                        </select>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label for="passwordUsuario">Contraseña</label>
-                    <input type="text" name="passwordUsuario" class="form-control" value="<?php echo $passwordUsuario ?>">
+                <div class="row">
+                    <div class="col form-group">
+                        <label for="estadoUsuario">Estado</label>
+                        <select name="estadoUsuario" class="form-control">
+                            <option value="true" <?php echo isset($estadoUsuario) ? 'selected' : ''; ?>>Activo</option>
+                            <option value="false" <?php echo isset($estadoUsuario) ? '' : 'selected'; ?>>Inactivo</option>
+                        </select>
+                    </div>
+                    <div class="col form-group">
+                        <label for="passwordUsuario">Contraseña</label>
+                        <input type="text" name="passwordUsuario" class="form-control" value="<?php echo $passwordUsuario ?>">
+                    </div>
                 </div>
                 <input type="submit" name="update" value="<?php if ($idUsuarioOld) {
                                                                 echo "Actualizar";

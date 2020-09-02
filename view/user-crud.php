@@ -8,7 +8,7 @@ require 'navbar.php';
 
         <h1 class="crud-title">Gestión de usuarios</h1>
         <div class="table-responsive">
-            <table class="table table-striped table-hover table-condensed" id="tableUser" class="display">
+            <table class="table table-striped table-hover table-condensed dt-responsive" id="tableUser" class="display">
                 <thead class="thead-dark">
                     <tr>
                         <th scope="col">Identificación</th>
@@ -77,9 +77,37 @@ require 'navbar.php';
 <script>
     $(document).ready(function() {
         $('#tableUser').DataTable({
+            "language": spanishTable
         });
-
     });
+    var spanishTable = {
+        "sProcessing": "Procesando...",
+        "sLengthMenu": "Mostrar _MENU_ registros",
+        "sZeroRecords": "No se encontraron resultados",
+        "sEmptyTable": "Ningún dato disponible en esta tabla",
+        "sInfo": "Registros del _START_ al _END_ de un total de _TOTAL_ ",
+        "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+        "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+        "sInfoPostFix": "",
+        "sSearch": "Buscar:",
+        "sUrl": "",
+        "sInfoThousands": ",",
+        "sLoadingRecords": "Cargando...",
+        "oPaginate": {
+            "sFirst": "Primero",
+            "sLast": "Último",
+            "sNext": "Siguiente",
+            "sPrevious": "Anterior"
+        },
+        "oAria": {
+            "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+            "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+        },
+        "buttons": {
+            "copy": "Copiar",
+            "colvis": "Visibilidad"
+        }
+    }
 </script>
 <footer class="sticky-bottom ">
     <div class="row">
