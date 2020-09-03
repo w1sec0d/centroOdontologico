@@ -138,7 +138,7 @@ if (isset($_REQUEST["showLoggedAlert"])){
         })
         Toast.fire({
             icon: 'success',
-            title: 'Inicio de Sesión correcto'
+            title: 'Inicio de sesión correcto'
         })
     </script>
     ";
