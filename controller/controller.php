@@ -32,7 +32,7 @@ if (isset($_REQUEST["login"])) {       //En caso de hacer login
             <script type='text/javascript'>
                 Swal.fire({
                     icon: 'error',
-                    title: 'Tu documento o contraseña es incorrecto',
+                    title: 'Tu documento y/o contraseña es incorrecto',
                     text: 'Porfavor, inténtalo de nuevo',
                     showCloseButton: true
                 }); 
@@ -105,29 +105,40 @@ if (isset($_REQUEST["create"])) {
 
     $query = "INSERT INTO USUARIO(idUsuario, nombreUsuario, apellidoUsuario, correoUsuario, telefonoUsuario, direccionUsuario, passwordUsuario, rolUsuario, estadoUsuario) VALUES ('$idUsuario', '$nombreUsuario', '$apellidoUsuario', '$correoUsuario', '$telefonoUsuario', '$direccionUsuario', '$passwordUsuario', '$rolUsuario', $estadoUsuario);";
     $result = mysqli_query($conection, $query);
-
-    if ($result) {
+    if($idUsuario != ""){
+        if ($result) {
+            echo("
+            <script type='text/javascript'>
+            Swal.fire({
+                icon: 'success',
+                title: 'Usuario Registrado Correctamente',
+                html: 'Puedes ' +
+                '<a href=\"../view/user-crud.php\">regresar al menú usuarios</a>' +
+                ' para continuar registrando cambios'
+            }); 
+            </script>   
+            ");
+        } else {
+            echo("
+            <script type='text/javascript'>
+            Swal.fire({
+                icon: 'error',
+                title: 'Has ingresado un usuario existente y/o no llenaste todos los campos',
+                text: 'Porfavor inténtalo de nuevo'
+            }); 
+            </script>   
+            ");
+        }
+    }else{
         echo("
-        <script type='text/javascript'>
-        Swal.fire({
-            icon: 'success',
-            title: 'Usuario Registrado Correctamente',
-            html: 'Puedes ' +
-            '<a href=\"../view/user-crud.php\">regresar al menú usuarios</a>' +
-            ' para continuar registrando cambios'
-        }); 
-        </script>   
-        ");
-    } else {
-        echo("
-        <script type='text/javascript'>
-        Swal.fire({
-            icon: 'error',
-            title: 'Has ingresado un usuario existente y/o no llenaste todos los campos',
-            text: 'Porfavor inténtalo de nuevo'
-        }); 
-        </script>   
-        ");
+            <script type='text/javascript'>
+            Swal.fire({
+                icon: 'error',
+                title: 'No has ingresado todos los datos necesarios',
+                text: 'Porfavor, inténtalo de nuevo'
+            }); 
+            </script>   
+            ");
     }
 }
 
@@ -143,7 +154,5 @@ if(isset($_REQUEST["restore"])){
 if(isset($_REQUEST["logout"]))
 {
     session_destroy();
-    header("location:../view/login.php");
+    header("location:../index.php");
 }
-
-?>

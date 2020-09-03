@@ -61,7 +61,7 @@ require_once 'navbar.php';
         </a>
     </div>
     <br>
-    <div class="row w-100 justify-content-center align-items-center" id="intro">
+    <div class="row w-100 justify-content-center align-items-center">
         <h1 class="text-center" style="margin-bottom: 6vh;">¡Centro Odontológico Mundo Oral es tu mejor opción!</h1>
         <div class="row">
             <div class="col">

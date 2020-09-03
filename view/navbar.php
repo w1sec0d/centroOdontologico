@@ -59,7 +59,7 @@ session_start();
                 };
                 ?>
                 <a href="login.php">
-                    <a class='btn btn-primary' href="../controller/controller.php?logout=true"><i class='fas fa-sign-out-alt'></i></a>
+                    <a class='btn btn-primary' href="../controller/controller.php?logout=true"><i class='fas fa-sign-out-alt'></i> Cerrar Sesión</a>
                 </a>
             </ul>
         </div>

@@ -642,3 +642,6 @@ DROP TABLE USUARIO_INACTIVO;
 INSERT INTO `consultorio`.`USUARIO` (`idUsuario`, `nombreUsuario`, `apellidoUsuario`, `correoUsuario`, `telefonoUsuario`, `direccionUsuario`, `passwordUsuario`, `rolUsuario`, `estadoUsuario`) VALUES ('001', 'Admin', 'Alcachofa', 'granadmon@gmail.com', '3564984808', 'Calle 24', '12345', 'Secretaria', true);
 INSERT INTO `consultorio`.`USUARIO` (`idUsuario`, `nombreUsuario`, `apellidoUsuario`, `correoUsuario`, `telefonoUsuario`, `direccionUsuario`, `passwordUsuario`, `rolUsuario`, `estadoUsuario`) VALUES ('002', 'Medico', 'Caicedo', 'granmedico@gmail.com', '3265488945', 'Calle 24', '12345', 'Medico', true);
 INSERT INTO `consultorio`.`USUARIO` (`idUsuario`, `nombreUsuario`, `apellidoUsuario`, `correoUsuario`, `telefonoUsuario`, `direccionUsuario`, `passwordUsuario`, `rolUsuario`, `estadoUsuario`) VALUES ('003', 'Paciente', 'David', 'granpaciente@gmail.com', '2645646598', 'Calle 24', '12345', 'Paciente', true);
+
+SELECT * FROM USUARIO;
+SELECT rolUsuario as "ROL",idUsuario AS "ID",passwordUsuario AS "PASSWORD" FROM USUARIO;
