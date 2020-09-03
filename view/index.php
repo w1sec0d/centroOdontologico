@@ -123,35 +123,28 @@ require_once 'navbar.php';
         </div>
     </div>
 </footer>
-<script>
-    <?php
-    if(isset($_SESSION["shownLoggedAlert"])){
+<?php
 
-    }else{
-        echo
-        "
+if (isset($_REQUEST["showLoggedAlert"])){
+    echo
+    "
+    <script>
         const Toast = Swal.mixin({
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            onOpen: (toast) => {
-                toast.addEventListener('mouseenter', Swal.stopTimer)
-                toast.addEventListener('mouseleave', Swal.resumeTimer)
-            }
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
         })
-    
         Toast.fire({
             icon: 'success',
             title: 'Inicio de Sesión correcto'
         })
-        $:S
-        ";
-        $_SESSION["shownLoggedAlert"] = true;
-    }
-    ?>
-</script>
+    </script>
+    ";
+}
+?>
+
 </body>
 
 </html>

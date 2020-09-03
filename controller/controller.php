@@ -25,7 +25,7 @@ if (isset($_REQUEST["login"])) {       //En caso de hacer login
                     break;
             }
             $_SESSION["showIndex"] = true;
-            header("Location: index.php");
+            header("Location: index.php?showLoggedAlert=true");
         } else {
             echo
             "
@@ -88,10 +88,9 @@ if (isset($_REQUEST["update"])) {
         Swal.fire({
             icon: 'success',
             title: 'Usuario Registrado Correctamente',
-            html:
-            You can use <b>bold text</b>, ' +
-            '<a href='//sweetalert2.github.io>links</a> ' +
-            'and other HTML tags',
+            html: 'Puedes ' +
+            '<a href=\"../view/user-crud.php\">regresar al menú usuarios</a>' +
+            ' para continuar registrando cambios'
         }); 
         </script>   
         ");
