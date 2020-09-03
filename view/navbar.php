@@ -3,7 +3,7 @@ session_start();
 ?>
 
 <body>
-    <nav class="navbar navbar-expand-md navbar-light bg-light sticky-top">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
         <a href="../index.php" class="navbar-brand">
             <img src="../assets/img/brandLogoWhite.png" alt="Centro Odontológico Mundo Oral" class="img-responsive" id="navbarBrandImg" width="100" height="30">
         </a>
@@ -16,8 +16,20 @@ session_start();
                     <a class="nav-link" href="index.php"><i class="fas fa-home"></i></a>
                 </li>
                 <?php
-                if ($_SESSION["rolUsuarioNavegando"]  == 1) {
-                    echo "<li class='nav-item' id='users_menu'><a class='nav-link' href='user-crud.php'><i class='fas fa-users'></i> Usuarios </a></li>";
+                if ($_SESSION["rolUsuarioNavegando"] == 1) {
+                    echo
+                    "
+                    <li class='nav-item dropdown'>
+                        <a class='nav-link dropdown-toggle' href='#' id='navbarDropdown' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
+                        <i class='fas fa-users'></i>Usuarios
+                        </a>
+                        <div class='dropdown-menu' aria-labelledby='navbarDropdown'>
+                            <a class='dropdown-item' href='./user-crud.php'>Gestión de Usuarios</a>
+                            <div class='dropdown-divider'></div>
+                            <a class='dropdown-item' href='./user-backup.php'>Recuperar Usuarios</a>
+                        </div>
+                    </li>
+                    ";
                 };
 
                 if ($_SESSION["rolUsuarioNavegando"]  == 2) {
@@ -52,3 +64,8 @@ session_start();
             </ul>
         </div>
     </nav>
+    <script>
+    $(document).ready(function() {
+        $(".dropdown-toggle").dropdown();
+    });
+    </script>

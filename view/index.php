@@ -60,6 +60,45 @@ require_once 'navbar.php';
             <span class="sr-only">Next</span>
         </a>
     </div>
+    <br>
+    <div class="row w-100 justify-content-center align-items-center" id="intro">
+        <h1 class="text-center" style="margin-bottom: 6vh;">¡Centro Odontológico Mundo Oral es tu mejor opción!</h1>
+        <div class="row">
+            <div class="col">
+                <div class="row justify-content-center">
+                    <div class="card" style="width: 20rem;">
+                        <img class="card-img-top" src="../assets/img/card1.jpg" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">Deja todo en nuestras manos</h5>
+                            <p class="card-text">Nuestro personal certificado cuidará de ti</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="row justify-content-center">
+                    <div class="card" style="width: 20rem;">
+                        <img class="card-img-top" src="../assets/img/card2.jpg" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">Nos adaptamos a tu bolsillo</h5>
+                            <p class="card-text">Brindandote precios competitivos</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="row justify-content-center">
+                    <div class="card" style="width: 20rem;">
+                        <img class="card-img-top" src="../assets/img/card3.jpg" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">Cuidamos de tu bienestar</h5>
+                            <p class="card-text">Contamos con medidas de bioseguridad</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="jumbotron">
         <div class="row">
@@ -125,9 +164,9 @@ require_once 'navbar.php';
 </footer>
 <?php
 
-if (isset($_REQUEST["showLoggedAlert"])){
+if (isset($_REQUEST["showLoggedAlert"])) {
     echo
-    "
+        "
     <script>
         const Toast = Swal.mixin({
         toast: true,

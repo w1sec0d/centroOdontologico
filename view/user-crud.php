@@ -65,11 +65,17 @@ require 'navbar.php';
 
                         </tr>
                     <?php
-                        if(isset($_REQUEST["delete"])){
+                        if (isset($_REQUEST["delete"])){
                             echo
                             "
                             <script>
-                            
+                            Swal.fire({
+                                icon: 'info',
+                                title: 'Usuario eliminado Correctamente',
+                                html: 'Puedes ' +
+                                '<a href=\"./user-backup.php\">ir al módulo recuperar usuarios</a>' +
+                                ' para recuperar el usuario'
+                            })
                             </script>
                             ";
                         }
@@ -136,7 +142,7 @@ require 'navbar.php';
             reverseButtons: true
         }).then((result) => {
             if (result.value) {
-                window.location.href="../controller/controller.php?delete=true&idUsuario="+id;
+                window.location.href = "../controller/controller.php?delete=true&idUsuario=" + id;
             } else if (
                 /* Read more about handling dismissals below */
                 result.dismiss === Swal.DismissReason.cancel

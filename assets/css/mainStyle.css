@@ -7,6 +7,7 @@
         font-size: 1.5em;
         text-align: center;
         overflow-x: hidden;
+        background: #E9ECEF;
     }
     
     h1,
@@ -377,4 +378,8 @@
     
     .swal2-cancel {
         margin-right: 1vw;
+    }
+    
+    .card {
+        margin: 10px;
     }

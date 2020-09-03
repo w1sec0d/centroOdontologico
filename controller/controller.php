@@ -55,17 +55,11 @@ if (isset($_REQUEST["login"])) {       //En caso de hacer login
 
 if (isset($_REQUEST["delete"])) {       //En caso de Eliminar
     $idUsuario = $_REQUEST["idUsuario"];
-    $fk_check = "SET FOREIGN_KEY_CHECKS=0";
-    $query1 = "DELETE FROM PACIENTE WHERE idPaciente = $idUsuario";
-    $query2 = "DELETE FROM MEDICO WHERE idMedico = $idUsuario";
-    $query3 = "DELETE FROM USUARIO WHERE idUsuario = $idUsuario";
+    $query = "UPDATE USUARIO SET estadoUsuario = false WHERE idUsuario = $idUsuario";
 
-    $result0 = mysqli_query($conection, $fk_check);
-    $result1 = mysqli_query($conection, $query1);
-    $result2 = mysqli_query($conection, $query2);
-    $result3 = mysqli_query($conection, $query3);
+    $result = mysqli_query($conection, $query);
 
-    header("Location: ../view/user-crud.php?deleted=true");
+    header("Location: ../view/user-crud.php?delete=true");
 }
 if (isset($_REQUEST["update"])) 
 {
@@ -88,7 +82,7 @@ if (isset($_REQUEST["update"]))
         <script type='text/javascript'>
         Swal.fire({
             icon: 'success',
-            title: 'Usuario Registrado Correctamente',
+            title: 'Usuario actualizado correctamente',
             html: 'Puedes ' +
             '<a href=\"../view/user-crud.php\">regresar al menú usuarios</a>' +
             ' para continuar registrando cambios'
@@ -125,8 +119,25 @@ if (isset($_REQUEST["create"])) {
         </script>   
         ");
     } else {
-        echo $query;
+        echo("
+        <script type='text/javascript'>
+        Swal.fire({
+            icon: 'error',
+            title: 'Has ingresado un usuario existente y/o no llenaste todos los campos',
+            text: 'Porfavor inténtalo de nuevo'
+        }); 
+        </script>   
+        ");
     }
+}
+
+if(isset($_REQUEST["restore"])){
+    $idUsuario = $_REQUEST["idUsuario"];
+
+    $query = "UPDATE USUARIO SET estadoUsuario = true WHERE idUsuario = $idUsuario";
+    $result = mysqli_query($conection, $query);
+
+    header("Location: ../view/user-backup.php?restore=true");
 }
 
 if(isset($_REQUEST["logout"]))
