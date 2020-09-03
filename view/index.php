@@ -102,8 +102,8 @@ require_once 'navbar.php';
             </div>
             <div class="row w-100 justify-content-center align-items-center" style="margin-top: 5vh; margin-bottom:1vh">
                 <h1 style="margin-right: 2vw;">¡Siguenos!</h1>
-                <a href="https://www.facebook.com/Centro-odontologico-mundo-oral-1400646953307029" class="fa fa-facebook"></a>
-                <a href="https://www.instagram.com/dradianahermida/" class="fa fa-instagram"></a>
+                <a href="https://www.facebook.com/Centro-odontologico-mundo-oral-1400646953307029" target="_blank" class="fa fa-facebook"></a>
+                <a href="https://www.instagram.com/dradianahermida/" target="_blank" class="fa fa-instagram"></a>
             </div>
         </div>
     </div>
@@ -119,7 +119,7 @@ require_once 'navbar.php';
             <p>Copyright &copy; Sena 2019</p>
         </div>
         <div class="col">
-            Imagen creada por <a href="https://www.freepik.es/fotos/mujer">jcomp - www.freepik.es</a>
+            Imagen creada por <a href="https://www.freepik.es/fotos/mujer" target="_blank">jcomp - www.freepik.es</a>
         </div>
     </div>
 </footer>

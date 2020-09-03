@@ -3,11 +3,11 @@ require_once '../model/database.php';
 require_once 'header.php';
 require_once 'navbar.php';
 
-if (isset($_REQUEST["idUsuarioOld"])) {
+if (isset($_REQUEST["idUsuario"])) {
     $_SESSION["update"] = true;
-    $idUsuarioOld = $_REQUEST["idUsuarioOld"];
+    $idUsuario = $_REQUEST["idUsuario"];
 } else {
-    $idUsuarioOld = "";
+    $idUsuario = "";
 }
 if (isset($_REQUEST["nombreUsuario"])) {
     $nombreUsuario = $_REQUEST["nombreUsuario"];
@@ -55,16 +55,13 @@ if (isset($_REQUEST["estadoUsuario"])) {
     <div class="container-fluid w-100 h-100" id="crud-back">
         <div class="row w-100 h-100 justify-content-center align-items-center" style="margin:0">
             <form method="post" class="w-60 h-70" id="edit-user-form">
-                <h1 class="font-weight-bold text-center">
-                    <?php
-                    if ($idUsuarioOld) {
-                        echo "✏️Editar Usuario <b style='color: coral'>$nombreUsuario</b>";
-                    } else {
-                        echo "Nuevo Usuario";
-                    };
-                    ?>
-                </h1>
-                <input type="text" name="idUsuario" class="hidden" value="<?php echo $idUsuarioOld ?>" />
+                <?php
+                if ($idUsuario) {
+                    echo "<h1 class='font-weight-bold text-center'>✏️Editar Usuario <b style='color: coral'>$nombreUsuario</b></h1>";
+                    echo "<p>Con número de identificación <b>$idUsuario</b></p>  ";
+                }
+                ?>
+                <input type="text" name="idUsuario" class="hidden" value="<?php echo $idUsuario ?>" />
                 <div class="row">
                     <div class="col form-group">
                         <label for="nombreUsuario">Nombre</label>
@@ -105,7 +102,7 @@ if (isset($_REQUEST["estadoUsuario"])) {
                         <input type="text" name="passwordUsuario" class="form-control" value="<?php echo $passwordUsuario ?>">
                     </div>
                 </div>
-                <input type="submit" name="update" value="<?php if ($idUsuarioOld) {
+                <input type="submit" name="update" value="<?php if ($idUsuario) {
                                                                 echo "Actualizar";
                                                             } else echo "Crear Usuario"; ?>" class="btn btn-primary btn-lg">
                 <?php require_once '../controller/controller.php'; ?>

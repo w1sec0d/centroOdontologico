@@ -357,3 +357,24 @@
         background: tomato;
         color: white;
     }
+    
+    #swal2-content a {
+        text-decoration: none;
+    }
+    
+    #swal2-content a:hover {
+        animation-name: link;
+        animation-duration: 0.5s;
+        animation-fill-mode: forwards;
+    }
+    
+    @keyframes link {
+        from {}
+        to {
+            color: #FF7F50;
+        }
+    }
+    
+    .swal2-cancel {
+        margin-right: 1vw;
+    }

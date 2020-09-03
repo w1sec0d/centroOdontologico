@@ -49,14 +49,14 @@ require 'navbar.php';
                             <td><?php echo $mostrar["rolUsuario"] ?></td>
                             <td><?php echo $mostrar["estadoUsuario"] ? 'Activo' : 'Inactivo' ?></td>
                             <td class="bg-info">
-                                <a href="user-update.php?rolUsuario=<?php echo $mostrar["rolUsuario"] ?>&action=3&estadoUsuario=<?php echo $mostrar["estadoUsuario"] == 1 ? true : "false" ?>&idUsuarioOld=<?php echo $mostrar["idUsuario"] ?>&nombreUsuario=<?php echo $mostrar["nombreUsuario"] ?>&apellidoUsuario=<?php echo $mostrar["apellidoUsuario"] ?>&correoUsuario=<?php echo $mostrar["correoUsuario"] ?>&telefonoUsuario=<?php echo $mostrar["telefonoUsuario"] ?>&direccionUsuario=<?php echo $mostrar["direccionUsuario"] ?>&passwordUsuario=<?php echo $mostrar["passwordUsuario"] ?> ">
+                                <a href="user-update.php?rolUsuario=<?php echo $mostrar["rolUsuario"] ?>&action=3&estadoUsuario=<?php echo $mostrar["estadoUsuario"] == 1 ? true : "false" ?>&idUsuario=<?php echo $mostrar["idUsuario"] ?>&nombreUsuario=<?php echo $mostrar["nombreUsuario"] ?>&apellidoUsuario=<?php echo $mostrar["apellidoUsuario"] ?>&correoUsuario=<?php echo $mostrar["correoUsuario"] ?>&telefonoUsuario=<?php echo $mostrar["telefonoUsuario"] ?>&direccionUsuario=<?php echo $mostrar["direccionUsuario"] ?>&passwordUsuario=<?php echo $mostrar["passwordUsuario"] ?> ">
                                     <span style="color: White;">
                                         <i class="fas fa-edit"></i>
                                     </span>
                                 </a>
                             </td>
                             <td class="bg-danger">
-                                <a href="../controller/controller.php?eliminar=true&idUsuario=<?php echo $mostrar["idUsuario"] ?>">
+                                <a href="#" onclick="deleteConfirmation(<?php echo $mostrar['idUsuario'] ?>)">
                                     <span style="color: White;">
                                         <i class="fas fa-trash-alt"></i>
                                     </span>
@@ -65,6 +65,14 @@ require 'navbar.php';
 
                         </tr>
                     <?php
+                        if(isset($_REQUEST["delete"])){
+                            echo
+                            "
+                            <script>
+                            
+                            </script>
+                            ";
+                        }
                     }
                     ?>
                 </tbody>
@@ -107,6 +115,39 @@ require 'navbar.php';
             "copy": "Copiar",
             "colvis": "Visibilidad"
         }
+    }
+
+    function deleteConfirmation(id) {
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+                confirmButton: 'btn btn-success',
+                cancelButton: 'btn btn-danger'
+            },
+            buttonsStyling: false
+        })
+
+        swalWithBootstrapButtons.fire({
+            title: '¿Estás seguro de eliminar el registro?',
+            text: "De todas formas, podrás recuperarlo en el módulo de recuperar usuarios",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Si, Eliminar Registro',
+            cancelButtonText: 'No, Cancelar',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.value) {
+                window.location.href="../controller/controller.php?delete=true&idUsuario="+id;
+            } else if (
+                /* Read more about handling dismissals below */
+                result.dismiss === Swal.DismissReason.cancel
+            ) {
+                swalWithBootstrapButtons.fire(
+                    'Operación Cancelada',
+                    'Tu usuario no ha sido eliminado :)',
+                    'info'
+                )
+            }
+        })
     }
 </script>
 <footer class="sticky-bottom ">

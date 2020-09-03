@@ -53,7 +53,7 @@ if (isset($_REQUEST["login"])) {       //En caso de hacer login
     }
 }
 
-if (isset($_REQUEST["eliminar"])) {       //En caso de Eliminar
+if (isset($_REQUEST["delete"])) {       //En caso de Eliminar
     $idUsuario = $_REQUEST["idUsuario"];
     $fk_check = "SET FOREIGN_KEY_CHECKS=0";
     $query1 = "DELETE FROM PACIENTE WHERE idPaciente = $idUsuario";
@@ -65,10 +65,10 @@ if (isset($_REQUEST["eliminar"])) {       //En caso de Eliminar
     $result2 = mysqli_query($conection, $query2);
     $result3 = mysqli_query($conection, $query3);
 
-    header("Location: ../view/user-crud.php");
+    header("Location: ../view/user-crud.php?deleted=true");
 }
-
-if (isset($_REQUEST["update"])) {
+if (isset($_REQUEST["update"])) 
+{
     $idUsuario = $_REQUEST["idUsuario"];
     $nombreUsuario = $_REQUEST["nombreUsuario"];
     $apellidoUsuario = $_REQUEST["apellidoUsuario"];
@@ -83,7 +83,8 @@ if (isset($_REQUEST["update"])) {
     $result = mysqli_query($conection, $query);
 
     if ($result) {
-        echo("
+        echo
+        ("
         <script type='text/javascript'>
         Swal.fire({
             icon: 'success',
@@ -112,11 +113,17 @@ if (isset($_REQUEST["create"])) {
     $result = mysqli_query($conection, $query);
 
     if ($result) {
-        echo ("
-            <a href='user-crud.php'>
-                <p style='margin: 0;' class='btn btn-success btn-lg'>Información registrada, toca para volver a la sección usuarios<p>
-            </a>    
-            ");
+        echo("
+        <script type='text/javascript'>
+        Swal.fire({
+            icon: 'success',
+            title: 'Usuario Registrado Correctamente',
+            html: 'Puedes ' +
+            '<a href=\"../view/user-crud.php\">regresar al menú usuarios</a>' +
+            ' para continuar registrando cambios'
+        }); 
+        </script>   
+        ");
     } else {
         echo $query;
     }
