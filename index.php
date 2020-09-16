@@ -91,7 +91,7 @@ session_start();
             </a>
         </div>
         <div class="row w-100 justify-content-center align-items-center" id="intro">
-            <h1 class="text-center" style="margin-bottom: 6vh; margin-top:6vh">¡Centro Odontológico Mundo Oral es tu mejor opción!</h1>
+            <h1 class="text-center" style="margin-bottom: 6vh; margin-top:6vh; margin-right: 0">¡Centro Odontológico Mundo Oral es tu mejor opción!</h1>
             <div class="row">
                 <div class="col">
                     <div class="row justify-content-center">

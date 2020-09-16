@@ -5,7 +5,6 @@ require 'navbar.php';
 <div class="container-fluid" id="crud-back">
 
     <div class="row w-100 h-100 justify-content-center align-items-center">
-
         <h1 class="crud-title">Gestión de usuarios</h1>
         <div class="table-responsive">
             <table class="table table-striped table-hover table-condensed dt-responsive" id="tableUser" class="display">

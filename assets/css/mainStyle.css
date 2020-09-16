@@ -383,3 +383,11 @@
     .card {
         margin: 10px;
     }
+    
+    .card-text {
+        font-size: 1em;
+    }
+    
+    #intro {
+        margin: 0;
+    }

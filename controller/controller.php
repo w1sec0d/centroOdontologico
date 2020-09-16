@@ -10,10 +10,12 @@ if (isset($_REQUEST["login"])) {       //En caso de hacer login
     $result = mysqli_query($conection, $query);
     if ($result) {
         $resultArray = $result->fetch_assoc();
-        if ($resultArray) 
-        {
+        if ($resultArray) {
             $_SESSION["rolUsuarioNavegando"] = $resultArray["rolUsuario"];
             switch ($_SESSION["rolUsuarioNavegando"]) {
+                case 'Admin':
+                    $_SESSION["rolUsuarioNavegando"] = 0;
+                    break;
                 case 'Secretaria':
                     $_SESSION["rolUsuarioNavegando"] = 1;
                     break;
@@ -28,7 +30,7 @@ if (isset($_REQUEST["login"])) {       //En caso de hacer login
             header("Location: index.php?showLoggedAlert=true");
         } else {
             echo
-            "
+                "
             <script type='text/javascript'>
                 Swal.fire({
                     icon: 'error',
@@ -41,7 +43,7 @@ if (isset($_REQUEST["login"])) {       //En caso de hacer login
         }
     } else {
         echo
-        "
+            "
         <script type='text/javascript'>
             Swal.fire({
                 icon: 'error',
@@ -51,18 +53,14 @@ if (isset($_REQUEST["login"])) {       //En caso de hacer login
         </script>
         ";
     }
-}
-
-if (isset($_REQUEST["delete"])) {       //En caso de Eliminar
+} else if (isset($_REQUEST["delete"])) {       //En caso de Eliminar
     $idUsuario = $_REQUEST["idUsuario"];
     $query = "UPDATE USUARIO SET estadoUsuario = false WHERE idUsuario = $idUsuario";
 
     $result = mysqli_query($conection, $query);
 
     header("Location: ../view/user-crud.php?delete=true");
-}
-if (isset($_REQUEST["update"])) 
-{
+} else if (isset($_REQUEST["update"])) {
     $idUsuario = $_REQUEST["idUsuario"];
     $nombreUsuario = $_REQUEST["nombreUsuario"];
     $apellidoUsuario = $_REQUEST["apellidoUsuario"];
@@ -77,8 +75,7 @@ if (isset($_REQUEST["update"]))
     $result = mysqli_query($conection, $query);
 
     if ($result) {
-        echo
-        ("
+        echo ("
         <script type='text/javascript'>
         Swal.fire({
             icon: 'success',
@@ -90,9 +87,7 @@ if (isset($_REQUEST["update"]))
         </script>   
         ");
     }
-}
-
-if (isset($_REQUEST["create"])) {
+} else if (isset($_REQUEST["create"])) {
     $idUsuario = $_REQUEST["idUsuario"];
     $nombreUsuario = $_REQUEST["nombreUsuario"];
     $apellidoUsuario = $_REQUEST["apellidoUsuario"];
@@ -105,9 +100,9 @@ if (isset($_REQUEST["create"])) {
 
     $query = "INSERT INTO USUARIO(idUsuario, nombreUsuario, apellidoUsuario, correoUsuario, telefonoUsuario, direccionUsuario, passwordUsuario, rolUsuario, estadoUsuario) VALUES ('$idUsuario', '$nombreUsuario', '$apellidoUsuario', '$correoUsuario', '$telefonoUsuario', '$direccionUsuario', '$passwordUsuario', '$rolUsuario', $estadoUsuario);";
     $result = mysqli_query($conection, $query);
-    if($idUsuario != ""){
+    if ($idUsuario != "") {
         if ($result) {
-            echo("
+            echo ("
             <script type='text/javascript'>
             Swal.fire({
                 icon: 'success',
@@ -119,7 +114,7 @@ if (isset($_REQUEST["create"])) {
             </script>   
             ");
         } else {
-            echo("
+            echo ("
             <script type='text/javascript'>
             Swal.fire({
                 icon: 'error',
@@ -129,8 +124,8 @@ if (isset($_REQUEST["create"])) {
             </script>   
             ");
         }
-    }else{
-        echo("
+    } else {
+        echo ("
             <script type='text/javascript'>
             Swal.fire({
                 icon: 'error',
@@ -140,19 +135,14 @@ if (isset($_REQUEST["create"])) {
             </script>   
             ");
     }
-}
-
-if(isset($_REQUEST["restore"])){
+} else if (isset($_REQUEST["restore"])) {
     $idUsuario = $_REQUEST["idUsuario"];
 
     $query = "UPDATE USUARIO SET estadoUsuario = true WHERE idUsuario = $idUsuario";
     $result = mysqli_query($conection, $query);
 
     header("Location: ../view/user-backup.php?restore=true");
-}
-
-if(isset($_REQUEST["logout"]))
-{
+} else if (isset($_REQUEST["logout"])) {
     session_destroy();
     header("location:../index.php");
 }

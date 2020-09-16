@@ -16,7 +16,7 @@ session_start();
                     <a class="nav-link" href="index.php"><i class="fas fa-home"></i></a>
                 </li>
                 <?php
-                if ($_SESSION["rolUsuarioNavegando"] == 1) {
+                if ($_SESSION["rolUsuarioNavegando"] == 1 OR $_SESSION["rolUsuarioNavegando"] == 0) {
                     echo
                     "
                     <li class='nav-item dropdown'>
@@ -32,7 +32,7 @@ session_start();
                     ";
                 };
 
-                if ($_SESSION["rolUsuarioNavegando"]  == 2) {
+                if ($_SESSION["rolUsuarioNavegando"] == 2 OR $_SESSION["rolUsuarioNavegando"] == 0) {
                     echo "<li class='nav-item' id='doctor'><a class='nav-link' href='gestionar-cita-medico.php'><i class='fas fa-book'></i> Agenda Médica </a></li>";
                 };
                 ?>
@@ -54,7 +54,7 @@ session_start();
                     </a>
                 </li>
                 <?php
-                if ($_SESSION["rolUsuarioNavegando"] == 1) {
+                if ($_SESSION["rolUsuarioNavegando"] == 1 OR $_SESSION["rolUsuarioNavegando"] == 0) {
                     echo ("<li class='nav-item dropdown' id='reports'><a class='nav-link dropdown-toggle' href='#' id='navbarDropdownMenuLink' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'><i class='fas fa-chart-bar'></i> Reportes </a><div class='dropdown-menu' aria-labelledby='navbarDropdownMenuLink'><a class='dropdown-item' href='#'>Citas por médico</a><a class='dropdown-item' href='#'>Asistencia pacientes</a><a class='dropdown-item' href='#'>Historia Clínica</a><a class='dropdown-item' href='#'>Estado de Citas</a></div></li>");
                 };
                 ?>
