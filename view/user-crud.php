@@ -36,7 +36,7 @@ require 'navbar.php';
                     $result = mysqli_query($conection, $sql);
 
                     while ($mostrar = mysqli_fetch_array($result)) {
-                    ?>
+                        ?>
                         <tr>
                             <td><?php echo $mostrar["idUsuario"] ?></td>
                             <td><?php echo $mostrar["nombreUsuario"] ?></td>
@@ -64,7 +64,7 @@ require 'navbar.php';
 
                         </tr>
                     <?php
-                        if (isset($_REQUEST["delete"])){
+                        if (isset($_REQUEST["delete"])) {
                             echo
                             "
                             <script>
@@ -89,11 +89,7 @@ require 'navbar.php';
 
 <script>
     $(document).ready(function() {
-        $('#tableUser').DataTable({
-            "language": spanishTable
-        });
-    });
-    var spanishTable = {
+        var spanishTable = {
         "sProcessing": "Procesando...",
         "sLengthMenu": "Mostrar _MENU_ registros",
         "sZeroRecords": "No se encontraron resultados",
@@ -121,6 +117,33 @@ require 'navbar.php';
             "colvis": "Visibilidad"
         }
     }
+        $('#tableUser').DataTable({
+            "language": spanishTable,
+            colReorder: true,
+            responsive: "true",
+            dom: 'fBtp',  
+            buttons:[ 
+			{
+				extend:    'excelHtml5',
+				text:      '<i class="fas fa-file-excel"></i> ',
+				titleAttr: 'Exportar a Excel',
+				className: 'excel'
+			},
+			{
+				extend:    'pdfHtml5',
+				text:      '<i class="fas fa-file-pdf"></i> ',
+				titleAttr: 'Exportar a PDF',
+				className: 'btn btn-danger'
+			},
+			{
+				extend:    'print',
+				text:      '<i class="fas fa-print"></i>',
+				titleAttr: 'Imprimir',
+				className: 'btn btn-info'
+			},
+		    ]	       
+        });
+    
 
     function deleteConfirmation(id) {
         const swalWithBootstrapButtons = Swal.mixin({
@@ -154,6 +177,7 @@ require 'navbar.php';
             }
         })
     }
+    });
 </script>
 <footer class="sticky-bottom ">
     <div class="row">

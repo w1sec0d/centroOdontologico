@@ -1,18 +1,16 @@
 <?php
 require_once '../model/database.php';
-
-if (isset($_REQUEST["login"])) {       //En caso de hacer login
+if (isset($_REQUEST["login"])) {        //En caso de hacer login
     session_start();
     $_SESSION["idUsuario"] = $_REQUEST["idUsuario"];
     $_SESSION["passwordUsuario"] = $_REQUEST["passwordUsuario"];
-
     $query = "SELECT rolUsuario FROM USUARIO WHERE idUsuario = " . $_SESSION["idUsuario"] . " && passwordUsuario = " . $_SESSION["passwordUsuario"] . "";
     $result = mysqli_query($conection, $query);
     if ($result) {
         $resultArray = $result->fetch_assoc();
         if ($resultArray) {
             $_SESSION["rolUsuarioNavegando"] = $resultArray["rolUsuario"];
-            switch ($_SESSION["rolUsuarioNavegando"]) {
+            switch ($_SESSION["rolUsuarioNavegando"]) {     //Guarda en la sesión el tipo de usuario que es
                 case 'Admin':
                     $_SESSION["rolUsuarioNavegando"] = 0;
                     break;
@@ -30,37 +28,40 @@ if (isset($_REQUEST["login"])) {       //En caso de hacer login
             header("Location: index.php?showLoggedAlert=true");
         } else {
             echo
-                "
+            "
             <script type='text/javascript'>
                 Swal.fire({
                     icon: 'error',
-                    title: 'Tu documento y/o contraseña es incorrecto',
+                    title: 'Tu documento o contraseña es incorrecto',
                     text: 'Porfavor, inténtalo de nuevo',
-                    showCloseButton: true
+                    showCloseButton:true,
+                    timer:5000
                 }); 
             </script>
             ";
         }
     } else {
         echo
-            "
+        "
         <script type='text/javascript'>
             Swal.fire({
                 icon: 'error',
                 title: 'Tu documento o contraseña es incorrecto',
                 text: 'Porfavor, inténtalo de nuevo',
+                showCloseButton:true,
+                timer:5000
             }); 
         </script>
         ";
     }
-} else if (isset($_REQUEST["delete"])) {       //En caso de Eliminar
+} elseif (isset($_REQUEST["delete"])) {       //En caso de Eliminar
     $idUsuario = $_REQUEST["idUsuario"];
     $query = "UPDATE USUARIO SET estadoUsuario = false WHERE idUsuario = $idUsuario";
 
     $result = mysqli_query($conection, $query);
 
     header("Location: ../view/user-crud.php?delete=true");
-} else if (isset($_REQUEST["update"])) {
+} elseif (isset($_REQUEST["update"])) {
     $idUsuario = $_REQUEST["idUsuario"];
     $nombreUsuario = $_REQUEST["nombreUsuario"];
     $apellidoUsuario = $_REQUEST["apellidoUsuario"];
@@ -75,7 +76,7 @@ if (isset($_REQUEST["login"])) {       //En caso de hacer login
     $result = mysqli_query($conection, $query);
 
     if ($result) {
-        echo ("
+        echo("
         <script type='text/javascript'>
         Swal.fire({
             icon: 'success',
@@ -87,7 +88,7 @@ if (isset($_REQUEST["login"])) {       //En caso de hacer login
         </script>   
         ");
     }
-} else if (isset($_REQUEST["create"])) {
+} elseif (isset($_REQUEST["create"])) {
     $idUsuario = $_REQUEST["idUsuario"];
     $nombreUsuario = $_REQUEST["nombreUsuario"];
     $apellidoUsuario = $_REQUEST["apellidoUsuario"];
@@ -102,7 +103,7 @@ if (isset($_REQUEST["login"])) {       //En caso de hacer login
     $result = mysqli_query($conection, $query);
     if ($idUsuario != "") {
         if ($result) {
-            echo ("
+            echo("
             <script type='text/javascript'>
             Swal.fire({
                 icon: 'success',
@@ -114,7 +115,7 @@ if (isset($_REQUEST["login"])) {       //En caso de hacer login
             </script>   
             ");
         } else {
-            echo ("
+            echo("
             <script type='text/javascript'>
             Swal.fire({
                 icon: 'error',
@@ -125,7 +126,7 @@ if (isset($_REQUEST["login"])) {       //En caso de hacer login
             ");
         }
     } else {
-        echo ("
+        echo("
             <script type='text/javascript'>
             Swal.fire({
                 icon: 'error',
@@ -135,14 +136,14 @@ if (isset($_REQUEST["login"])) {       //En caso de hacer login
             </script>   
             ");
     }
-} else if (isset($_REQUEST["restore"])) {
+} elseif (isset($_REQUEST["restore"])) {
     $idUsuario = $_REQUEST["idUsuario"];
 
     $query = "UPDATE USUARIO SET estadoUsuario = true WHERE idUsuario = $idUsuario";
     $result = mysqli_query($conection, $query);
 
     header("Location: ../view/user-backup.php?restore=true");
-} else if (isset($_REQUEST["logout"])) {
+} elseif (isset($_REQUEST["logout"])) {
     session_destroy();
     header("location:../index.php");
 }

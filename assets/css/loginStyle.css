@@ -1,4 +1,19 @@
-body{
+/* Carga las dos fuentes que se van a utilizar en la página */
+
+@font-face {
+    font-family: "Alata";
+    src: url("./fonts/Alata-Regular.ttf");
+}
+
+@font-face {
+    font-family: "Open Sans";
+    src: url("./fonts/OpenSans-Regular.ttf");
+}
+
+
+/* Establece un body que abarque toda la pantalla del dispositivo*/
+
+body {
     margin: 0;
     padding: 0;
     width: 100vw;
@@ -6,67 +21,78 @@ body{
     background: url(../img/loginBackground.png) no-repeat;
     background-size: cover;
     font-family: 'Open Sans', sans-serif;
-    font-size: 1em;
-    text-align: center;
-}
-h1, h2 , h3{
-    font-family: 'Alata', sans-serif;
-    font-size: 1.5em;
-    font-weight: bold;
     text-align: center;
 }
 
-.btn{
-    display: block;
+h1,
+h2,
+h3 {
+    font-family: 'Alata', sans-serif;
+    font-weight: bold;
+}
+
+#login-formulario {
+    width: 80vw;
+    height: fit-content;
+    max-width: 400px;
+    position: absolute;
+    /* Centra el formulario segun la pantalla */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.85);
+    box-shadow: 0px 1px 4px 1px rgba(0, 0, 0, 0.75);
+    border-radius: 5px;
+}
+
+#login-titulo {
+    margin-top: 2vh;
+    margin-bottom: 1vh;
+}
+
+#login-icono {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    position: absolute;
+    top: -10%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0px 1px 4px 1px rgba(0, 0, 0, 0.75);
+    z-index: 100;
+}
+
+#login-icono:hover {
+    animation-name: hover-icono;
+    animation-duration: 0.5s;
+    /* Hace que se mantenga el último estado de la animación */
+    animation-fill-mode: forwards;
+}
+
+@keyframes hover-icono {
+    from {}
+    to {
+        width: 102.5px;
+        height: 102.5px;
+    }
+}
+
+#submit {
     width: 100%;
     margin-top: 2vh;
 }
 
-.login-form{
-    width: 80vw;
-    height: 60vh;
-    max-width: 400px;
-    max-height: 300px;
-    position: absolute;
-    top:50%;
-    left:50%;
-    padding: 10px;
-    transform: translate(-50%,-50%);
-    background: rgba(255, 255, 255, 0.85);
-    box-shadow: 0px 0px 6px 1px rgba(0,0,0,0.63);
+footer {
+    padding: 5px;
 }
-    #login-title{
-        margin-top: 2vh;
-        margin-bottom: 1vh;
-    }
-    #login-icon{
-        width: 100px;
-        height: 100px;
-        border-radius: 50%;
-        position: absolute;
-        top: -10%;
-        left: 50%;
-        transform: translate(-50%,-50%);
-        box-shadow: 0px 0px 6px 1px rgba(0,0,0,0.63);
-        z-index: 100;
-    }
-        .login-icon:hover{
-            animation: icon-resize 2s;
-            animation-fill-mode: forwards;
-        }
 
-        @keyframes icon-resize{
-            from{transform: scale(1);}
-            to{transform: scale(1.05);}
-        }
-    .btn{
-        font-weight: bold;
-    }
-footer p{
+footer p {
     margin: 0;
     color: white;
 }
-    footer p a:hover{
-        text-decoration: none;
-        color: orange;
-    }
+
+footer p a:hover {
+    text-decoration: none;
+    color: orange;
+}
