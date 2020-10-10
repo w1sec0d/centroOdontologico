@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="es">
 
@@ -6,16 +9,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Carga Bootstrap -->
-    <script src="../assets/js/jquery.js"></script>
-    <link rel="stylesheet" href="../assets/css/bootstrap.css">
-    <script src="../assets/js/bootstrap.js"></script>
+    <script src="../assets/libraries/jquery.js"></script>
+    <link rel="stylesheet" href="../assets/libraries/bootstrap.css">
+    <script src="../assets/libraries/bootstrap.js"></script>
 
     <!-- Carga SweetAlert -->
-    <script src="../assets/js/sweetAlert.js"></script>
+    <script src="../assets/libraries/sweetAlert.js"></script>
+
+    <!-- Carga FitText -->
+    <script src="../assets/libraries/jquery.fittext.js"></script>
 
     <!-- Carga Favicon y estilos -->
-    <link rel="icon" href="../assets/img/brandIcon.ico">
-    <link rel="stylesheet" href="../assets/css/loginStyle.css">
+    <link rel="icon" href="../assets/img/icono.ico">
+    <link rel="stylesheet" href="../assets/css/estiloLogin.css">
     <title>Inicio de sesión - Centro odontológico Mundo Oral</title>
 </head>
 
@@ -58,19 +64,25 @@
         </div>
         <input type="submit" value="Continuar" name="login" id="submit" class="btn btn-primary">
     </form>
+
+    <?php
+    require_once "../controller/controller.php";
+    ?>
+
     <footer class="bg-dark fixed-bottom">
-        <p>
+        <p id="footer-texto">
             Fondo creado por <a href="https://www.freepik.es/vectores/personas" target="_blank">pch.vector</a> -
             www.freepik.es
         </p>
     </footer>
-    <?php
-    require_once "../controller/controller.php";
-    ?>
+
     <!-- Carga FitText y hace responsive el título -->
-    <script src="../assets/js/jquery.fittext.js"></script>
     <script>
     jQuery("#login-titulo").fitText(); // Hace el título responsive
+    jQuery("#footer-texto").fitText(2, {
+        minFontSize: '10px',
+        maxFontSize: '15px'
+    });
 
     function mostrarContrasena() { // Se encarga de mostrar/ocultar la contraseña cambiando el input
         const inputContrasena = document.getElementById("inputContrasena");

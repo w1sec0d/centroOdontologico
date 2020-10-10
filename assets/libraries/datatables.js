@@ -4,10 +4,10 @@
  *
  * To rebuild or modify this file with the latest versions of the included
  * software please visit:
- *   https://datatables.net/download/#dt/jszip-2.5.0/pdfmake-0.1.36/dt-1.10.22/b-1.6.4/b-html5-1.6.4/b-print-1.6.4/cr-1.5.2/fh-3.1.7/kt-2.5.3/r-2.2.6/rr-1.2.7
+ *   https://datatables.net/download/#dt/jszip-2.5.0/pdfmake-0.1.36/dt-1.10.22/b-1.6.5/b-colvis-1.6.5/b-flash-1.6.5/b-html5-1.6.5/b-print-1.6.5/cr-1.5.2/fc-3.3.1/fh-3.1.7/kt-2.5.3/r-2.2.6/rr-1.2.7
  *
  * Included libraries:
- *   JSZip 2.5.0, pdfmake 0.1.36, DataTables 1.10.22, Buttons 1.6.4, HTML5 export 1.6.4, Print view 1.6.4, ColReorder 1.5.2, FixedHeader 3.1.7, KeyTable 2.5.3, Responsive 2.2.6, RowReorder 1.2.7
+ *   JSZip 2.5.0, pdfmake 0.1.36, DataTables 1.10.22, Buttons 1.6.5, Column visibility 1.6.5, Flash export 1.6.5, HTML5 export 1.6.5, Print view 1.6.5, ColReorder 1.5.2, FixedColumns 3.3.1, FixedHeader 3.1.7, KeyTable 2.5.3, Responsive 2.2.6, RowReorder 1.2.7
  */
 
 /*!
@@ -73602,7 +73602,7 @@ this.pdfMake = this.pdfMake || {}; this.pdfMake.vfs = {
 		 *
 		 *  @type string
 		 */
-		build:"dt/jszip-2.5.0/pdfmake-0.1.36/dt-1.10.22/b-1.6.4/b-html5-1.6.4/b-print-1.6.4/cr-1.5.2/fh-3.1.7/kt-2.5.3/r-2.2.6/rr-1.2.7",
+		build:"dt/jszip-2.5.0/pdfmake-0.1.36/dt-1.10.22/b-1.6.5/b-colvis-1.6.5/b-flash-1.6.5/b-html5-1.6.5/b-print-1.6.5/cr-1.5.2/fc-3.3.1/fh-3.1.7/kt-2.5.3/r-2.2.6/rr-1.2.7",
 	
 	
 		/**
@@ -75031,7 +75031,7 @@ this.pdfMake = this.pdfMake || {}; this.pdfMake.vfs = {
 }));
 
 
-/*! Buttons for DataTables 1.6.4
+/*! Buttons for DataTables 1.6.5
  * ©2016-2020 SpryMedia Ltd - datatables.net/license
  */
 
@@ -76538,7 +76538,7 @@ Buttons.defaults = {
  * @type {string}
  * @static
  */
-Buttons.version = '1.6.4';
+Buttons.version = '1.6.5';
 
 
 $.extend( _dtButtons, {
@@ -77187,6 +77187,1680 @@ if ( DataTable.ext.features ) {
 
 
 return Buttons;
+}));
+
+
+/*!
+ * Column visibility buttons for Buttons and DataTables.
+ * 2016 SpryMedia Ltd - datatables.net/license
+ */
+
+(function( factory ){
+	if ( typeof define === 'function' && define.amd ) {
+		// AMD
+		define( ['jquery', 'datatables.net', 'datatables.net-buttons'], function ( $ ) {
+			return factory( $, window, document );
+		} );
+	}
+	else if ( typeof exports === 'object' ) {
+		// CommonJS
+		module.exports = function (root, $) {
+			if ( ! root ) {
+				root = window;
+			}
+
+			if ( ! $ || ! $.fn.dataTable ) {
+				$ = require('datatables.net')(root, $).$;
+			}
+
+			if ( ! $.fn.dataTable.Buttons ) {
+				require('datatables.net-buttons')(root, $);
+			}
+
+			return factory( $, root, root.document );
+		};
+	}
+	else {
+		// Browser
+		factory( jQuery, window, document );
+	}
+}(function( $, window, document, undefined ) {
+'use strict';
+var DataTable = $.fn.dataTable;
+
+
+$.extend( DataTable.ext.buttons, {
+	// A collection of column visibility buttons
+	colvis: function ( dt, conf ) {
+		return {
+			extend: 'collection',
+			text: function ( dt ) {
+				return dt.i18n( 'buttons.colvis', 'Column visibility' );
+			},
+			className: 'buttons-colvis',
+			buttons: [ {
+				extend: 'columnsToggle',
+				columns: conf.columns,
+				columnText: conf.columnText
+			} ]
+		};
+	},
+
+	// Selected columns with individual buttons - toggle column visibility
+	columnsToggle: function ( dt, conf ) {
+		var columns = dt.columns( conf.columns ).indexes().map( function ( idx ) {
+			return {
+				extend: 'columnToggle',
+				columns: idx,
+				columnText: conf.columnText
+			};
+		} ).toArray();
+
+		return columns;
+	},
+
+	// Single button to toggle column visibility
+	columnToggle: function ( dt, conf ) {
+		return {
+			extend: 'columnVisibility',
+			columns: conf.columns,
+			columnText: conf.columnText
+		};
+	},
+
+	// Selected columns with individual buttons - set column visibility
+	columnsVisibility: function ( dt, conf ) {
+		var columns = dt.columns( conf.columns ).indexes().map( function ( idx ) {
+			return {
+				extend: 'columnVisibility',
+				columns: idx,
+				visibility: conf.visibility,
+				columnText: conf.columnText
+			};
+		} ).toArray();
+
+		return columns;
+	},
+
+	// Single button to set column visibility
+	columnVisibility: {
+		columns: undefined, // column selector
+		text: function ( dt, button, conf ) {
+			return conf._columnText( dt, conf );
+		},
+		className: 'buttons-columnVisibility',
+		action: function ( e, dt, button, conf ) {
+			var col = dt.columns( conf.columns );
+			var curr = col.visible();
+
+			col.visible( conf.visibility !== undefined ?
+				conf.visibility :
+				! (curr.length ? curr[0] : false )
+			);
+		},
+		init: function ( dt, button, conf ) {
+			var that = this;
+			button.attr( 'data-cv-idx', conf.columns );
+
+			dt
+				.on( 'column-visibility.dt'+conf.namespace, function (e, settings) {
+					if ( ! settings.bDestroying && settings.nTable == dt.settings()[0].nTable ) {
+						that.active( dt.column( conf.columns ).visible() );
+					}
+				} )
+				.on( 'column-reorder.dt'+conf.namespace, function (e, settings, details) {
+					if ( dt.columns( conf.columns ).count() !== 1 ) {
+						return;
+					}
+
+					// This button controls the same column index but the text for the column has
+					// changed
+					that.text( conf._columnText( dt, conf ) );
+
+					// Since its a different column, we need to check its visibility
+					that.active( dt.column( conf.columns ).visible() );
+				} );
+
+			this.active( dt.column( conf.columns ).visible() );
+		},
+		destroy: function ( dt, button, conf ) {
+			dt
+				.off( 'column-visibility.dt'+conf.namespace )
+				.off( 'column-reorder.dt'+conf.namespace );
+		},
+
+		_columnText: function ( dt, conf ) {
+			// Use DataTables' internal data structure until this is presented
+			// is a public API. The other option is to use
+			// `$( column(col).node() ).text()` but the node might not have been
+			// populated when Buttons is constructed.
+			var idx = dt.column( conf.columns ).index();
+			var title = dt.settings()[0].aoColumns[ idx ].sTitle;
+
+			if (! title) {
+				title = dt.column(idx).header().innerHTML;
+			}
+
+			title = title
+				.replace(/\n/g," ")        // remove new lines
+				.replace(/<br\s*\/?>/gi, " ")  // replace line breaks with spaces
+				.replace(/<select(.*?)<\/select>/g, "") // remove select tags, including options text
+				.replace(/<!\-\-.*?\-\->/g, "") // strip HTML comments
+				.replace(/<.*?>/g, "")   // strip HTML
+				.replace(/^\s+|\s+$/g,""); // trim
+
+			return conf.columnText ?
+				conf.columnText( dt, idx, title ) :
+				title;
+		}
+	},
+
+
+	colvisRestore: {
+		className: 'buttons-colvisRestore',
+
+		text: function ( dt ) {
+			return dt.i18n( 'buttons.colvisRestore', 'Restore visibility' );
+		},
+
+		init: function ( dt, button, conf ) {
+			conf._visOriginal = dt.columns().indexes().map( function ( idx ) {
+				return dt.column( idx ).visible();
+			} ).toArray();
+		},
+
+		action: function ( e, dt, button, conf ) {
+			dt.columns().every( function ( i ) {
+				// Take into account that ColReorder might have disrupted our
+				// indexes
+				var idx = dt.colReorder && dt.colReorder.transpose ?
+					dt.colReorder.transpose( i, 'toOriginal' ) :
+					i;
+
+				this.visible( conf._visOriginal[ idx ] );
+			} );
+		}
+	},
+
+
+	colvisGroup: {
+		className: 'buttons-colvisGroup',
+
+		action: function ( e, dt, button, conf ) {
+			dt.columns( conf.show ).visible( true, false );
+			dt.columns( conf.hide ).visible( false, false );
+
+			dt.columns.adjust();
+		},
+
+		show: [],
+
+		hide: []
+	}
+} );
+
+
+return DataTable.Buttons;
+}));
+
+
+/*!
+ * Flash export buttons for Buttons and DataTables.
+ * 2015-2017 SpryMedia Ltd - datatables.net/license
+ *
+ * ZeroClipbaord - MIT license
+ * Copyright (c) 2012 Joseph Huckaby
+ */
+
+(function( factory ){
+	if ( typeof define === 'function' && define.amd ) {
+		// AMD
+		define( ['jquery', 'datatables.net', 'datatables.net-buttons'], function ( $ ) {
+			return factory( $, window, document );
+		} );
+	}
+	else if ( typeof exports === 'object' ) {
+		// CommonJS
+		module.exports = function (root, $) {
+			if ( ! root ) {
+				root = window;
+			}
+
+			if ( ! $ || ! $.fn.dataTable ) {
+				$ = require('datatables.net')(root, $).$;
+			}
+
+			if ( ! $.fn.dataTable.Buttons ) {
+				require('datatables.net-buttons')(root, $);
+			}
+
+			return factory( $, root, root.document );
+		};
+	}
+	else {
+		// Browser
+		factory( jQuery, window, document );
+	}
+}(function( $, window, document, undefined ) {
+'use strict';
+var DataTable = $.fn.dataTable;
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * ZeroClipboard dependency
+ */
+
+/*
+ * ZeroClipboard 1.0.4 with modifications
+ * Author: Joseph Huckaby
+ * License: MIT
+ *
+ * Copyright (c) 2012 Joseph Huckaby
+ */
+var ZeroClipboard_TableTools = {
+	version: "1.0.4-TableTools2",
+	clients: {}, // registered upload clients on page, indexed by id
+	moviePath: '', // URL to movie
+	nextId: 1, // ID of next movie
+
+	$: function(thingy) {
+		// simple DOM lookup utility function
+		if (typeof(thingy) == 'string') {
+			thingy = document.getElementById(thingy);
+		}
+		if (!thingy.addClass) {
+			// extend element with a few useful methods
+			thingy.hide = function() { this.style.display = 'none'; };
+			thingy.show = function() { this.style.display = ''; };
+			thingy.addClass = function(name) { this.removeClass(name); this.className += ' ' + name; };
+			thingy.removeClass = function(name) {
+				this.className = this.className.replace( new RegExp("\\s*" + name + "\\s*"), " ").replace(/^\s+/, '').replace(/\s+$/, '');
+			};
+			thingy.hasClass = function(name) {
+				return !!this.className.match( new RegExp("\\s*" + name + "\\s*") );
+			};
+		}
+		return thingy;
+	},
+
+	setMoviePath: function(path) {
+		// set path to ZeroClipboard.swf
+		this.moviePath = path;
+	},
+
+	dispatch: function(id, eventName, args) {
+		// receive event from flash movie, send to client
+		var client = this.clients[id];
+		if (client) {
+			client.receiveEvent(eventName, args);
+		}
+	},
+
+	log: function ( str ) {
+		console.log( 'Flash: '+str );
+	},
+
+	register: function(id, client) {
+		// register new client to receive events
+		this.clients[id] = client;
+	},
+
+	getDOMObjectPosition: function(obj) {
+		// get absolute coordinates for dom element
+		var info = {
+			left: 0,
+			top: 0,
+			width: obj.width ? obj.width : obj.offsetWidth,
+			height: obj.height ? obj.height : obj.offsetHeight
+		};
+
+		if ( obj.style.width !== "" ) {
+			info.width = obj.style.width.replace("px","");
+		}
+
+		if ( obj.style.height !== "" ) {
+			info.height = obj.style.height.replace("px","");
+		}
+
+		while (obj) {
+			info.left += obj.offsetLeft;
+			info.top += obj.offsetTop;
+			obj = obj.offsetParent;
+		}
+
+		return info;
+	},
+
+	Client: function(elem) {
+		// constructor for new simple upload client
+		this.handlers = {};
+
+		// unique ID
+		this.id = ZeroClipboard_TableTools.nextId++;
+		this.movieId = 'ZeroClipboard_TableToolsMovie_' + this.id;
+
+		// register client with singleton to receive flash events
+		ZeroClipboard_TableTools.register(this.id, this);
+
+		// create movie
+		if (elem) {
+			this.glue(elem);
+		}
+	}
+};
+
+ZeroClipboard_TableTools.Client.prototype = {
+
+	id: 0, // unique ID for us
+	ready: false, // whether movie is ready to receive events or not
+	movie: null, // reference to movie object
+	clipText: '', // text to copy to clipboard
+	fileName: '', // default file save name
+	action: 'copy', // action to perform
+	handCursorEnabled: true, // whether to show hand cursor, or default pointer cursor
+	cssEffects: true, // enable CSS mouse effects on dom container
+	handlers: null, // user event handlers
+	sized: false,
+	sheetName: '', // default sheet name for excel export
+
+	glue: function(elem, title) {
+		// glue to DOM element
+		// elem can be ID or actual DOM element object
+		this.domElement = ZeroClipboard_TableTools.$(elem);
+
+		// float just above object, or zIndex 99 if dom element isn't set
+		var zIndex = 99;
+		if (this.domElement.style.zIndex) {
+			zIndex = parseInt(this.domElement.style.zIndex, 10) + 1;
+		}
+
+		// find X/Y position of domElement
+		var box = ZeroClipboard_TableTools.getDOMObjectPosition(this.domElement);
+
+		// create floating DIV above element
+		this.div = document.createElement('div');
+		var style = this.div.style;
+		style.position = 'absolute';
+		style.left = '0px';
+		style.top = '0px';
+		style.width = (box.width) + 'px';
+		style.height = box.height + 'px';
+		style.zIndex = zIndex;
+
+		if ( typeof title != "undefined" && title !== "" ) {
+			this.div.title = title;
+		}
+		if ( box.width !== 0 && box.height !== 0 ) {
+			this.sized = true;
+		}
+
+		// style.backgroundColor = '#f00'; // debug
+		if ( this.domElement ) {
+			this.domElement.appendChild(this.div);
+			this.div.innerHTML = this.getHTML( box.width, box.height ).replace(/&/g, '&amp;');
+		}
+	},
+
+	positionElement: function() {
+		var box = ZeroClipboard_TableTools.getDOMObjectPosition(this.domElement);
+		var style = this.div.style;
+
+		style.position = 'absolute';
+		//style.left = (this.domElement.offsetLeft)+'px';
+		//style.top = this.domElement.offsetTop+'px';
+		style.width = box.width + 'px';
+		style.height = box.height + 'px';
+
+		if ( box.width !== 0 && box.height !== 0 ) {
+			this.sized = true;
+		} else {
+			return;
+		}
+
+		var flash = this.div.childNodes[0];
+		flash.width = box.width;
+		flash.height = box.height;
+	},
+
+	getHTML: function(width, height) {
+		// return HTML for movie
+		var html = '';
+		var flashvars = 'id=' + this.id +
+			'&width=' + width +
+			'&height=' + height;
+
+		if (navigator.userAgent.match(/MSIE/)) {
+			// IE gets an OBJECT tag
+			var protocol = location.href.match(/^https/i) ? 'https://' : 'http://';
+			html += '<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="'+protocol+'download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=10,0,0,0" width="'+width+'" height="'+height+'" id="'+this.movieId+'" align="middle"><param name="allowScriptAccess" value="always" /><param name="allowFullScreen" value="false" /><param name="movie" value="'+ZeroClipboard_TableTools.moviePath+'" /><param name="loop" value="false" /><param name="menu" value="false" /><param name="quality" value="best" /><param name="bgcolor" value="#ffffff" /><param name="flashvars" value="'+flashvars+'"/><param name="wmode" value="transparent"/></object>';
+		}
+		else {
+			// all other browsers get an EMBED tag
+			html += '<embed id="'+this.movieId+'" src="'+ZeroClipboard_TableTools.moviePath+'" loop="false" menu="false" quality="best" bgcolor="#ffffff" width="'+width+'" height="'+height+'" name="'+this.movieId+'" align="middle" allowScriptAccess="always" allowFullScreen="false" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" flashvars="'+flashvars+'" wmode="transparent" />';
+		}
+		return html;
+	},
+
+	hide: function() {
+		// temporarily hide floater offscreen
+		if (this.div) {
+			this.div.style.left = '-2000px';
+		}
+	},
+
+	show: function() {
+		// show ourselves after a call to hide()
+		this.reposition();
+	},
+
+	destroy: function() {
+		// destroy control and floater
+		var that = this;
+
+		if (this.domElement && this.div) {
+			$(this.div).remove();
+
+			this.domElement = null;
+			this.div = null;
+
+			$.each( ZeroClipboard_TableTools.clients, function ( id, client ) {
+				if ( client === that ) {
+					delete ZeroClipboard_TableTools.clients[ id ];
+				}
+			} );
+		}
+	},
+
+	reposition: function(elem) {
+		// reposition our floating div, optionally to new container
+		// warning: container CANNOT change size, only position
+		if (elem) {
+			this.domElement = ZeroClipboard_TableTools.$(elem);
+			if (!this.domElement) {
+				this.hide();
+			}
+		}
+
+		if (this.domElement && this.div) {
+			var box = ZeroClipboard_TableTools.getDOMObjectPosition(this.domElement);
+			var style = this.div.style;
+			style.left = '' + box.left + 'px';
+			style.top = '' + box.top + 'px';
+		}
+	},
+
+	clearText: function() {
+		// clear the text to be copy / saved
+		this.clipText = '';
+		if (this.ready) {
+			this.movie.clearText();
+		}
+	},
+
+	appendText: function(newText) {
+		// append text to that which is to be copied / saved
+		this.clipText += newText;
+		if (this.ready) { this.movie.appendText(newText) ;}
+	},
+
+	setText: function(newText) {
+		// set text to be copied to be copied / saved
+		this.clipText = newText;
+		if (this.ready) { this.movie.setText(newText) ;}
+	},
+
+	setFileName: function(newText) {
+		// set the file name
+		this.fileName = newText;
+		if (this.ready) {
+			this.movie.setFileName(newText);
+		}
+	},
+
+	setSheetData: function(data) {
+		// set the xlsx sheet data
+		if (this.ready) {
+			this.movie.setSheetData( JSON.stringify( data ) );
+		}
+	},
+
+	setAction: function(newText) {
+		// set action (save or copy)
+		this.action = newText;
+		if (this.ready) {
+			this.movie.setAction(newText);
+		}
+	},
+
+	addEventListener: function(eventName, func) {
+		// add user event listener for event
+		// event types: load, queueStart, fileStart, fileComplete, queueComplete, progress, error, cancel
+		eventName = eventName.toString().toLowerCase().replace(/^on/, '');
+		if (!this.handlers[eventName]) {
+			this.handlers[eventName] = [];
+		}
+		this.handlers[eventName].push(func);
+	},
+
+	setHandCursor: function(enabled) {
+		// enable hand cursor (true), or default arrow cursor (false)
+		this.handCursorEnabled = enabled;
+		if (this.ready) {
+			this.movie.setHandCursor(enabled);
+		}
+	},
+
+	setCSSEffects: function(enabled) {
+		// enable or disable CSS effects on DOM container
+		this.cssEffects = !!enabled;
+	},
+
+	receiveEvent: function(eventName, args) {
+		var self;
+
+		// receive event from flash
+		eventName = eventName.toString().toLowerCase().replace(/^on/, '');
+
+		// special behavior for certain events
+		switch (eventName) {
+			case 'load':
+				// movie claims it is ready, but in IE this isn't always the case...
+				// bug fix: Cannot extend EMBED DOM elements in Firefox, must use traditional function
+				this.movie = document.getElementById(this.movieId);
+				if (!this.movie) {
+					self = this;
+					setTimeout( function() { self.receiveEvent('load', null); }, 1 );
+					return;
+				}
+
+				// firefox on pc needs a "kick" in order to set these in certain cases
+				if (!this.ready && navigator.userAgent.match(/Firefox/) && navigator.userAgent.match(/Windows/)) {
+					self = this;
+					setTimeout( function() { self.receiveEvent('load', null); }, 100 );
+					this.ready = true;
+					return;
+				}
+
+				this.ready = true;
+				this.movie.clearText();
+				this.movie.appendText( this.clipText );
+				this.movie.setFileName( this.fileName );
+				this.movie.setAction( this.action );
+				this.movie.setHandCursor( this.handCursorEnabled );
+				break;
+
+			case 'mouseover':
+				if (this.domElement && this.cssEffects) {
+					//this.domElement.addClass('hover');
+					if (this.recoverActive) {
+						this.domElement.addClass('active');
+					}
+				}
+				break;
+
+			case 'mouseout':
+				if (this.domElement && this.cssEffects) {
+					this.recoverActive = false;
+					if (this.domElement.hasClass('active')) {
+						this.domElement.removeClass('active');
+						this.recoverActive = true;
+					}
+					//this.domElement.removeClass('hover');
+				}
+				break;
+
+			case 'mousedown':
+				if (this.domElement && this.cssEffects) {
+					this.domElement.addClass('active');
+				}
+				break;
+
+			case 'mouseup':
+				if (this.domElement && this.cssEffects) {
+					this.domElement.removeClass('active');
+					this.recoverActive = false;
+				}
+				break;
+		} // switch eventName
+
+		if (this.handlers[eventName]) {
+			for (var idx = 0, len = this.handlers[eventName].length; idx < len; idx++) {
+				var func = this.handlers[eventName][idx];
+
+				if (typeof(func) == 'function') {
+					// actual function reference
+					func(this, args);
+				}
+				else if ((typeof(func) == 'object') && (func.length == 2)) {
+					// PHP style object + method, i.e. [myObject, 'myMethod']
+					func[0][ func[1] ](this, args);
+				}
+				else if (typeof(func) == 'string') {
+					// name of function
+					window[func](this, args);
+				}
+			} // foreach event handler defined
+		} // user defined handler for event
+	}
+};
+
+ZeroClipboard_TableTools.hasFlash = function ()
+{
+	try {
+		var fo = new ActiveXObject('ShockwaveFlash.ShockwaveFlash');
+		if (fo) {
+			return true;
+		}
+	}
+	catch (e) {
+		if (
+			navigator.mimeTypes &&
+			navigator.mimeTypes['application/x-shockwave-flash'] !== undefined &&
+			navigator.mimeTypes['application/x-shockwave-flash'].enabledPlugin
+		) {
+			return true;
+		}
+	}
+
+	return false;
+};
+
+// For the Flash binding to work, ZeroClipboard_TableTools must be on the global
+// object list
+window.ZeroClipboard_TableTools = ZeroClipboard_TableTools;
+
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * Local (private) functions
+ */
+
+/**
+ * If a Buttons instance is initlaised before it is placed into the DOM, Flash
+ * won't be able to bind to it, so we need to wait until it is available, this
+ * method abstracts that out.
+ *
+ * @param {ZeroClipboard} flash ZeroClipboard instance
+ * @param {jQuery} node  Button
+ */
+var _glue = function ( flash, node )
+{
+	var id = node.attr('id');
+
+	if ( node.parents('html').length ) {
+		flash.glue( node[0], '' );
+	}
+	else {
+		setTimeout( function () {
+			_glue( flash, node );
+		}, 500 );
+	}
+};
+
+/**
+ * Get the sheet name for Excel exports.
+ *
+ * @param {object}  config       Button configuration
+ */
+var _sheetname = function ( config )
+{
+	var sheetName = 'Sheet1';
+
+	if ( config.sheetName ) {
+		sheetName = config.sheetName.replace(/[\[\]\*\/\\\?\:]/g, '');
+	}
+
+	return sheetName;
+};
+
+/**
+ * Set the flash text. This has to be broken up into chunks as the Javascript /
+ * Flash bridge has a size limit. There is no indication in the Flash
+ * documentation what this is, and it probably depends upon the browser.
+ * Experimentation shows that the point is around 50k when data starts to get
+ * lost, so an 8K limit used here is safe.
+ *
+ * @param {ZeroClipboard} flash ZeroClipboard instance
+ * @param {string}        data  Data to send to Flash
+ */
+var _setText = function ( flash, data )
+{
+	var parts = data.match(/[\s\S]{1,8192}/g) || [];
+
+	flash.clearText();
+	for ( var i=0, len=parts.length ; i<len ; i++ )
+	{
+		flash.appendText( parts[i] );
+	}
+};
+
+/**
+ * Get the newline character(s)
+ *
+ * @param {object}  config Button configuration
+ * @return {string}        Newline character
+ */
+var _newLine = function ( config )
+{
+	return config.newline ?
+		config.newline :
+		navigator.userAgent.match(/Windows/) ?
+			'\r\n' :
+			'\n';
+};
+
+/**
+ * Combine the data from the `buttons.exportData` method into a string that
+ * will be used in the export file.
+ *
+ * @param  {DataTable.Api} dt     DataTables API instance
+ * @param  {object}        config Button configuration
+ * @return {object}               The data to export
+ */
+var _exportData = function ( dt, config )
+{
+	var newLine = _newLine( config );
+	var data = dt.buttons.exportData( config.exportOptions );
+	var boundary = config.fieldBoundary;
+	var separator = config.fieldSeparator;
+	var reBoundary = new RegExp( boundary, 'g' );
+	var escapeChar = config.escapeChar !== undefined ?
+		config.escapeChar :
+		'\\';
+	var join = function ( a ) {
+		var s = '';
+
+		// If there is a field boundary, then we might need to escape it in
+		// the source data
+		for ( var i=0, ien=a.length ; i<ien ; i++ ) {
+			if ( i > 0 ) {
+				s += separator;
+			}
+
+			s += boundary ?
+				boundary + ('' + a[i]).replace( reBoundary, escapeChar+boundary ) + boundary :
+				a[i];
+		}
+
+		return s;
+	};
+
+	var header = config.header ? join( data.header )+newLine : '';
+	var footer = config.footer && data.footer ? newLine+join( data.footer ) : '';
+	var body = [];
+
+	for ( var i=0, ien=data.body.length ; i<ien ; i++ ) {
+		body.push( join( data.body[i] ) );
+	}
+
+	return {
+		str: header + body.join( newLine ) + footer,
+		rows: body.length
+	};
+};
+
+
+// Basic initialisation for the buttons is common between them
+var flashButton = {
+	available: function () {
+		return ZeroClipboard_TableTools.hasFlash();
+	},
+
+	init: function ( dt, button, config ) {
+		// Insert the Flash movie
+		ZeroClipboard_TableTools.moviePath = DataTable.Buttons.swfPath;
+		var flash = new ZeroClipboard_TableTools.Client();
+
+		flash.setHandCursor( true );
+		flash.addEventListener('mouseDown', function(client) {
+			config._fromFlash = true;
+			dt.button( button[0] ).trigger();
+			config._fromFlash = false;
+		} );
+
+		_glue( flash, button );
+
+		config._flash = flash;
+	},
+
+	destroy: function ( dt, button, config ) {
+		config._flash.destroy();
+	},
+
+	fieldSeparator: ',',
+
+	fieldBoundary: '"',
+
+	exportOptions: {},
+
+	title: '*',
+
+	messageTop: '*',
+
+	messageBottom: '*',
+
+	filename: '*',
+
+	extension: '.csv',
+
+	header: true,
+
+	footer: false
+};
+
+
+/**
+ * Convert from numeric position to letter for column names in Excel
+ * @param  {int} n Column number
+ * @return {string} Column letter(s) name
+ */
+function createCellPos( n ){
+	var ordA = 'A'.charCodeAt(0);
+	var ordZ = 'Z'.charCodeAt(0);
+	var len = ordZ - ordA + 1;
+	var s = "";
+
+	while( n >= 0 ) {
+		s = String.fromCharCode(n % len + ordA) + s;
+		n = Math.floor(n / len) - 1;
+	}
+
+	return s;
+}
+
+/**
+ * Create an XML node and add any children, attributes, etc without needing to
+ * be verbose in the DOM.
+ *
+ * @param  {object} doc      XML document
+ * @param  {string} nodeName Node name
+ * @param  {object} opts     Options - can be `attr` (attributes), `children`
+ *   (child nodes) and `text` (text content)
+ * @return {node}            Created node
+ */
+function _createNode( doc, nodeName, opts ){
+	var tempNode = doc.createElement( nodeName );
+
+	if ( opts ) {
+		if ( opts.attr ) {
+			$(tempNode).attr( opts.attr );
+		}
+
+		if ( opts.children ) {
+			$.each( opts.children, function ( key, value ) {
+				tempNode.appendChild( value );
+			} );
+		}
+
+		if ( opts.text !== null && opts.text !== undefined ) {
+			tempNode.appendChild( doc.createTextNode( opts.text ) );
+		}
+	}
+
+	return tempNode;
+}
+
+/**
+ * Get the width for an Excel column based on the contents of that column
+ * @param  {object} data Data for export
+ * @param  {int}    col  Column index
+ * @return {int}         Column width
+ */
+function _excelColWidth( data, col ) {
+	var max = data.header[col].length;
+	var len, lineSplit, str;
+
+	if ( data.footer && data.footer[col].length > max ) {
+		max = data.footer[col].length;
+	}
+
+	for ( var i=0, ien=data.body.length ; i<ien ; i++ ) {
+		var point = data.body[i][col];
+		str = point !== null && point !== undefined ?
+			point.toString() :
+			'';
+
+		// If there is a newline character, workout the width of the column
+		// based on the longest line in the string
+		if ( str.indexOf('\n') !== -1 ) {
+			lineSplit = str.split('\n');
+			lineSplit.sort( function (a, b) {
+				return b.length - a.length;
+			} );
+
+			len = lineSplit[0].length;
+		}
+		else {
+			len = str.length;
+		}
+
+		if ( len > max ) {
+			max = len;
+		}
+
+		// Max width rather than having potentially massive column widths
+		if ( max > 40 ) {
+			return 52; // 40 * 1.3
+		}
+	}
+
+	max *= 1.3;
+
+	// And a min width
+	return max > 6 ? max : 6;
+}
+
+  var _serialiser = "";
+    if (typeof window.XMLSerializer === 'undefined') {
+        _serialiser = new function () {
+            this.serializeToString = function (input) {
+                return input.xml
+            }
+        };
+    } else {
+        _serialiser =  new XMLSerializer();
+    }
+
+    var _ieExcel;
+
+
+/**
+ * Convert XML documents in an object to strings
+ * @param  {object} obj XLSX document object
+ */
+function _xlsxToStrings( obj ) {
+	if ( _ieExcel === undefined ) {
+		// Detect if we are dealing with IE's _awful_ serialiser by seeing if it
+		// drop attributes
+		_ieExcel = _serialiser
+			.serializeToString(
+				$.parseXML( excelStrings['xl/worksheets/sheet1.xml'] )
+			)
+			.indexOf( 'xmlns:r' ) === -1;
+	}
+
+	$.each( obj, function ( name, val ) {
+		if ( $.isPlainObject( val ) ) {
+			_xlsxToStrings( val );
+		}
+		else {
+			if ( _ieExcel ) {
+				// IE's XML serialiser will drop some name space attributes from
+				// from the root node, so we need to save them. Do this by
+				// replacing the namespace nodes with a regular attribute that
+				// we convert back when serialised. Edge does not have this
+				// issue
+				var worksheet = val.childNodes[0];
+				var i, ien;
+				var attrs = [];
+
+				for ( i=worksheet.attributes.length-1 ; i>=0 ; i-- ) {
+					var attrName = worksheet.attributes[i].nodeName;
+					var attrValue = worksheet.attributes[i].nodeValue;
+
+					if ( attrName.indexOf( ':' ) !== -1 ) {
+						attrs.push( { name: attrName, value: attrValue } );
+
+						worksheet.removeAttribute( attrName );
+					}
+				}
+
+				for ( i=0, ien=attrs.length ; i<ien ; i++ ) {
+					var attr = val.createAttribute( attrs[i].name.replace( ':', '_dt_b_namespace_token_' ) );
+					attr.value = attrs[i].value;
+					worksheet.setAttributeNode( attr );
+				}
+			}
+
+			var str = _serialiser.serializeToString(val);
+
+			// Fix IE's XML
+			if ( _ieExcel ) {
+				// IE doesn't include the XML declaration
+				if ( str.indexOf( '<?xml' ) === -1 ) {
+					str = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'+str;
+				}
+
+				// Return namespace attributes to being as such
+				str = str.replace( /_dt_b_namespace_token_/g, ':' );
+			}
+
+			// Safari, IE and Edge will put empty name space attributes onto
+			// various elements making them useless. This strips them out
+			str = str.replace( /<([^<>]*?) xmlns=""([^<>]*?)>/g, '<$1 $2>' );
+
+			obj[ name ] = str;
+		}
+	} );
+}
+
+// Excel - Pre-defined strings to build a basic XLSX file
+var excelStrings = {
+	"_rels/.rels":
+		'<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'+
+		'<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">'+
+			'<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/>'+
+		'</Relationships>',
+
+	"xl/_rels/workbook.xml.rels":
+		'<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'+
+		'<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">'+
+			'<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/>'+
+			'<Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/>'+
+		'</Relationships>',
+
+	"[Content_Types].xml":
+		'<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'+
+		'<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">'+
+			'<Default Extension="xml" ContentType="application/xml" />'+
+			'<Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml" />'+
+			'<Default Extension="jpeg" ContentType="image/jpeg" />'+
+			'<Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml" />'+
+			'<Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml" />'+
+			'<Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml" />'+
+		'</Types>',
+
+	"xl/workbook.xml":
+		'<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'+
+		'<workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">'+
+			'<fileVersion appName="xl" lastEdited="5" lowestEdited="5" rupBuild="24816"/>'+
+			'<workbookPr showInkAnnotation="0" autoCompressPictures="0"/>'+
+			'<bookViews>'+
+				'<workbookView xWindow="0" yWindow="0" windowWidth="25600" windowHeight="19020" tabRatio="500"/>'+
+			'</bookViews>'+
+			'<sheets>'+
+				'<sheet name="" sheetId="1" r:id="rId1"/>'+
+			'</sheets>'+
+		'</workbook>',
+
+	"xl/worksheets/sheet1.xml":
+		'<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'+
+		'<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="x14ac" xmlns:x14ac="http://schemas.microsoft.com/office/spreadsheetml/2009/9/ac">'+
+			'<sheetData/>'+
+			'<mergeCells count="0"/>'+
+		'</worksheet>',
+
+	"xl/styles.xml":
+		'<?xml version="1.0" encoding="UTF-8"?>'+
+		'<styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="x14ac" xmlns:x14ac="http://schemas.microsoft.com/office/spreadsheetml/2009/9/ac">'+
+			'<numFmts count="6">'+
+				'<numFmt numFmtId="164" formatCode="#,##0.00_-\ [$$-45C]"/>'+
+				'<numFmt numFmtId="165" formatCode="&quot;£&quot;#,##0.00"/>'+
+				'<numFmt numFmtId="166" formatCode="[$€-2]\ #,##0.00"/>'+
+				'<numFmt numFmtId="167" formatCode="0.0%"/>'+
+				'<numFmt numFmtId="168" formatCode="#,##0;(#,##0)"/>'+
+				'<numFmt numFmtId="169" formatCode="#,##0.00;(#,##0.00)"/>'+
+			'</numFmts>'+
+			'<fonts count="5" x14ac:knownFonts="1">'+
+				'<font>'+
+					'<sz val="11" />'+
+					'<name val="Calibri" />'+
+				'</font>'+
+				'<font>'+
+					'<sz val="11" />'+
+					'<name val="Calibri" />'+
+					'<color rgb="FFFFFFFF" />'+
+				'</font>'+
+				'<font>'+
+					'<sz val="11" />'+
+					'<name val="Calibri" />'+
+					'<b />'+
+				'</font>'+
+				'<font>'+
+					'<sz val="11" />'+
+					'<name val="Calibri" />'+
+					'<i />'+
+				'</font>'+
+				'<font>'+
+					'<sz val="11" />'+
+					'<name val="Calibri" />'+
+					'<u />'+
+				'</font>'+
+			'</fonts>'+
+			'<fills count="6">'+
+				'<fill>'+
+					'<patternFill patternType="none" />'+
+				'</fill>'+
+				'<fill>'+ // Excel appears to use this as a dotted background regardless of values but
+					'<patternFill patternType="none" />'+ // to be valid to the schema, use a patternFill
+				'</fill>'+
+				'<fill>'+
+					'<patternFill patternType="solid">'+
+						'<fgColor rgb="FFD9D9D9" />'+
+						'<bgColor indexed="64" />'+
+					'</patternFill>'+
+				'</fill>'+
+				'<fill>'+
+					'<patternFill patternType="solid">'+
+						'<fgColor rgb="FFD99795" />'+
+						'<bgColor indexed="64" />'+
+					'</patternFill>'+
+				'</fill>'+
+				'<fill>'+
+					'<patternFill patternType="solid">'+
+						'<fgColor rgb="ffc6efce" />'+
+						'<bgColor indexed="64" />'+
+					'</patternFill>'+
+				'</fill>'+
+				'<fill>'+
+					'<patternFill patternType="solid">'+
+						'<fgColor rgb="ffc6cfef" />'+
+						'<bgColor indexed="64" />'+
+					'</patternFill>'+
+				'</fill>'+
+			'</fills>'+
+			'<borders count="2">'+
+				'<border>'+
+					'<left />'+
+					'<right />'+
+					'<top />'+
+					'<bottom />'+
+					'<diagonal />'+
+				'</border>'+
+				'<border diagonalUp="false" diagonalDown="false">'+
+					'<left style="thin">'+
+						'<color auto="1" />'+
+					'</left>'+
+					'<right style="thin">'+
+						'<color auto="1" />'+
+					'</right>'+
+					'<top style="thin">'+
+						'<color auto="1" />'+
+					'</top>'+
+					'<bottom style="thin">'+
+						'<color auto="1" />'+
+					'</bottom>'+
+					'<diagonal />'+
+				'</border>'+
+			'</borders>'+
+			'<cellStyleXfs count="1">'+
+				'<xf numFmtId="0" fontId="0" fillId="0" borderId="0" />'+
+			'</cellStyleXfs>'+
+			'<cellXfs count="61">'+
+				'<xf numFmtId="0" fontId="0" fillId="0" borderId="0" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="1" fillId="0" borderId="0" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="2" fillId="0" borderId="0" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="3" fillId="0" borderId="0" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="4" fillId="0" borderId="0" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="0" fillId="2" borderId="0" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="1" fillId="2" borderId="0" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="2" fillId="2" borderId="0" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="3" fillId="2" borderId="0" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="4" fillId="2" borderId="0" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="0" fillId="3" borderId="0" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="1" fillId="3" borderId="0" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="2" fillId="3" borderId="0" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="3" fillId="3" borderId="0" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="4" fillId="3" borderId="0" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="0" fillId="4" borderId="0" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="1" fillId="4" borderId="0" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="2" fillId="4" borderId="0" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="3" fillId="4" borderId="0" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="4" fillId="4" borderId="0" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="0" fillId="5" borderId="0" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="1" fillId="5" borderId="0" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="2" fillId="5" borderId="0" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="3" fillId="5" borderId="0" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="4" fillId="5" borderId="0" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="0" fillId="0" borderId="1" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="1" fillId="0" borderId="1" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="2" fillId="0" borderId="1" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="3" fillId="0" borderId="1" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="4" fillId="0" borderId="1" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="0" fillId="2" borderId="1" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="1" fillId="2" borderId="1" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="2" fillId="2" borderId="1" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="3" fillId="2" borderId="1" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="4" fillId="2" borderId="1" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="0" fillId="3" borderId="1" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="1" fillId="3" borderId="1" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="2" fillId="3" borderId="1" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="3" fillId="3" borderId="1" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="4" fillId="3" borderId="1" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="0" fillId="4" borderId="1" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="1" fillId="4" borderId="1" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="2" fillId="4" borderId="1" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="3" fillId="4" borderId="1" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="4" fillId="4" borderId="1" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="0" fillId="5" borderId="1" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="1" fillId="5" borderId="1" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="2" fillId="5" borderId="1" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="3" fillId="5" borderId="1" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="4" fillId="5" borderId="1" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="0" fillId="0" borderId="0" applyFont="1" applyFill="1" applyBorder="1" xfId="0" applyAlignment="1">'+
+					'<alignment horizontal="left"/>'+
+				'</xf>'+
+				'<xf numFmtId="0" fontId="0" fillId="0" borderId="0" applyFont="1" applyFill="1" applyBorder="1" xfId="0" applyAlignment="1">'+
+					'<alignment horizontal="center"/>'+
+				'</xf>'+
+				'<xf numFmtId="0" fontId="0" fillId="0" borderId="0" applyFont="1" applyFill="1" applyBorder="1" xfId="0" applyAlignment="1">'+
+					'<alignment horizontal="right"/>'+
+				'</xf>'+
+				'<xf numFmtId="0" fontId="0" fillId="0" borderId="0" applyFont="1" applyFill="1" applyBorder="1" xfId="0" applyAlignment="1">'+
+					'<alignment horizontal="fill"/>'+
+				'</xf>'+
+				'<xf numFmtId="0" fontId="0" fillId="0" borderId="0" applyFont="1" applyFill="1" applyBorder="1" xfId="0" applyAlignment="1">'+
+					'<alignment textRotation="90"/>'+
+				'</xf>'+
+				'<xf numFmtId="0" fontId="0" fillId="0" borderId="0" applyFont="1" applyFill="1" applyBorder="1" xfId="0" applyAlignment="1">'+
+					'<alignment wrapText="1"/>'+
+				'</xf>'+
+				'<xf numFmtId="9"   fontId="0" fillId="0" borderId="0" applyFont="1" applyFill="1" applyBorder="1" xfId="0" applyNumberFormat="1"/>'+
+				'<xf numFmtId="164" fontId="0" fillId="0" borderId="0" applyFont="1" applyFill="1" applyBorder="1" xfId="0" applyNumberFormat="1"/>'+
+				'<xf numFmtId="165" fontId="0" fillId="0" borderId="0" applyFont="1" applyFill="1" applyBorder="1" xfId="0" applyNumberFormat="1"/>'+
+				'<xf numFmtId="166" fontId="0" fillId="0" borderId="0" applyFont="1" applyFill="1" applyBorder="1" xfId="0" applyNumberFormat="1"/>'+
+				'<xf numFmtId="167" fontId="0" fillId="0" borderId="0" applyFont="1" applyFill="1" applyBorder="1" xfId="0" applyNumberFormat="1"/>'+
+				'<xf numFmtId="168" fontId="0" fillId="0" borderId="0" applyFont="1" applyFill="1" applyBorder="1" xfId="0" applyNumberFormat="1"/>'+
+				'<xf numFmtId="169" fontId="0" fillId="0" borderId="0" applyFont="1" applyFill="1" applyBorder="1" xfId="0" applyNumberFormat="1"/>'+
+				'<xf numFmtId="3" fontId="0" fillId="0" borderId="0" applyFont="1" applyFill="1" applyBorder="1" xfId="0" applyNumberFormat="1"/>'+
+				'<xf numFmtId="4" fontId="0" fillId="0" borderId="0" applyFont="1" applyFill="1" applyBorder="1" xfId="0" applyNumberFormat="1"/>'+
+			'</cellXfs>'+
+			'<cellStyles count="1">'+
+				'<cellStyle name="Normal" xfId="0" builtinId="0" />'+
+			'</cellStyles>'+
+			'<dxfs count="0" />'+
+			'<tableStyles count="0" defaultTableStyle="TableStyleMedium9" defaultPivotStyle="PivotStyleMedium4" />'+
+		'</styleSheet>'
+};
+// Note we could use 3 `for` loops for the styles, but when gzipped there is
+// virtually no difference in size, since the above can be easily compressed
+
+// Pattern matching for special number formats. Perhaps this should be exposed
+// via an API in future?
+var _excelSpecials = [
+	{ match: /^\-?\d+\.\d%$/,       style: 60, fmt: function (d) { return d/100; } }, // Precent with d.p.
+	{ match: /^\-?\d+\.?\d*%$/,     style: 56, fmt: function (d) { return d/100; } }, // Percent
+	{ match: /^\-?\$[\d,]+.?\d*$/,  style: 57 }, // Dollars
+	{ match: /^\-?£[\d,]+.?\d*$/,   style: 58 }, // Pounds
+	{ match: /^\-?€[\d,]+.?\d*$/,   style: 59 }, // Euros
+	{ match: /^\([\d,]+\)$/,        style: 61, fmt: function (d) { return -1 * d.replace(/[\(\)]/g, ''); } },  // Negative numbers indicated by brackets
+	{ match: /^\([\d,]+\.\d{2}\)$/, style: 62, fmt: function (d) { return -1 * d.replace(/[\(\)]/g, ''); } },  // Negative numbers indicated by brackets - 2d.p.
+	{ match: /^[\d,]+$/,            style: 63 }, // Numbers with thousand separators
+	{ match: /^[\d,]+\.\d{2}$/,     style: 64 }  // Numbers with 2d.p. and thousands separators
+];
+
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * DataTables options and methods
+ */
+
+// Set the default SWF path
+DataTable.Buttons.swfPath = '//cdn.datatables.net/buttons/'+DataTable.Buttons.version+'/swf/flashExport.swf';
+
+// Method to allow Flash buttons to be resized when made visible - as they are
+// of zero height and width if initialised hidden
+DataTable.Api.register( 'buttons.resize()', function () {
+	$.each( ZeroClipboard_TableTools.clients, function ( i, client ) {
+		if ( client.domElement !== undefined && client.domElement.parentNode ) {
+			client.positionElement();
+		}
+	} );
+} );
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * Button definitions
+ */
+
+// Copy to clipboard
+DataTable.ext.buttons.copyFlash = $.extend( {}, flashButton, {
+	className: 'buttons-copy buttons-flash',
+
+	text: function ( dt ) {
+		return dt.i18n( 'buttons.copy', 'Copy' );
+	},
+
+	action: function ( e, dt, button, config ) {
+		// Check that the trigger did actually occur due to a Flash activation
+		if ( ! config._fromFlash ) {
+			return;
+		}
+
+		this.processing( true );
+
+		var flash = config._flash;
+		var exportData = _exportData( dt, config );
+		var info = dt.buttons.exportInfo( config );
+		var newline = _newLine(config);
+		var output = exportData.str;
+
+		if ( info.title ) {
+			output = info.title + newline + newline + output;
+		}
+
+		if ( info.messageTop ) {
+			output = info.messageTop + newline + newline + output;
+		}
+
+		if ( info.messageBottom ) {
+			output = output + newline + newline + info.messageBottom;
+		}
+
+		if ( config.customize ) {
+			output = config.customize( output, config, dt );
+		}
+
+		flash.setAction( 'copy' );
+		_setText( flash, output );
+
+		this.processing( false );
+
+		dt.buttons.info(
+			dt.i18n( 'buttons.copyTitle', 'Copy to clipboard' ),
+			dt.i18n( 'buttons.copySuccess', {
+				_: 'Copied %d rows to clipboard',
+				1: 'Copied 1 row to clipboard'
+			}, data.rows ),
+			3000
+		);
+	},
+
+	fieldSeparator: '\t',
+
+	fieldBoundary: ''
+} );
+
+// CSV save file
+DataTable.ext.buttons.csvFlash = $.extend( {}, flashButton, {
+	className: 'buttons-csv buttons-flash',
+
+	text: function ( dt ) {
+		return dt.i18n( 'buttons.csv', 'CSV' );
+	},
+
+	action: function ( e, dt, button, config ) {
+		// Set the text
+		var flash = config._flash;
+		var data = _exportData( dt, config );
+		var info = dt.buttons.exportInfo( config );
+		var output = config.customize ?
+			config.customize( data.str, config, dt ) :
+			data.str;
+
+		flash.setAction( 'csv' );
+		flash.setFileName( info.filename );
+		_setText( flash, output );
+	},
+
+	escapeChar: '"'
+} );
+
+// Excel save file - this is really a CSV file using UTF-8 that Excel can read
+DataTable.ext.buttons.excelFlash = $.extend( {}, flashButton, {
+	className: 'buttons-excel buttons-flash',
+
+	text: function ( dt ) {
+		return dt.i18n( 'buttons.excel', 'Excel' );
+	},
+
+	action: function ( e, dt, button, config ) {
+		this.processing( true );
+
+		var flash = config._flash;
+		var rowPos = 0;
+		var rels = $.parseXML( excelStrings['xl/worksheets/sheet1.xml'] ) ; //Parses xml
+		var relsGet = rels.getElementsByTagName( "sheetData" )[0];
+
+		var xlsx = {
+			_rels: {
+				".rels": $.parseXML( excelStrings['_rels/.rels'] )
+			},
+			xl: {
+				_rels: {
+					"workbook.xml.rels": $.parseXML( excelStrings['xl/_rels/workbook.xml.rels'] )
+				},
+				"workbook.xml": $.parseXML( excelStrings['xl/workbook.xml'] ),
+				"styles.xml": $.parseXML( excelStrings['xl/styles.xml'] ),
+				"worksheets": {
+					"sheet1.xml": rels
+				}
+
+			},
+			"[Content_Types].xml": $.parseXML( excelStrings['[Content_Types].xml'])
+		};
+
+		var data = dt.buttons.exportData( config.exportOptions );
+		var currentRow, rowNode;
+		var addRow = function ( row ) {
+			currentRow = rowPos+1;
+			rowNode = _createNode( rels, "row", { attr: {r:currentRow} } );
+
+			for ( var i=0, ien=row.length ; i<ien ; i++ ) {
+				// Concat both the Cell Columns as a letter and the Row of the cell.
+				var cellId = createCellPos(i) + '' + currentRow;
+				var cell = null;
+
+				// For null, undefined of blank cell, continue so it doesn't create the _createNode
+				if ( row[i] === null || row[i] === undefined || row[i] === '' ) {
+					if ( config.createEmptyCells === true ) {
+						row[i] = '';
+					}
+					else {
+						continue;
+					}
+				}
+
+				row[i] = typeof row[i].trim === 'function'
+					? row[i].trim()
+					: row[i];
+
+				// Special number formatting options
+				for ( var j=0, jen=_excelSpecials.length ; j<jen ; j++ ) {
+					var special = _excelSpecials[j];
+
+					// TODO Need to provide the ability for the specials to say
+					// if they are returning a string, since at the moment it is
+					// assumed to be a number
+					if ( row[i].match && ! row[i].match(/^0\d+/) && row[i].match( special.match ) ) {
+						var val = row[i].replace(/[^\d\.\-]/g, '');
+
+						if ( special.fmt ) {
+							val = special.fmt( val );
+						}
+
+						cell = _createNode( rels, 'c', {
+							attr: {
+								r: cellId,
+								s: special.style
+							},
+							children: [
+								_createNode( rels, 'v', { text: val } )
+							]
+						} );
+
+						break;
+					}
+				}
+
+				if ( ! cell ) {
+					if ( typeof row[i] === 'number' || (
+						row[i].match &&
+						row[i].match(/^-?\d+(\.\d+)?$/) &&
+						! row[i].match(/^0\d+/) )
+					) {
+						// Detect numbers - don't match numbers with leading zeros
+						// or a negative anywhere but the start
+						cell = _createNode( rels, 'c', {
+							attr: {
+								t: 'n',
+								r: cellId
+							},
+							children: [
+								_createNode( rels, 'v', { text: row[i] } )
+							]
+						} );
+					}
+					else {
+						// String output - replace non standard characters for text output
+						var text = ! row[i].replace ?
+							row[i] :
+							row[i].replace(/[\x00-\x09\x0B\x0C\x0E-\x1F\x7F-\x9F]/g, '');
+
+						cell = _createNode( rels, 'c', {
+							attr: {
+								t: 'inlineStr',
+								r: cellId
+							},
+							children:{
+								row: _createNode( rels, 'is', {
+									children: {
+										row: _createNode( rels, 't', {
+											text: text
+										} )
+									}
+								} )
+							}
+						} );
+					}
+				}
+
+				rowNode.appendChild( cell );
+			}
+
+			relsGet.appendChild(rowNode);
+			rowPos++;
+		};
+
+		$( 'sheets sheet', xlsx.xl['workbook.xml'] ).attr( 'name', _sheetname( config ) );
+
+		if ( config.customizeData ) {
+			config.customizeData( data );
+		}
+
+		var mergeCells = function ( row, colspan ) {
+			var mergeCells = $('mergeCells', rels);
+
+			mergeCells[0].appendChild( _createNode( rels, 'mergeCell', {
+				attr: {
+					ref: 'A'+row+':'+createCellPos(colspan)+row
+				}
+			} ) );
+			mergeCells.attr( 'count', mergeCells.attr( 'count' )+1 );
+			$('row:eq('+(row-1)+') c', rels).attr( 's', '51' ); // centre
+		};
+
+		// Title and top messages
+		var exportInfo = dt.buttons.exportInfo( config );
+		if ( exportInfo.title ) {
+			addRow( [exportInfo.title], rowPos );
+			mergeCells( rowPos, data.header.length-1 );
+		}
+
+		if ( exportInfo.messageTop ) {
+			addRow( [exportInfo.messageTop], rowPos );
+			mergeCells( rowPos, data.header.length-1 );
+		}
+
+		// Table itself
+		if ( config.header ) {
+			addRow( data.header, rowPos );
+			$('row:last c', rels).attr( 's', '2' ); // bold
+		}
+
+		for ( var n=0, ie=data.body.length ; n<ie ; n++ ) {
+			addRow( data.body[n], rowPos );
+		}
+
+		if ( config.footer && data.footer ) {
+			addRow( data.footer, rowPos);
+			$('row:last c', rels).attr( 's', '2' ); // bold
+		}
+
+		// Below the table
+		if ( exportInfo.messageBottom ) {
+			addRow( [exportInfo.messageBottom], rowPos );
+			mergeCells( rowPos, data.header.length-1 );
+		}
+
+		// Set column widths
+		var cols = _createNode( rels, 'cols' );
+		$('worksheet', rels).prepend( cols );
+
+		for ( var i=0, ien=data.header.length ; i<ien ; i++ ) {
+			cols.appendChild( _createNode( rels, 'col', {
+				attr: {
+					min: i+1,
+					max: i+1,
+					width: _excelColWidth( data, i ),
+					customWidth: 1
+				}
+			} ) );
+		}
+
+		// Let the developer customise the document if they want to
+		if ( config.customize ) {
+			config.customize( xlsx, config, dt );
+		}
+
+		_xlsxToStrings( xlsx );
+
+		flash.setAction( 'excel' );
+		flash.setFileName( exportInfo.filename );
+		flash.setSheetData( xlsx );
+		_setText( flash, '' );
+
+		this.processing( false );
+	},
+
+	extension: '.xlsx',
+	
+	createEmptyCells: false
+} );
+
+
+
+// PDF export
+DataTable.ext.buttons.pdfFlash = $.extend( {}, flashButton, {
+	className: 'buttons-pdf buttons-flash',
+
+	text: function ( dt ) {
+		return dt.i18n( 'buttons.pdf', 'PDF' );
+	},
+
+	action: function ( e, dt, button, config ) {
+		this.processing( true );
+
+		// Set the text
+		var flash = config._flash;
+		var data = dt.buttons.exportData( config.exportOptions );
+		var info = dt.buttons.exportInfo( config );
+		var totalWidth = dt.table().node().offsetWidth;
+
+		// Calculate the column width ratios for layout of the table in the PDF
+		var ratios = dt.columns( config.columns ).indexes().map( function ( idx ) {
+			return dt.column( idx ).header().offsetWidth / totalWidth;
+		} );
+
+		flash.setAction( 'pdf' );
+		flash.setFileName( info.filename );
+
+		_setText( flash, JSON.stringify( {
+			title:         info.title || '',
+			messageTop:    info.messageTop || '',
+			messageBottom: info.messageBottom || '',
+			colWidth:      ratios.toArray(),
+			orientation:   config.orientation,
+			size:          config.pageSize,
+			header:        config.header ? data.header : null,
+			footer:        config.footer ? data.footer : null,
+			body:          data.body
+		} ) );
+
+		this.processing( false );
+	},
+
+	extension: '.pdf',
+
+	orientation: 'portrait',
+
+	pageSize: 'A4',
+
+	newline: '\n'
+} );
+
+
+return DataTable.Buttons;
 }));
 
 
@@ -78255,7 +79929,9 @@ DataTable.ext.buttons.excelHtml5 = {
 				}
 
 				var originalContent = row[i];
-				row[i] = row[i].trim();
+				row[i] = typeof row[i].trim === 'function'
+					? row[i].trim()
+					: row[i];
 
 				// Special number formatting options
 				for ( var j=0, jen=_excelSpecials.length ; j<jen ; j++ ) {
@@ -80355,6 +82031,1685 @@ $.fn.dataTable.Api.register( 'colReorder.disable()', function() {
 
 
 return ColReorder;
+}));
+
+
+/*! FixedColumns 3.3.1
+ * ©2010-2020 SpryMedia Ltd - datatables.net/license
+ */
+
+/**
+ * @summary     FixedColumns
+ * @description Freeze columns in place on a scrolling DataTable
+ * @version     3.3.1
+ * @file        dataTables.fixedColumns.js
+ * @author      SpryMedia Ltd (www.sprymedia.co.uk)
+ * @contact     www.sprymedia.co.uk/contact
+ * @copyright   Copyright 2010-2020 SpryMedia Ltd.
+ *
+ * This source file is free software, available under the following license:
+ *   MIT license - http://datatables.net/license/mit
+ *
+ * This source file is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the license files for details.
+ *
+ * For details please refer to: http://www.datatables.net
+ */
+(function( factory ){
+	if ( typeof define === 'function' && define.amd ) {
+		// AMD
+		define( ['jquery', 'datatables.net'], function ( $ ) {
+			return factory( $, window, document );
+		} );
+	}
+	else if ( typeof exports === 'object' ) {
+		// CommonJS
+		module.exports = function (root, $) {
+			if ( ! root ) {
+				root = window;
+			}
+
+			if ( ! $ || ! $.fn.dataTable ) {
+				$ = require('datatables.net')(root, $).$;
+			}
+
+			return factory( $, root, root.document );
+		};
+	}
+	else {
+		// Browser
+		factory( jQuery, window, document );
+	}
+}(function( $, window, document, undefined ) {
+'use strict';
+var DataTable = $.fn.dataTable;
+var _firefoxScroll;
+
+/**
+ * When making use of DataTables' x-axis scrolling feature, you may wish to
+ * fix the left most column in place. This plug-in for DataTables provides
+ * exactly this option (note for non-scrolling tables, please use the
+ * FixedHeader plug-in, which can fix headers and footers). Key
+ * features include:
+ *
+ * * Freezes the left or right most columns to the side of the table
+ * * Option to freeze two or more columns
+ * * Full integration with DataTables' scrolling options
+ * * Speed - FixedColumns is fast in its operation
+ *
+ *  @class
+ *  @constructor
+ *  @global
+ *  @param {object} dt DataTables instance. With DataTables 1.10 this can also
+ *    be a jQuery collection, a jQuery selector, DataTables API instance or
+ *    settings object.
+ *  @param {object} [init={}] Configuration object for FixedColumns. Options are
+ *    defined by {@link FixedColumns.defaults}
+ *
+ *  @requires jQuery 1.7+
+ *  @requires DataTables 1.8.0+
+ *
+ *  @example
+ *      var table = $('#example').dataTable( {
+ *        "scrollX": "100%"
+ *      } );
+ *      new $.fn.dataTable.fixedColumns( table );
+ */
+var FixedColumns = function ( dt, init ) {
+	var that = this;
+
+	/* Sanity check - you just know it will happen */
+	if ( ! ( this instanceof FixedColumns ) ) {
+		alert( "FixedColumns warning: FixedColumns must be initialised with the 'new' keyword." );
+		return;
+	}
+
+	if ( init === undefined || init === true ) {
+		init = {};
+	}
+
+	// Use the DataTables Hungarian notation mapping method, if it exists to
+	// provide forwards compatibility for camel case variables
+	var camelToHungarian = $.fn.dataTable.camelToHungarian;
+	if ( camelToHungarian ) {
+		camelToHungarian( FixedColumns.defaults, FixedColumns.defaults, true );
+		camelToHungarian( FixedColumns.defaults, init );
+	}
+
+	// v1.10 allows the settings object to be got form a number of sources
+	var dtSettings = new $.fn.dataTable.Api( dt ).settings()[0];
+
+	/**
+	 * Settings object which contains customisable information for FixedColumns instance
+	 * @namespace
+	 * @extends FixedColumns.defaults
+	 * @private
+	 */
+	this.s = {
+		/**
+		 * DataTables settings objects
+		 *  @type     object
+		 *  @default  Obtained from DataTables instance
+		 */
+		"dt": dtSettings,
+
+		/**
+		 * Number of columns in the DataTable - stored for quick access
+		 *  @type     int
+		 *  @default  Obtained from DataTables instance
+		 */
+		"iTableColumns": dtSettings.aoColumns.length,
+
+		/**
+		 * Original outer widths of the columns as rendered by DataTables - used to calculate
+		 * the FixedColumns grid bounding box
+		 *  @type     array.<int>
+		 *  @default  []
+		 */
+		"aiOuterWidths": [],
+
+		/**
+		 * Original inner widths of the columns as rendered by DataTables - used to apply widths
+		 * to the columns
+		 *  @type     array.<int>
+		 *  @default  []
+		 */
+		"aiInnerWidths": [],
+
+
+		/**
+		 * Is the document layout right-to-left
+		 * @type boolean
+		 */
+		rtl: $(dtSettings.nTable).css('direction') === 'rtl'
+	};
+
+
+	/**
+	 * DOM elements used by the class instance
+	 * @namespace
+	 * @private
+	 *
+	 */
+	this.dom = {
+		/**
+		 * DataTables scrolling element
+		 *  @type     node
+		 *  @default  null
+		 */
+		"scroller": null,
+
+		/**
+		 * DataTables header table
+		 *  @type     node
+		 *  @default  null
+		 */
+		"header": null,
+
+		/**
+		 * DataTables body table
+		 *  @type     node
+		 *  @default  null
+		 */
+		"body": null,
+
+		/**
+		 * DataTables footer table
+		 *  @type     node
+		 *  @default  null
+		 */
+		"footer": null,
+
+		/**
+		 * Display grid elements
+		 * @namespace
+		 */
+		"grid": {
+			/**
+			 * Grid wrapper. This is the container element for the 3x3 grid
+			 *  @type     node
+			 *  @default  null
+			 */
+			"wrapper": null,
+
+			/**
+			 * DataTables scrolling element. This element is the DataTables
+			 * component in the display grid (making up the main table - i.e.
+			 * not the fixed columns).
+			 *  @type     node
+			 *  @default  null
+			 */
+			"dt": null,
+
+			/**
+			 * Left fixed column grid components
+			 * @namespace
+			 */
+			"left": {
+				"wrapper": null,
+				"head": null,
+				"body": null,
+				"foot": null
+			},
+
+			/**
+			 * Right fixed column grid components
+			 * @namespace
+			 */
+			"right": {
+				"wrapper": null,
+				"head": null,
+				"body": null,
+				"foot": null
+			}
+		},
+
+		/**
+		 * Cloned table nodes
+		 * @namespace
+		 */
+		"clone": {
+			/**
+			 * Left column cloned table nodes
+			 * @namespace
+			 */
+			"left": {
+				/**
+				 * Cloned header table
+				 *  @type     node
+				 *  @default  null
+				 */
+				"header": null,
+
+				/**
+				 * Cloned body table
+				 *  @type     node
+				 *  @default  null
+				 */
+				"body": null,
+
+				/**
+				 * Cloned footer table
+				 *  @type     node
+				 *  @default  null
+				 */
+				"footer": null
+			},
+
+			/**
+			 * Right column cloned table nodes
+			 * @namespace
+			 */
+			"right": {
+				/**
+				 * Cloned header table
+				 *  @type     node
+				 *  @default  null
+				 */
+				"header": null,
+
+				/**
+				 * Cloned body table
+				 *  @type     node
+				 *  @default  null
+				 */
+				"body": null,
+
+				/**
+				 * Cloned footer table
+				 *  @type     node
+				 *  @default  null
+				 */
+				"footer": null
+			}
+		}
+	};
+
+	if ( dtSettings._oFixedColumns ) {
+		throw 'FixedColumns already initialised on this table';
+	}
+
+	/* Attach the instance to the DataTables instance so it can be accessed easily */
+	dtSettings._oFixedColumns = this;
+
+	/* Let's do it */
+	if ( ! dtSettings._bInitComplete )
+	{
+		dtSettings.oApi._fnCallbackReg( dtSettings, 'aoInitComplete', function () {
+			that._fnConstruct( init );
+		}, 'FixedColumns' );
+	}
+	else
+	{
+		this._fnConstruct( init );
+	}
+};
+
+
+
+$.extend( FixedColumns.prototype , {
+	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+	 * Public methods
+	 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+	/**
+	 * Update the fixed columns - including headers and footers. Note that FixedColumns will
+	 * automatically update the display whenever the host DataTable redraws.
+	 *  @returns {void}
+	 *  @example
+	 *      var table = $('#example').dataTable( {
+	 *          "scrollX": "100%"
+	 *      } );
+	 *      var fc = new $.fn.dataTable.fixedColumns( table );
+	 *
+	 *      // at some later point when the table has been manipulated....
+	 *      fc.fnUpdate();
+	 */
+	"fnUpdate": function ()
+	{
+		this._fnDraw( true );
+	},
+
+
+	/**
+	 * Recalculate the resizes of the 3x3 grid that FixedColumns uses for display of the table.
+	 * This is useful if you update the width of the table container. Note that FixedColumns will
+	 * perform this function automatically when the window.resize event is fired.
+	 *  @returns {void}
+	 *  @example
+	 *      var table = $('#example').dataTable( {
+	 *          "scrollX": "100%"
+	 *      } );
+	 *      var fc = new $.fn.dataTable.fixedColumns( table );
+	 *
+	 *      // Resize the table container and then have FixedColumns adjust its layout....
+	 *      $('#content').width( 1200 );
+	 *      fc.fnRedrawLayout();
+	 */
+	"fnRedrawLayout": function ()
+	{
+		this._fnColCalc();
+		this._fnGridLayout();
+		this.fnUpdate();
+	},
+
+
+	/**
+	 * Mark a row such that it's height should be recalculated when using 'semiauto' row
+	 * height matching. This function will have no effect when 'none' or 'auto' row height
+	 * matching is used.
+	 *  @param   {Node} nTr TR element that should have it's height recalculated
+	 *  @returns {void}
+	 *  @example
+	 *      var table = $('#example').dataTable( {
+	 *          "scrollX": "100%"
+	 *      } );
+	 *      var fc = new $.fn.dataTable.fixedColumns( table );
+	 *
+	 *      // manipulate the table - mark the row as needing an update then update the table
+	 *      // this allows the redraw performed by DataTables fnUpdate to recalculate the row
+	 *      // height
+	 *      fc.fnRecalculateHeight();
+	 *      table.fnUpdate( $('#example tbody tr:eq(0)')[0], ["insert date", 1, 2, 3 ... ]);
+	 */
+	"fnRecalculateHeight": function ( nTr )
+	{
+		delete nTr._DTTC_iHeight;
+		nTr.style.height = 'auto';
+	},
+
+
+	/**
+	 * Set the height of a given row - provides cross browser compatibility
+	 *  @param   {Node} nTarget TR element that should have it's height recalculated
+	 *  @param   {int} iHeight Height in pixels to set
+	 *  @returns {void}
+	 *  @example
+	 *      var table = $('#example').dataTable( {
+	 *          "scrollX": "100%"
+	 *      } );
+	 *      var fc = new $.fn.dataTable.fixedColumns( table );
+	 *
+	 *      // You may want to do this after manipulating a row in the fixed column
+	 *      fc.fnSetRowHeight( $('#example tbody tr:eq(0)')[0], 50 );
+	 */
+	"fnSetRowHeight": function ( nTarget, iHeight )
+	{
+		nTarget.style.height = iHeight+"px";
+	},
+
+
+	/**
+	 * Get data index information about a row or cell in the table body.
+	 * This function is functionally identical to fnGetPosition in DataTables,
+	 * taking the same parameter (TH, TD or TR node) and returning exactly the
+	 * the same information (data index information). THe difference between
+	 * the two is that this method takes into account the fixed columns in the
+	 * table, so you can pass in nodes from the master table, or the cloned
+	 * tables and get the index position for the data in the main table.
+	 *  @param {node} node TR, TH or TD element to get the information about
+	 *  @returns {int} If nNode is given as a TR, then a single index is 
+	 *    returned, or if given as a cell, an array of [row index, column index
+	 *    (visible), column index (all)] is given.
+	 */
+	"fnGetPosition": function ( node )
+	{
+		var idx;
+		var inst = this.s.dt.oInstance;
+
+		if ( ! $(node).parents('.DTFC_Cloned').length )
+		{
+			// Not in a cloned table
+			return inst.fnGetPosition( node );
+		}
+		else
+		{
+			// Its in the cloned table, so need to look up position
+			if ( node.nodeName.toLowerCase() === 'tr' ) {
+				idx = $(node).index();
+				return inst.fnGetPosition( $('tr', this.s.dt.nTBody)[ idx ] );
+			}
+			else
+			{
+				var colIdx = $(node).index();
+				idx = $(node.parentNode).index();
+				var row = inst.fnGetPosition( $('tr', this.s.dt.nTBody)[ idx ] );
+
+				return [
+					row,
+					colIdx,
+					inst.oApi._fnVisibleToColumnIndex( this.s.dt, colIdx )
+				];
+			}
+		}
+	},
+
+	fnToFixedNode: function ( rowIdx, colIdx )
+	{
+		var found;
+
+		if ( colIdx < this.s.iLeftColumns ) {
+			found = $(this.dom.clone.left.body).find('[data-dt-row='+rowIdx+'][data-dt-column='+colIdx+']');
+		}
+		else if ( colIdx >= this.s.iRightColumns ) {
+			found = $(this.dom.clone.right.body).find('[data-dt-row='+rowIdx+'][data-dt-column='+colIdx+']');
+		}
+
+		if ( found && found.length ) {
+			return found[0];
+		}
+
+		// Fallback - non-fixed node
+		var table = new $.fn.dataTable.Api(this.s.dt);
+		return table.cell(rowIdx, colIdx).node();
+	},
+
+
+	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+	 * Private methods (they are of course public in JS, but recommended as private)
+	 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+	/**
+	 * Initialisation for FixedColumns
+	 *  @param   {Object} oInit User settings for initialisation
+	 *  @returns {void}
+	 *  @private
+	 */
+	"_fnConstruct": function ( oInit )
+	{
+		var i, iLen, iWidth,
+			that = this;
+
+		/* Sanity checking */
+		if ( typeof this.s.dt.oInstance.fnVersionCheck != 'function' ||
+		     this.s.dt.oInstance.fnVersionCheck( '1.8.0' ) !== true )
+		{
+			alert( "FixedColumns "+FixedColumns.VERSION+" required DataTables 1.8.0 or later. "+
+				"Please upgrade your DataTables installation" );
+			return;
+		}
+
+		if ( this.s.dt.oScroll.sX === "" )
+		{
+			this.s.dt.oInstance.oApi._fnLog( this.s.dt, 1, "FixedColumns is not needed (no "+
+				"x-scrolling in DataTables enabled), so no action will be taken. Use 'FixedHeader' for "+
+				"column fixing when scrolling is not enabled" );
+			return;
+		}
+
+		/* Apply the settings from the user / defaults */
+		this.s = $.extend( true, this.s, FixedColumns.defaults, oInit );
+
+		/* Set up the DOM as we need it and cache nodes */
+		var classes = this.s.dt.oClasses;
+		this.dom.grid.dt = $(this.s.dt.nTable).parents('div.'+classes.sScrollWrapper)[0];
+		this.dom.scroller = $('div.'+classes.sScrollBody, this.dom.grid.dt )[0];
+
+		/* Set up the DOM that we want for the fixed column layout grid */
+		this._fnColCalc();
+		this._fnGridSetup();
+
+		/* Event handlers */
+		var mouseController;
+		var mouseDown = false;
+
+		// When the mouse is down (drag scroll) the mouse controller cannot
+		// change, as the browser keeps the original element as the scrolling one
+		$(this.s.dt.nTableWrapper).on( 'mousedown.DTFC', function (e) {
+			if ( e.button === 0 ) {
+				mouseDown = true;
+
+				$(document).one( 'mouseup', function () {
+					mouseDown = false;
+				} );
+			}
+		} );
+
+		// When the body is scrolled - scroll the left and right columns
+		$(this.dom.scroller)
+			.on( 'mouseover.DTFC touchstart.DTFC', function () {
+				if ( ! mouseDown ) {
+					mouseController = 'main';
+				}
+			} )
+			.on( 'scroll.DTFC', function (e) {
+				if ( ! mouseController && e.originalEvent ) {
+					mouseController = 'main';
+				}
+
+				if ( mouseController === 'main' || mouseController === 'key' ) {
+					if ( that.s.iLeftColumns > 0 ) {
+						that.dom.grid.left.liner.scrollTop = that.dom.scroller.scrollTop;
+					}
+					if ( that.s.iRightColumns > 0 ) {
+						that.dom.grid.right.liner.scrollTop = that.dom.scroller.scrollTop;
+					}
+				}
+			} );
+
+		var wheelType = 'onwheel' in document.createElement('div') ?
+			'wheel.DTFC' :
+			'mousewheel.DTFC';
+
+		if ( that.s.iLeftColumns > 0 ) {
+			// When scrolling the left column, scroll the body and right column
+			$(that.dom.grid.left.liner)
+				.on( 'mouseover.DTFC touchstart.DTFC', function () {
+					if ( ! mouseDown && mouseController !== 'key' ) {
+						mouseController = 'left';
+					}
+				} )
+				.on( 'scroll.DTFC', function ( e ) {
+					if ( ! mouseController && e.originalEvent ) {
+						mouseController = 'left';
+					}
+
+					if ( mouseController === 'left' ) {
+						that.dom.scroller.scrollTop = that.dom.grid.left.liner.scrollTop;
+						if ( that.s.iRightColumns > 0 ) {
+							that.dom.grid.right.liner.scrollTop = that.dom.grid.left.liner.scrollTop;
+						}
+					}
+				} )
+				.on( wheelType, function(e) {
+					mouseController = 'left';
+
+					// Pass horizontal scrolling through
+					var xDelta = e.type === 'wheel' ?
+						-e.originalEvent.deltaX :
+						e.originalEvent.wheelDeltaX;
+					that.dom.scroller.scrollLeft -= xDelta;
+				} );
+		}
+
+		if ( that.s.iRightColumns > 0 ) {
+			// When scrolling the right column, scroll the body and the left column
+			$(that.dom.grid.right.liner)
+				.on( 'mouseover.DTFC touchstart.DTFC', function () {
+					if ( ! mouseDown && mouseController !== 'key' ) {
+						mouseController = 'right';
+					}
+				} )
+				.on( 'scroll.DTFC', function ( e ) {
+					if ( ! mouseController && e.originalEvent ) {
+						mouseController = 'right';
+					}
+
+					if ( mouseController === 'right' ) {
+						that.dom.scroller.scrollTop = that.dom.grid.right.liner.scrollTop;
+						if ( that.s.iLeftColumns > 0 ) {
+							that.dom.grid.left.liner.scrollTop = that.dom.grid.right.liner.scrollTop;
+						}
+					}
+				} )
+				.on( wheelType, function(e) {
+					mouseController = 'left';
+
+					// Pass horizontal scrolling through
+					var xDelta = e.type === 'wheel' ?
+						-e.originalEvent.deltaX :
+						e.originalEvent.wheelDeltaX;
+					that.dom.scroller.scrollLeft -= xDelta;
+				} );
+		}
+
+		$(window).on( 'resize.DTFC', function () {
+			that._fnGridLayout.call( that );
+		} );
+
+		var bFirstDraw = true;
+		var jqTable = $(this.s.dt.nTable);
+
+		jqTable
+			.on( 'draw.dt.DTFC', function () {
+				that._fnColCalc();
+				that._fnDraw.call( that, bFirstDraw );
+				bFirstDraw = false;
+			} )
+			.on('key-focus.dt.DTFC', function () {
+				// KeyTable navigation needs to be main focused
+				mouseController = 'key';
+			})
+			.on( 'column-sizing.dt.DTFC', function () {
+				that._fnColCalc();
+				that._fnGridLayout( that );
+			} )
+			.on( 'column-visibility.dt.DTFC', function ( e, settings, column, vis, recalc ) {
+				if ( recalc === undefined || recalc ) {
+					that._fnColCalc();
+					that._fnGridLayout( that );
+					that._fnDraw( true );
+				}
+			} )
+			.on( 'select.dt.DTFC deselect.dt.DTFC', function ( e, dt, type, indexes ) {
+				if ( e.namespace === 'dt' ) {
+					that._fnDraw( false );
+				}
+			} )
+			.on( 'position.dts.dt.DTFC', function (e, tableTop) {
+				// Sync up with Scroller
+				if (that.dom.grid.left.body) {
+					$(that.dom.grid.left.body).find('table').eq(0).css('top', tableTop);
+				}
+
+				if (that.dom.grid.right.body) {
+					$(that.dom.grid.right.body).find('table').eq(0).css('top', tableTop);
+				}
+			} )
+			.on( 'destroy.dt.DTFC', function () {
+				jqTable.off( '.DTFC' );
+
+				$(that.dom.scroller).off( '.DTFC' );
+				$(window).off( '.DTFC' );
+				$(that.s.dt.nTableWrapper).off( '.DTFC' );
+
+				$(that.dom.grid.left.liner).off( '.DTFC '+wheelType );
+				$(that.dom.grid.left.wrapper).remove();
+
+				$(that.dom.grid.right.liner).off( '.DTFC '+wheelType );
+				$(that.dom.grid.right.wrapper).remove();
+			} );
+
+		/* Get things right to start with - note that due to adjusting the columns, there must be
+		 * another redraw of the main table. It doesn't need to be a full redraw however.
+		 */
+		this._fnGridLayout();
+		this.s.dt.oInstance.fnDraw(false);
+	},
+
+
+	/**
+	 * Calculate the column widths for the grid layout
+	 *  @returns {void}
+	 *  @private
+	 */
+	"_fnColCalc": function ()
+	{
+		var that = this;
+		var iLeftWidth = 0;
+		var iRightWidth = 0;
+
+		this.s.aiInnerWidths = [];
+		this.s.aiOuterWidths = [];
+
+		$.each( this.s.dt.aoColumns, function (i, col) {
+			var th = $(col.nTh);
+			var border;
+
+			if ( ! th.filter(':visible').length ) {
+				that.s.aiInnerWidths.push( 0 );
+				that.s.aiOuterWidths.push( 0 );
+			}
+			else
+			{
+				// Inner width is used to assign widths to cells
+				// Outer width is used to calculate the container
+				var iWidth = th.outerWidth();
+
+				// When working with the left most-cell, need to add on the
+				// table's border to the outerWidth, since we need to take
+				// account of it, but it isn't in any cell
+				if ( that.s.aiOuterWidths.length === 0 ) {
+					border = $(that.s.dt.nTable).css('border-left-width');
+					iWidth += typeof border === 'string' && border.indexOf('px') === -1 ?
+						1 :
+						parseInt( border, 10 );
+				}
+
+				// Likewise with the final column on the right
+				if ( that.s.aiOuterWidths.length === that.s.dt.aoColumns.length-1 ) {
+					border = $(that.s.dt.nTable).css('border-right-width');
+					iWidth += typeof border === 'string' && border.indexOf('px') === -1 ?
+						1 :
+						parseInt( border, 10 );
+				}
+
+				that.s.aiOuterWidths.push( iWidth );
+				that.s.aiInnerWidths.push( th.width() );
+
+				if ( i < that.s.iLeftColumns )
+				{
+					iLeftWidth += iWidth;
+				}
+
+				if ( that.s.iTableColumns-that.s.iRightColumns <= i )
+				{
+					iRightWidth += iWidth;
+				}
+			}
+		} );
+
+		this.s.iLeftWidth = iLeftWidth;
+		this.s.iRightWidth = iRightWidth;
+	},
+
+
+	/**
+	 * Set up the DOM for the fixed column. The way the layout works is to create a 1x3 grid
+	 * for the left column, the DataTable (for which we just reuse the scrolling element DataTable
+	 * puts into the DOM) and the right column. In each of he two fixed column elements there is a
+	 * grouping wrapper element and then a head, body and footer wrapper. In each of these we then
+	 * place the cloned header, body or footer tables. This effectively gives as 3x3 grid structure.
+	 *  @returns {void}
+	 *  @private
+	 */
+	"_fnGridSetup": function ()
+	{
+		var that = this;
+		var oOverflow = this._fnDTOverflow();
+		var block;
+
+		this.dom.body = this.s.dt.nTable;
+		this.dom.header = this.s.dt.nTHead.parentNode;
+		this.dom.header.parentNode.parentNode.style.position = "relative";
+
+		var nSWrapper =
+			$('<div class="DTFC_ScrollWrapper" style="position:relative; clear:both;">'+
+				'<div class="DTFC_LeftWrapper" style="position:absolute; top:0; left:0;" aria-hidden="true">'+
+					'<div class="DTFC_LeftHeadWrapper" style="position:relative; top:0; left:0; overflow:hidden;"></div>'+
+					'<div class="DTFC_LeftBodyWrapper" style="position:relative; top:0; left:0; height:0; overflow:hidden;">'+
+						'<div class="DTFC_LeftBodyLiner" style="position:relative; top:0; left:0; overflow-y:scroll;"></div>'+
+					'</div>'+
+					'<div class="DTFC_LeftFootWrapper" style="position:relative; top:0; left:0; overflow:hidden;"></div>'+
+				'</div>'+
+				'<div class="DTFC_RightWrapper" style="position:absolute; top:0; right:0;" aria-hidden="true">'+
+					'<div class="DTFC_RightHeadWrapper" style="position:relative; top:0; left:0;">'+
+						'<div class="DTFC_RightHeadBlocker DTFC_Blocker" style="position:absolute; top:0; bottom:0;"></div>'+
+					'</div>'+
+					'<div class="DTFC_RightBodyWrapper" style="position:relative; top:0; left:0; height:0; overflow:hidden;">'+
+						'<div class="DTFC_RightBodyLiner" style="position:relative; top:0; left:0; overflow-y:scroll;"></div>'+
+					'</div>'+
+					'<div class="DTFC_RightFootWrapper" style="position:relative; top:0; left:0;">'+
+						'<div class="DTFC_RightFootBlocker DTFC_Blocker" style="position:absolute; top:0; bottom:0;"></div>'+
+					'</div>'+
+				'</div>'+
+			'</div>')[0];
+		var nLeft = nSWrapper.childNodes[0];
+		var nRight = nSWrapper.childNodes[1];
+
+		this.dom.grid.dt.parentNode.insertBefore( nSWrapper, this.dom.grid.dt );
+		nSWrapper.appendChild( this.dom.grid.dt );
+
+		this.dom.grid.wrapper = nSWrapper;
+
+		if ( this.s.iLeftColumns > 0 )
+		{
+			this.dom.grid.left.wrapper = nLeft;
+			this.dom.grid.left.head = nLeft.childNodes[0];
+			this.dom.grid.left.body = nLeft.childNodes[1];
+			this.dom.grid.left.liner = $('div.DTFC_LeftBodyLiner', nSWrapper)[0];
+
+			nSWrapper.appendChild( nLeft );
+		}
+
+		if ( this.s.iRightColumns > 0 )
+		{
+			this.dom.grid.right.wrapper = nRight;
+			this.dom.grid.right.head = nRight.childNodes[0];
+			this.dom.grid.right.body = nRight.childNodes[1];
+			this.dom.grid.right.liner = $('div.DTFC_RightBodyLiner', nSWrapper)[0];
+
+			nRight.style.right = oOverflow.bar+"px";
+
+			block = $('div.DTFC_RightHeadBlocker', nSWrapper)[0];
+			block.style.width = oOverflow.bar+"px";
+			block.style.right = -oOverflow.bar+"px";
+			this.dom.grid.right.headBlock = block;
+
+			block = $('div.DTFC_RightFootBlocker', nSWrapper)[0];
+			block.style.width = oOverflow.bar+"px";
+			block.style.right = -oOverflow.bar+"px";
+			this.dom.grid.right.footBlock = block;
+
+			nSWrapper.appendChild( nRight );
+		}
+
+		if ( this.s.dt.nTFoot )
+		{
+			this.dom.footer = this.s.dt.nTFoot.parentNode;
+			if ( this.s.iLeftColumns > 0 )
+			{
+				this.dom.grid.left.foot = nLeft.childNodes[2];
+			}
+			if ( this.s.iRightColumns > 0 )
+			{
+				this.dom.grid.right.foot = nRight.childNodes[2];
+			}
+		}
+
+		// RTL support - swap the position of the left and right columns (#48)
+		if ( this.s.rtl ) {
+			$('div.DTFC_RightHeadBlocker', nSWrapper).css( {
+				left: -oOverflow.bar+'px',
+				right: ''
+			} );
+		}
+	},
+
+
+	/**
+	 * Style and position the grid used for the FixedColumns layout
+	 *  @returns {void}
+	 *  @private
+	 */
+	"_fnGridLayout": function ()
+	{
+		var that = this;
+		var oGrid = this.dom.grid;
+		var iWidth = $(oGrid.wrapper).width();
+		var iBodyHeight = this.s.dt.nTable.parentNode.offsetHeight;
+		var iFullHeight = this.s.dt.nTable.parentNode.parentNode.offsetHeight;
+		var oOverflow = this._fnDTOverflow();
+		var iLeftWidth = this.s.iLeftWidth;
+		var iRightWidth = this.s.iRightWidth;
+		var rtl = $(this.dom.body).css('direction') === 'rtl';
+		var wrapper;
+		var scrollbarAdjust = function ( node, width ) {
+			if ( ! oOverflow.bar ) {
+				// If there is no scrollbar (Macs) we need to hide the auto scrollbar
+				node.style.width = (width+20)+"px";
+				node.style.paddingRight = "20px";
+				node.style.boxSizing = "border-box";
+			}
+			else if ( that._firefoxScrollError() ) {
+				// See the above function for why this is required
+				if ( $(node).height() > 34 ) {
+					node.style.width = (width+oOverflow.bar)+"px";
+				}
+			}
+			else {
+				// Otherwise just overflow by the scrollbar
+				node.style.width = (width+oOverflow.bar)+"px";
+			}
+		};
+
+		// When x scrolling - don't paint the fixed columns over the x scrollbar
+		if ( oOverflow.x )
+		{
+			iBodyHeight -= oOverflow.bar;
+		}
+
+		oGrid.wrapper.style.height = iFullHeight+"px";
+
+		if ( this.s.iLeftColumns > 0 )
+		{
+			wrapper = oGrid.left.wrapper;
+			wrapper.style.width = iLeftWidth+'px';
+			wrapper.style.height = '1px';
+
+			// Swap the position of the left and right columns for rtl (#48)
+			// This is always up against the edge, scrollbar on the far side
+			if ( rtl ) {
+				wrapper.style.left = '';
+				wrapper.style.right = 0;
+			}
+			else {
+				wrapper.style.left = 0;
+				wrapper.style.right = '';
+			}
+
+			oGrid.left.body.style.height = iBodyHeight+"px";
+			if ( oGrid.left.foot ) {
+				oGrid.left.foot.style.top = (oOverflow.x ? oOverflow.bar : 0)+"px"; // shift footer for scrollbar
+			}
+
+			scrollbarAdjust( oGrid.left.liner, iLeftWidth );
+			oGrid.left.liner.style.height = iBodyHeight+"px";
+			oGrid.left.liner.style.maxHeight = iBodyHeight+"px";
+		}
+
+		if ( this.s.iRightColumns > 0 )
+		{
+			wrapper = oGrid.right.wrapper;
+			wrapper.style.width = iRightWidth+'px';
+			wrapper.style.height = '1px';
+
+			// Need to take account of the vertical scrollbar
+			if ( this.s.rtl ) {
+				wrapper.style.left = oOverflow.y ? oOverflow.bar+'px' : 0;
+				wrapper.style.right = '';
+			}
+			else {
+				wrapper.style.left = '';
+				wrapper.style.right = oOverflow.y ? oOverflow.bar+'px' : 0;
+			}
+
+			oGrid.right.body.style.height = iBodyHeight+"px";
+			if ( oGrid.right.foot ) {
+				oGrid.right.foot.style.top = (oOverflow.x ? oOverflow.bar : 0)+"px";
+			}
+
+			scrollbarAdjust( oGrid.right.liner, iRightWidth );
+			oGrid.right.liner.style.height = iBodyHeight+"px";
+			oGrid.right.liner.style.maxHeight = iBodyHeight+"px";
+
+			oGrid.right.headBlock.style.display = oOverflow.y ? 'block' : 'none';
+			oGrid.right.footBlock.style.display = oOverflow.y ? 'block' : 'none';
+		}
+	},
+
+
+	/**
+	 * Get information about the DataTable's scrolling state - specifically if the table is scrolling
+	 * on either the x or y axis, and also the scrollbar width.
+	 *  @returns {object} Information about the DataTables scrolling state with the properties:
+	 *    'x', 'y' and 'bar'
+	 *  @private
+	 */
+	"_fnDTOverflow": function ()
+	{
+		var nTable = this.s.dt.nTable;
+		var nTableScrollBody = nTable.parentNode;
+		var out = {
+			"x": false,
+			"y": false,
+			"bar": this.s.dt.oScroll.iBarWidth
+		};
+
+		if ( nTable.offsetWidth > nTableScrollBody.clientWidth )
+		{
+			out.x = true;
+		}
+
+		if ( nTable.offsetHeight > nTableScrollBody.clientHeight )
+		{
+			out.y = true;
+		}
+
+		return out;
+	},
+
+
+	/**
+	 * Clone and position the fixed columns
+	 *  @returns {void}
+	 *  @param   {Boolean} bAll Indicate if the header and footer should be updated as well (true)
+	 *  @private
+	 */
+	"_fnDraw": function ( bAll )
+	{
+		this._fnGridLayout();
+		this._fnCloneLeft( bAll );
+		this._fnCloneRight( bAll );
+
+		/* Draw callback function */
+		if ( this.s.fnDrawCallback !== null )
+		{
+			this.s.fnDrawCallback.call( this, this.dom.clone.left, this.dom.clone.right );
+		}
+
+		/* Event triggering */
+		$(this).trigger( 'draw.dtfc', {
+			"leftClone": this.dom.clone.left,
+			"rightClone": this.dom.clone.right
+		} );
+	},
+
+
+	/**
+	 * Clone the right columns
+	 *  @returns {void}
+	 *  @param   {Boolean} bAll Indicate if the header and footer should be updated as well (true)
+	 *  @private
+	 */
+	"_fnCloneRight": function ( bAll )
+	{
+		if ( this.s.iRightColumns <= 0 ) {
+			return;
+		}
+
+		var that = this,
+			i, jq,
+			aiColumns = [];
+
+		for ( i=this.s.iTableColumns-this.s.iRightColumns ; i<this.s.iTableColumns ; i++ ) {
+			if ( this.s.dt.aoColumns[i].bVisible ) {
+				aiColumns.push( i );
+			}
+		}
+
+		this._fnClone( this.dom.clone.right, this.dom.grid.right, aiColumns, bAll );
+	},
+
+
+	/**
+	 * Clone the left columns
+	 *  @returns {void}
+	 *  @param   {Boolean} bAll Indicate if the header and footer should be updated as well (true)
+	 *  @private
+	 */
+	"_fnCloneLeft": function ( bAll )
+	{
+		if ( this.s.iLeftColumns <= 0 ) {
+			return;
+		}
+
+		var that = this,
+			i, jq,
+			aiColumns = [];
+
+		for ( i=0 ; i<this.s.iLeftColumns ; i++ ) {
+			if ( this.s.dt.aoColumns[i].bVisible ) {
+				aiColumns.push( i );
+			}
+		}
+
+		this._fnClone( this.dom.clone.left, this.dom.grid.left, aiColumns, bAll );
+	},
+
+
+	/**
+	 * Make a copy of the layout object for a header or footer element from DataTables. Note that
+	 * this method will clone the nodes in the layout object.
+	 *  @returns {Array} Copy of the layout array
+	 *  @param   {Object} aoOriginal Layout array from DataTables (aoHeader or aoFooter)
+	 *  @param   {Object} aiColumns Columns to copy
+	 *  @param   {boolean} events Copy cell events or not
+	 *  @private
+	 */
+	"_fnCopyLayout": function ( aoOriginal, aiColumns, events )
+	{
+		var aReturn = [];
+		var aClones = [];
+		var aCloned = [];
+
+		for ( var i=0, iLen=aoOriginal.length ; i<iLen ; i++ )
+		{
+			var aRow = [];
+			aRow.nTr = $(aoOriginal[i].nTr).clone(events, false)[0];
+
+			for ( var j=0, jLen=this.s.iTableColumns ; j<jLen ; j++ )
+			{
+				if ( $.inArray( j, aiColumns ) === -1 )
+				{
+					continue;
+				}
+
+				var iCloned = $.inArray( aoOriginal[i][j].cell, aCloned );
+				if ( iCloned === -1 )
+				{
+					var nClone = $(aoOriginal[i][j].cell).clone(events, false)[0];
+					aClones.push( nClone );
+					aCloned.push( aoOriginal[i][j].cell );
+
+					aRow.push( {
+						"cell": nClone,
+						"unique": aoOriginal[i][j].unique
+					} );
+				}
+				else
+				{
+					aRow.push( {
+						"cell": aClones[ iCloned ],
+						"unique": aoOriginal[i][j].unique
+					} );
+				}
+			}
+
+			aReturn.push( aRow );
+		}
+
+		return aReturn;
+	},
+
+
+	/**
+	 * Clone the DataTable nodes and place them in the DOM (sized correctly)
+	 *  @returns {void}
+	 *  @param   {Object} oClone Object containing the header, footer and body cloned DOM elements
+	 *  @param   {Object} oGrid Grid object containing the display grid elements for the cloned
+	 *                    column (left or right)
+	 *  @param   {Array} aiColumns Column indexes which should be operated on from the DataTable
+	 *  @param   {Boolean} bAll Indicate if the header and footer should be updated as well (true)
+	 *  @private
+	 */
+	"_fnClone": function ( oClone, oGrid, aiColumns, bAll )
+	{
+		var that = this,
+			i, iLen, j, jLen, jq, nTarget, iColumn, nClone, iIndex, aoCloneLayout,
+			jqCloneThead, aoFixedHeader,
+			dt = this.s.dt;
+
+		/*
+		 * Header
+		 */
+		if ( bAll )
+		{
+			$(oClone.header).remove();
+
+			oClone.header = $(this.dom.header).clone(true, false)[0];
+			oClone.header.className += " DTFC_Cloned";
+			oClone.header.style.width = "100%";
+			oGrid.head.appendChild( oClone.header );
+
+			/* Copy the DataTables layout cache for the header for our floating column */
+			aoCloneLayout = this._fnCopyLayout( dt.aoHeader, aiColumns, true );
+			jqCloneThead = $('>thead', oClone.header);
+			jqCloneThead.empty();
+
+			/* Add the created cloned TR elements to the table */
+			for ( i=0, iLen=aoCloneLayout.length ; i<iLen ; i++ )
+			{
+				jqCloneThead[0].appendChild( aoCloneLayout[i].nTr );
+			}
+
+			/* Use the handy _fnDrawHead function in DataTables to do the rowspan/colspan
+			 * calculations for us
+			 */
+			dt.oApi._fnDrawHead( dt, aoCloneLayout, true );
+		}
+		else
+		{
+			/* To ensure that we copy cell classes exactly, regardless of colspan, multiple rows
+			 * etc, we make a copy of the header from the DataTable again, but don't insert the
+			 * cloned cells, just copy the classes across. To get the matching layout for the
+			 * fixed component, we use the DataTables _fnDetectHeader method, allowing 1:1 mapping
+			 */
+			aoCloneLayout = this._fnCopyLayout( dt.aoHeader, aiColumns, false );
+			aoFixedHeader=[];
+
+			dt.oApi._fnDetectHeader( aoFixedHeader, $('>thead', oClone.header)[0] );
+
+			for ( i=0, iLen=aoCloneLayout.length ; i<iLen ; i++ )
+			{
+				for ( j=0, jLen=aoCloneLayout[i].length ; j<jLen ; j++ )
+				{
+					aoFixedHeader[i][j].cell.className = aoCloneLayout[i][j].cell.className;
+
+					// If jQuery UI theming is used we need to copy those elements as well
+					$('span.DataTables_sort_icon', aoFixedHeader[i][j].cell).each( function () {
+						this.className = $('span.DataTables_sort_icon', aoCloneLayout[i][j].cell)[0].className;
+					} );
+				}
+			}
+		}
+		this._fnEqualiseHeights( 'thead', this.dom.header, oClone.header );
+
+		/*
+		 * Body
+		 */
+		if ( this.s.sHeightMatch == 'auto' )
+		{
+			/* Remove any heights which have been applied already and let the browser figure it out */
+			$('>tbody>tr', that.dom.body).css('height', 'auto');
+		}
+
+		if ( oClone.body !== null )
+		{
+			$(oClone.body).remove();
+			oClone.body = null;
+		}
+
+		oClone.body = $(this.dom.body).clone(true)[0];
+		oClone.body.className += " DTFC_Cloned";
+		oClone.body.style.paddingBottom = dt.oScroll.iBarWidth+"px";
+		oClone.body.style.marginBottom = (dt.oScroll.iBarWidth*2)+"px"; /* For IE */
+		if ( oClone.body.getAttribute('id') !== null )
+		{
+			oClone.body.removeAttribute('id');
+		}
+
+		$('>thead>tr', oClone.body).empty();
+		$('>tfoot', oClone.body).remove();
+
+		var nBody = $('tbody', oClone.body)[0];
+		$(nBody).empty();
+		if ( dt.aiDisplay.length > 0 )
+		{
+			/* Copy the DataTables' header elements to force the column width in exactly the
+			 * same way that DataTables does it - have the header element, apply the width and
+			 * colapse it down
+			 */
+			var nInnerThead = $('>thead>tr', oClone.body)[0];
+			for ( iIndex=0 ; iIndex<aiColumns.length ; iIndex++ )
+			{
+				iColumn = aiColumns[iIndex];
+
+				nClone = $(dt.aoColumns[iColumn].nTh).clone(true)[0];
+				nClone.innerHTML = "";
+
+				var oStyle = nClone.style;
+				oStyle.paddingTop = "0";
+				oStyle.paddingBottom = "0";
+				oStyle.borderTopWidth = "0";
+				oStyle.borderBottomWidth = "0";
+				oStyle.height = 0;
+				oStyle.width = that.s.aiInnerWidths[iColumn]+"px";
+
+				nInnerThead.appendChild( nClone );
+			}
+
+			/* Add in the tbody elements, cloning form the master table */
+			$('>tbody>tr', that.dom.body).each( function (z) {
+				var i = that.s.dt.oFeatures.bServerSide===false ?
+					that.s.dt.aiDisplay[ that.s.dt._iDisplayStart+z ] : z;
+				var aTds = that.s.dt.aoData[ i ].anCells || $(this).children('td, th');
+
+				var n = this.cloneNode(false);
+				n.removeAttribute('id');
+				n.setAttribute( 'data-dt-row', i );
+
+				for ( iIndex=0 ; iIndex<aiColumns.length ; iIndex++ )
+				{
+					iColumn = aiColumns[iIndex];
+
+					if ( aTds.length > 0 )
+					{
+						nClone = $( aTds[iColumn] ).clone(true, true)[0];
+						nClone.removeAttribute( 'id' );
+						nClone.setAttribute( 'data-dt-row', i );
+						nClone.setAttribute( 'data-dt-column', iColumn );
+						n.appendChild( nClone );
+					}
+				}
+				nBody.appendChild( n );
+			} );
+		}
+		else
+		{
+			$('>tbody>tr', that.dom.body).each( function (z) {
+				nClone = this.cloneNode(true);
+				nClone.className += ' DTFC_NoData';
+				$('td', nClone).html('');
+				nBody.appendChild( nClone );
+			} );
+		}
+
+		oClone.body.style.width = "100%";
+		oClone.body.style.margin = "0";
+		oClone.body.style.padding = "0";
+
+		// Interop with Scroller - need to use a height forcing element in the
+		// scrolling area in the same way that Scroller does in the body scroll.
+		if ( dt.oScroller !== undefined )
+		{
+			var scrollerForcer = dt.oScroller.dom.force;
+
+			if ( ! oGrid.forcer ) {
+				oGrid.forcer = scrollerForcer.cloneNode( true );
+				oGrid.liner.appendChild( oGrid.forcer );
+			}
+			else {
+				oGrid.forcer.style.height = scrollerForcer.style.height;
+			}
+		}
+
+		oGrid.liner.appendChild( oClone.body );
+
+		this._fnEqualiseHeights( 'tbody', that.dom.body, oClone.body );
+
+		/*
+		 * Footer
+		 */
+		if ( dt.nTFoot !== null )
+		{
+			if ( bAll )
+			{
+				if ( oClone.footer !== null )
+				{
+					oClone.footer.parentNode.removeChild( oClone.footer );
+				}
+				oClone.footer = $(this.dom.footer).clone(true, true)[0];
+				oClone.footer.className += " DTFC_Cloned";
+				oClone.footer.style.width = "100%";
+				oGrid.foot.appendChild( oClone.footer );
+
+				/* Copy the footer just like we do for the header */
+				aoCloneLayout = this._fnCopyLayout( dt.aoFooter, aiColumns, true );
+				var jqCloneTfoot = $('>tfoot', oClone.footer);
+				jqCloneTfoot.empty();
+
+				for ( i=0, iLen=aoCloneLayout.length ; i<iLen ; i++ )
+				{
+					jqCloneTfoot[0].appendChild( aoCloneLayout[i].nTr );
+				}
+				dt.oApi._fnDrawHead( dt, aoCloneLayout, true );
+			}
+			else
+			{
+				aoCloneLayout = this._fnCopyLayout( dt.aoFooter, aiColumns, false );
+				var aoCurrFooter=[];
+
+				dt.oApi._fnDetectHeader( aoCurrFooter, $('>tfoot', oClone.footer)[0] );
+
+				for ( i=0, iLen=aoCloneLayout.length ; i<iLen ; i++ )
+				{
+					for ( j=0, jLen=aoCloneLayout[i].length ; j<jLen ; j++ )
+					{
+						aoCurrFooter[i][j].cell.className = aoCloneLayout[i][j].cell.className;
+					}
+				}
+			}
+			this._fnEqualiseHeights( 'tfoot', this.dom.footer, oClone.footer );
+		}
+
+		/* Equalise the column widths between the header footer and body - body get's priority */
+		var anUnique = dt.oApi._fnGetUniqueThs( dt, $('>thead', oClone.header)[0] );
+		$(anUnique).each( function (i) {
+			iColumn = aiColumns[i];
+			this.style.width = that.s.aiInnerWidths[iColumn]+"px";
+		} );
+
+		if ( that.s.dt.nTFoot !== null )
+		{
+			anUnique = dt.oApi._fnGetUniqueThs( dt, $('>tfoot', oClone.footer)[0] );
+			$(anUnique).each( function (i) {
+				iColumn = aiColumns[i];
+				this.style.width = that.s.aiInnerWidths[iColumn]+"px";
+			} );
+		}
+	},
+
+
+	/**
+	 * From a given table node (THEAD etc), get a list of TR direct child elements
+	 *  @param   {Node} nIn Table element to search for TR elements (THEAD, TBODY or TFOOT element)
+	 *  @returns {Array} List of TR elements found
+	 *  @private
+	 */
+	"_fnGetTrNodes": function ( nIn )
+	{
+		var aOut = [];
+		for ( var i=0, iLen=nIn.childNodes.length ; i<iLen ; i++ )
+		{
+			if ( nIn.childNodes[i].nodeName.toUpperCase() == "TR" )
+			{
+				aOut.push( nIn.childNodes[i] );
+			}
+		}
+		return aOut;
+	},
+
+
+	/**
+	 * Equalise the heights of the rows in a given table node in a cross browser way
+	 *  @returns {void}
+	 *  @param   {String} nodeName Node type - thead, tbody or tfoot
+	 *  @param   {Node} original Original node to take the heights from
+	 *  @param   {Node} clone Copy the heights to
+	 *  @private
+	 */
+	"_fnEqualiseHeights": function ( nodeName, original, clone )
+	{
+		if ( this.s.sHeightMatch == 'none' && nodeName !== 'thead' && nodeName !== 'tfoot' )
+		{
+			return;
+		}
+
+		var that = this,
+			i, iLen, iHeight, iHeight2, iHeightOriginal, iHeightClone,
+			rootOriginal = original.getElementsByTagName(nodeName)[0],
+			rootClone    = clone.getElementsByTagName(nodeName)[0],
+			jqBoxHack    = $('>'+nodeName+'>tr:eq(0)', original).children(':first'),
+			iBoxHack     = jqBoxHack.outerHeight() - jqBoxHack.height(),
+			anOriginal   = this._fnGetTrNodes( rootOriginal ),
+			anClone      = this._fnGetTrNodes( rootClone ),
+			heights      = [];
+
+		for ( i=0, iLen=anClone.length ; i<iLen ; i++ )
+		{
+			iHeightOriginal = anOriginal[i].offsetHeight;
+			iHeightClone = anClone[i].offsetHeight;
+			iHeight = iHeightClone > iHeightOriginal ? iHeightClone : iHeightOriginal;
+
+			if ( this.s.sHeightMatch == 'semiauto' )
+			{
+				anOriginal[i]._DTTC_iHeight = iHeight;
+			}
+
+			heights.push( iHeight );
+		}
+
+		for ( i=0, iLen=anClone.length ; i<iLen ; i++ )
+		{
+			anClone[i].style.height = heights[i]+"px";
+			anOriginal[i].style.height = heights[i]+"px";
+		}
+	},
+
+	/**
+	 * Determine if the UA suffers from Firefox's overflow:scroll scrollbars
+	 * not being shown bug.
+	 *
+	 * Firefox doesn't draw scrollbars, even if it is told to using
+	 * overflow:scroll, if the div is less than 34px height. See bugs 292284 and
+	 * 781885. Using UA detection here since this is particularly hard to detect
+	 * using objects - its a straight up rendering error in Firefox.
+	 *
+	 * @return {boolean} True if Firefox error is present, false otherwise
+	 */
+	_firefoxScrollError: function () {
+		if ( _firefoxScroll === undefined ) {
+			var test = $('<div/>')
+				.css( {
+					position: 'absolute',
+					top: 0,
+					left: 0,
+					height: 10,
+					width: 50,
+					overflow: 'scroll'
+				} )
+				.appendTo( 'body' );
+
+			// Make sure this doesn't apply on Macs with 0 width scrollbars
+			_firefoxScroll = (
+				test[0].clientWidth === test[0].offsetWidth && this._fnDTOverflow().bar !== 0
+			);
+
+			test.remove();
+		}
+
+		return _firefoxScroll;
+	}
+} );
+
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * Statics
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+/**
+ * FixedColumns default settings for initialisation
+ *  @name FixedColumns.defaults
+ *  @namespace
+ *  @static
+ */
+FixedColumns.defaults = /** @lends FixedColumns.defaults */{
+	/**
+	 * Number of left hand columns to fix in position
+	 *  @type     int
+	 *  @default  1
+	 *  @static
+	 *  @example
+	 *      var  = $('#example').dataTable( {
+	 *          "scrollX": "100%"
+	 *      } );
+	 *      new $.fn.dataTable.fixedColumns( table, {
+	 *          "leftColumns": 2
+	 *      } );
+	 */
+	"iLeftColumns": 1,
+
+	/**
+	 * Number of right hand columns to fix in position
+	 *  @type     int
+	 *  @default  0
+	 *  @static
+	 *  @example
+	 *      var table = $('#example').dataTable( {
+	 *          "scrollX": "100%"
+	 *      } );
+	 *      new $.fn.dataTable.fixedColumns( table, {
+	 *          "rightColumns": 1
+	 *      } );
+	 */
+	"iRightColumns": 0,
+
+	/**
+	 * Draw callback function which is called when FixedColumns has redrawn the fixed assets
+	 *  @type     function(object, object):void
+	 *  @default  null
+	 *  @static
+	 *  @example
+	 *      var table = $('#example').dataTable( {
+	 *          "scrollX": "100%"
+	 *      } );
+	 *      new $.fn.dataTable.fixedColumns( table, {
+	 *          "drawCallback": function () {
+	 *	            alert( "FixedColumns redraw" );
+	 *	        }
+	 *      } );
+	 */
+	"fnDrawCallback": null,
+
+	/**
+	 * Height matching algorthim to use. This can be "none" which will result in no height
+	 * matching being applied by FixedColumns (height matching could be forced by CSS in this
+	 * case), "semiauto" whereby the height calculation will be performed once, and the result
+	 * cached to be used again (fnRecalculateHeight can be used to force recalculation), or
+	 * "auto" when height matching is performed on every draw (slowest but must accurate)
+	 *  @type     string
+	 *  @default  semiauto
+	 *  @static
+	 *  @example
+	 *      var table = $('#example').dataTable( {
+	 *          "scrollX": "100%"
+	 *      } );
+	 *      new $.fn.dataTable.fixedColumns( table, {
+	 *          "heightMatch": "auto"
+	 *      } );
+	 */
+	"sHeightMatch": "semiauto"
+};
+
+
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * Constants
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+/**
+ * FixedColumns version
+ *  @name      FixedColumns.version
+ *  @type      String
+ *  @default   See code
+ *  @static
+ */
+FixedColumns.version = "3.3.1";
+
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * DataTables API integration
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+DataTable.Api.register( 'fixedColumns()', function () {
+	return this;
+} );
+
+DataTable.Api.register( 'fixedColumns().update()', function () {
+	return this.iterator( 'table', function ( ctx ) {
+		if ( ctx._oFixedColumns ) {
+			ctx._oFixedColumns.fnUpdate();
+		}
+	} );
+} );
+
+DataTable.Api.register( 'fixedColumns().relayout()', function () {
+	return this.iterator( 'table', function ( ctx ) {
+		if ( ctx._oFixedColumns ) {
+			ctx._oFixedColumns.fnRedrawLayout();
+		}
+	} );
+} );
+
+DataTable.Api.register( 'rows().recalcHeight()', function () {
+	return this.iterator( 'row', function ( ctx, idx ) {
+		if ( ctx._oFixedColumns ) {
+			ctx._oFixedColumns.fnRecalculateHeight( this.row(idx).node() );
+		}
+	} );
+} );
+
+DataTable.Api.register( 'fixedColumns().rowIndex()', function ( row ) {
+	row = $(row);
+
+	return row.parents('.DTFC_Cloned').length ?
+		this.rows( { page: 'current' } ).indexes()[ row.index() ] :
+		this.row( row ).index();
+} );
+
+DataTable.Api.register( 'fixedColumns().cellIndex()', function ( cell ) {
+	cell = $(cell);
+
+	if ( cell.parents('.DTFC_Cloned').length ) {
+		var rowClonedIdx = cell.parent().index();
+		var rowIdx = this.rows( { page: 'current' } ).indexes()[ rowClonedIdx ];
+		var columnIdx;
+
+		if ( cell.parents('.DTFC_LeftWrapper').length ) {
+			columnIdx = cell.index();
+		}
+		else {
+			var columns = this.columns().flatten().length;
+			columnIdx = columns - this.context[0]._oFixedColumns.s.iRightColumns + cell.index();
+		}
+
+		return {
+			row: rowIdx,
+			column: this.column.index( 'toData', columnIdx ),
+			columnVisible: columnIdx
+		};
+	}
+	else {
+		return this.cell( cell ).index();
+	}
+} );
+
+DataTable.Api.registerPlural( 'cells().fixedNodes()', 'cell().fixedNode()', function () {
+	return this.iterator( 'cell', function ( settings, row, column ) {
+		return settings._oFixedColumns
+			? settings._oFixedColumns.fnToFixedNode( row, column )
+			: this.cell(row, column).node();
+	}, 1 );
+} );
+
+
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * Initialisation
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+// Attach a listener to the document which listens for DataTables initialisation
+// events so we can automatically initialise
+$(document).on( 'init.dt.fixedColumns', function (e, settings) {
+	if ( e.namespace !== 'dt' ) {
+		return;
+	}
+
+	var init = settings.oInit.fixedColumns;
+	var defaults = DataTable.defaults.fixedColumns;
+
+	if ( init || defaults ) {
+		var opts = $.extend( {}, init, defaults );
+
+		if ( init !== false ) {
+			new FixedColumns( settings, opts );
+		}
+	}
+} );
+
+
+
+// Make FixedColumns accessible from the DataTables instance
+$.fn.dataTable.FixedColumns = FixedColumns;
+$.fn.DataTable.FixedColumns = FixedColumns;
+
+return FixedColumns;
 }));
 
 

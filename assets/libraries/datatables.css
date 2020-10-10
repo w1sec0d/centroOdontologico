@@ -4,10 +4,10 @@
  *
  * To rebuild or modify this file with the latest versions of the included
  * software please visit:
- *   https://datatables.net/download/#dt/jszip-2.5.0/pdfmake-0.1.36/dt-1.10.22/b-1.6.4/b-html5-1.6.4/b-print-1.6.4/cr-1.5.2/fh-3.1.7/kt-2.5.3/r-2.2.6/rr-1.2.7
+ *   https://datatables.net/download/#dt/jszip-2.5.0/pdfmake-0.1.36/dt-1.10.22/b-1.6.5/b-colvis-1.6.5/b-flash-1.6.5/b-html5-1.6.5/b-print-1.6.5/cr-1.5.2/fc-3.3.1/fh-3.1.7/kt-2.5.3/r-2.2.6/rr-1.2.7
  *
  * Included libraries:
- *   JSZip 2.5.0, pdfmake 0.1.36, DataTables 1.10.22, Buttons 1.6.4, HTML5 export 1.6.4, Print view 1.6.4, ColReorder 1.5.2, FixedHeader 3.1.7, KeyTable 2.5.3, Responsive 2.2.6, RowReorder 1.2.7
+ *   JSZip 2.5.0, pdfmake 0.1.36, DataTables 1.10.22, Buttons 1.6.5, Column visibility 1.6.5, Flash export 1.6.5, HTML5 export 1.6.5, Print view 1.6.5, ColReorder 1.5.2, FixedColumns 3.3.1, FixedHeader 3.1.7, KeyTable 2.5.3, Responsive 2.2.6, RowReorder 1.2.7
  */
 
 /*
@@ -866,6 +866,30 @@ div.DTCR_pointer {
   width: 1px;
   background-color: #0259C4;
   z-index: 201;
+}
+
+
+table.DTFC_Cloned thead,
+table.DTFC_Cloned tfoot {
+  background-color: white;
+}
+
+div.DTFC_Blocker {
+  background-color: white;
+}
+
+div.DTFC_LeftWrapper table.dataTable,
+div.DTFC_RightWrapper table.dataTable {
+  margin-bottom: 0;
+  z-index: 2;
+}
+div.DTFC_LeftWrapper table.dataTable.no-footer,
+div.DTFC_RightWrapper table.dataTable.no-footer {
+  border-bottom: none;
+}
+
+table.dataTable.display tbody tr.DTFC_NoData {
+  background-color: transparent;
 }
 
 

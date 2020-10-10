@@ -2,31 +2,23 @@
 require 'header.php';
 require 'navbar.php';
 ?>
-<div class="container-fluid" id="crud-back">
-
-    <div class="row w-100 h-100 justify-content-center align-items-center">
-        <h1 class="crud-title">Gestión de usuarios</h1>
+<div class="container-fluid" id="container-modulo">
+    <div class="row justify-content-center align-items-center">
+        <h1 class="modulo-titulo">Gestión de usuarios</h1>
         <div class="table-responsive">
-            <table class="table table-striped table-hover table-condensed dt-responsive" id="tableUser" class="display">
+            <table class="table" id="tablaCrud">
                 <thead class="thead-dark">
                     <tr>
-                        <th scope="col">Identificación</th>
-                        <th scope="col">Nombre</th>
-                        <th scope="col">Apellido</th>
-                        <th scope="col">Correo</th>
-                        <th scope="col">Telefono</th>
-                        <th scope="col">Dirección</th>
-                        <th scope="col">Password</th>
-                        <th scope="col">Rol</th>
-                        <th scope="col">Estado</th>
-                        <th scope="col" class="bg-success">
-                            <a href="user-create.php">
-                                <span style="color: White;">
-                                    <i class="fas fa-plus-circle"></i>
-                                </span>
-                            </a>
-                        </th>
-                        <th scope="col" class="bg-success">Crear</th>
+                        <th>Acciones</th>
+                        <th>Identificación</th>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>Correo</th>
+                        <th>Telefono</th>
+                        <th>Dirección</th>
+                        <th>Password</th>
+                        <th>Rol</th>
+                        <th>Estado</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -37,32 +29,34 @@ require 'navbar.php';
 
                     while ($mostrar = mysqli_fetch_array($result)) {
                         ?>
-                        <tr>
-                            <td><?php echo $mostrar["idUsuario"] ?></td>
-                            <td><?php echo $mostrar["nombreUsuario"] ?></td>
-                            <td><?php echo $mostrar["apellidoUsuario"] ?></td>
-                            <td><?php echo $mostrar["correoUsuario"] ?></td>
-                            <td><?php echo $mostrar["telefonoUsuario"] ?></td>
-                            <td><?php echo $mostrar["direccionUsuario"] ?></td>
-                            <td><?php echo $mostrar["passwordUsuario"] ?></td>
-                            <td><?php echo $mostrar["rolUsuario"] ?></td>
-                            <td><?php echo $mostrar["estadoUsuario"] ? 'Activo' : 'Inactivo' ?></td>
-                            <td class="bg-info">
-                                <a href="user-update.php?rolUsuario=<?php echo $mostrar["rolUsuario"] ?>&action=3&estadoUsuario=<?php echo $mostrar["estadoUsuario"] == 1 ? true : "false" ?>&idUsuario=<?php echo $mostrar["idUsuario"] ?>&nombreUsuario=<?php echo $mostrar["nombreUsuario"] ?>&apellidoUsuario=<?php echo $mostrar["apellidoUsuario"] ?>&correoUsuario=<?php echo $mostrar["correoUsuario"] ?>&telefonoUsuario=<?php echo $mostrar["telefonoUsuario"] ?>&direccionUsuario=<?php echo $mostrar["direccionUsuario"] ?>&passwordUsuario=<?php echo $mostrar["passwordUsuario"] ?> ">
+                    <tr>
+                        <td>
+                            <div class="btn-group">
+                                <a href="user-update.php?rolUsuario=<?php echo $mostrar["rolUsuario"] ?>&action=3&estadoUsuario=<?php echo $mostrar["estadoUsuario"] == 1 ? true : "false" ?>&idUsuario=<?php echo $mostrar["idUsuario"] ?>&nombreUsuario=<?php echo $mostrar["nombreUsuario"] ?>&apellidoUsuario=<?php echo $mostrar["apellidoUsuario"] ?>&correoUsuario=<?php echo $mostrar["correoUsuario"] ?>&telefonoUsuario=<?php echo $mostrar["telefonoUsuario"] ?>&direccionUsuario=<?php echo $mostrar["direccionUsuario"] ?>&passwordUsuario=<?php echo $mostrar["passwordUsuario"] ?> "
+                                    id="boton-editar">
                                     <span style="color: White;">
-                                        <i class="fas fa-edit"></i>
+                                        <i class="fas fa-edit fa-fw"></i>
                                     </span>
                                 </a>
-                            </td>
-                            <td class="bg-danger">
-                                <a href="#" onclick="deleteConfirmation(<?php echo $mostrar['idUsuario'] ?>)">
+                                <a href="#" onclick="deleteConfirmation(<?php echo $mostrar['idUsuario'] ?>)"
+                                    id="boton-eliminar">
                                     <span style="color: White;">
-                                        <i class="fas fa-trash-alt"></i>
+                                        <i class="fas fa-trash-alt fa-fw"></i>
                                     </span>
                                 </a>
-                            </td>
+                            </div>
+                        </td>
+                        <td><?php echo $mostrar["idUsuario"] ?></td>
+                        <td><?php echo $mostrar["nombreUsuario"] ?></td>
+                        <td><?php echo $mostrar["apellidoUsuario"] ?></td>
+                        <td><?php echo $mostrar["correoUsuario"] ?></td>
+                        <td><?php echo $mostrar["telefonoUsuario"] ?></td>
+                        <td><?php echo $mostrar["direccionUsuario"] ?></td>
+                        <td><?php echo $mostrar["passwordUsuario"] ?></td>
+                        <td><?php echo $mostrar["rolUsuario"] ?></td>
+                        <td><?php echo $mostrar["estadoUsuario"] ? 'Activo' : 'Inactivo' ?></td>
 
-                        </tr>
+                    </tr>
                     <?php
                         if (isset($_REQUEST["delete"])) {
                             echo
@@ -84,12 +78,25 @@ require 'navbar.php';
             </table>
         </div>
     </div>
-
+    <footer class="bg-dark fixed-bottom">
+        <div class="row">
+            <div class="col">
+                <p>Copyright &copy; Sena 2019</p>
+            </div>
+            <div class="col">
+                <div>Icons made by <a href="https://www.flaticon.es/autores/freepik" title="Freepik">Freepik and <a
+                            href="https://www.flaticon.es/autores/monkik" title="monkik">monkik</a> </a> from <a
+                        href="https://www.flaticon.es/" title="Flaticon">www.flaticon.com</a> is licensed by <a
+                        href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0"
+                        target="_blank">CC 3.0 BY</a></div>
+            </div>
+        </div>
+    </footer>
 </div>
 
 <script>
-    $(document).ready(function() {
-        var spanishTable = {
+$(document).ready(function() {
+    var spanishTable = { // Variable que almacena la traduccion a español de la tabla
         "sProcessing": "Procesando...",
         "sLengthMenu": "Mostrar _MENU_ registros",
         "sZeroRecords": "No se encontraron resultados",
@@ -117,33 +124,37 @@ require 'navbar.php';
             "colvis": "Visibilidad"
         }
     }
-        $('#tableUser').DataTable({
-            "language": spanishTable,
-            colReorder: true,
-            responsive: "true",
-            dom: 'fBtp',  
-            buttons:[ 
-			{
-				extend:    'excelHtml5',
-				text:      '<i class="fas fa-file-excel"></i> ',
-				titleAttr: 'Exportar a Excel',
-				className: 'excel'
-			},
-			{
-				extend:    'pdfHtml5',
-				text:      '<i class="fas fa-file-pdf"></i> ',
-				titleAttr: 'Exportar a PDF',
-				className: 'btn btn-danger'
-			},
-			{
-				extend:    'print',
-				text:      '<i class="fas fa-print"></i>',
-				titleAttr: 'Imprimir',
-				className: 'btn btn-info'
-			},
-		    ]	       
-        });
-    
+
+    $('#tablaCrud').DataTable({
+        language: spanishTable, //establece el idioma
+        fixedHeader: true,
+        colReorder: true,
+        responsive: true,
+        "columnDefs": [{ // Hace que algunas columnas no sean ordenables
+            "orderable": false,
+            "targets": [0, 1]
+        }],
+        dom: 'fBtp', // Establece los elementos a mostrar en la tabla
+        buttons: [{
+                extend: 'excelHtml5',
+                text: '<i class="fas fa-file-excel"></i> Exportar Excel ',
+                titleAttr: 'Exportar a Excel',
+                className: 'excel'
+            },
+            {
+                extend: 'print',
+                text: '<i class="fas fa-print"></i> Imprimir',
+                titleAttr: 'Imprimir',
+                className: 'imprimir'
+            },
+            {
+                text: '<i class="fas fa-plus-circle"></i> Añadir Registro',
+                titleAttr: 'Crear registro',
+                className: 'crear'
+            }
+        ]
+    });
+
 
     function deleteConfirmation(id) {
         const swalWithBootstrapButtons = Swal.mixin({
@@ -177,18 +188,13 @@ require 'navbar.php';
             }
         })
     }
-    });
+
+    jQuery(".modulo-titulo").fitText(1, {
+        minFontSize: '30px',
+        maxFontSize: '70px'
+    })
+});
 </script>
-<footer class="sticky-bottom ">
-    <div class="row">
-        <div class="col">
-            <p>Copyright &copy; Sena 2019</p>
-        </div>
-        <div class="col">
-            <div>Icons made by <a href="https://www.flaticon.es/autores/freepik" title="Freepik">Freepik and <a href="https://www.flaticon.es/autores/monkik" title="monkik">monkik</a> </a> from <a href="https://www.flaticon.es/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
-        </div>
-    </div>
-</footer>
 </body>
 
 </html>
