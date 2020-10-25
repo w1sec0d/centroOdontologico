@@ -22,6 +22,19 @@ body {
     text-align: center;
 }
 
+
+/* Personaliza el scrollbar */
+
+body::-webkit-scrollbar {
+    width: 10px;
+    background: #F0F0F0;
+}
+
+body::-webkit-scrollbar-thumb {
+    background: #008dce79;
+    border-radius: 5px;
+}
+
 h1,
 h2,
 h3 {
@@ -33,9 +46,9 @@ h3 {
 /* Estilos de navbar */
 
 .navbar {
-    font-size: 0.8rem;
     font-weight: bold;
     padding: 0.5rem;
+    transition: top 0.5s;
 }
 
 .navbar-brand {
@@ -45,6 +58,19 @@ h3 {
 .navbar p {
     display: inline-block;
     font-size: 1vw;
+}
+
+.dropdown-menu {
+    background: #F8F9FA;
+}
+
+.dropdown-item:hover {
+    background: #e6e7e7;
+}
+
+.dropdown-item:active {
+    color: black;
+    background: #cbcccc;
 }
 
 #boton-cerrarSesion {
@@ -70,6 +96,9 @@ h3 {
     width: 100%;
     max-width: 150vh;
 }
+
+
+/* Estilos del texto del carousel*/
 
 .carousel-caption {
     background: rgba(255, 255, 255, 0.7);
@@ -164,6 +193,9 @@ h1 {
     width: 90%;
 }
 
+
+/* Estilos que hacen al mapa responsive */
+
 .mapa {
     overflow: hidden;
     padding-bottom: 56.25%;
@@ -192,6 +224,9 @@ h1 {
     font-size: 30px;
     margin-right: 2vw;
 }
+
+
+/* Da estilo a los botones de redes sociales */
 
 .fa {
     padding: 20px;
@@ -265,84 +300,136 @@ h1 {
 
 #container-modulo {
     min-height: 95vh;
-    background: url("../img/formBackground.jpg");
+    background: url("../img/fondo.jpg");
     background-repeat: no-repeat;
     background-size: cover;
 }
 
 .modulo-titulo {
-    margin-top: 5vh;
-    margin-bottom: 2vh;
     color: white;
     text-shadow: -1px 1px 2px #23430C, 1px 1px 2px #23430C, 1px -1px 0 #23430C, -1px -1px 0 #23430C;
     font-weight: bold;
     font-size: 4rem;
 }
 
+
+/* Estilos de las tablas */
+
+#row-tabla {
+    min-height: 500px;
+}
+
+#container-tabla {
+    padding: 10px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.7);
+    margin-bottom: 2vh;
+}
+
 .table-responsive {
     width: 90vw;
-    height: 60vh;
 }
 
-.table-responsive input {
-    background: white!important;
-}
-
-table {
-    background: rgba(255, 255, 255, 0.7);
+#tablaCrud tbody tr {
+    transition: background 0.5s;
 }
 
 #tablaCrud tbody tr:hover {
-    background-color: cadetblue;
-    cursor: pointer;
+    background-color: rgba(144, 198, 223, 0.747);
 }
 
-#tablaCrud tr:hover td.sorting_1 {
-    background-color: cadetblue;
-    cursor: pointer;
+.paginate-button:hover {
+    background-color: rgba(144, 198, 223, 0.747)!important;
 }
 
-#tablaCrud_paginate {
-    background: white;
+
+/* Estilo de los botones de las tablas */
+
+.boton {
+    font-weight: bold;
 }
 
-.excel {
+.boton-excel {
     background: #28A745!important;
     border: #28A745!important;
     color: white!important;
 }
 
-.imprimir {
+.boton-excel:hover {
+    background: #218538!important;
+    border: #218538!important;
+}
+
+.boton-imprimir {
     background: #fd7e14!important;
     border: #fd7e14!important;
     color: white!important;
 }
 
-.crear {
-    background: #007bff!important;
-    border: #007bff!important;
+.boton-imprimir:hover {
+    background: #c96310!important;
+    border: #c96310!important;
+}
+
+.boton-crear {
+    background: #17a2b8!important;
+    border: #17a2b8!important;
     color: white!important;
 }
 
-#boton-eliminar {
+.boton-crear:hover {
+    background: #106e7c!important;
+    border: #106e7c!important;
+}
+
+.boton-crear a {
+    color: white;
+    text-decoration: none;
+}
+
+.boton-recuperar {
+    background: #6f42c1!important;
+    border: #6f42c1!important;
+    color: white!important;
+}
+
+.boton-recuperar:hover {
+    background: #5d38a3!important;
+    border: #5d38a3!important;
+}
+
+.boton-recuperar a {
+    color: white;
+    text-decoration: none;
+}
+
+.boton-eliminar {
     border-radius: 0 5px 5px 0;
     background: #dc3545;
     padding: 5px;
 }
 
-#boton-editar {
+.boton-editar {
     border-radius: 5px 0 0 5px;
     background: #007bff;
     padding: 5px;
 }
 
+.swal2-confirm,
+.swal2-cancel {
+    margin: 5px;
+}
+
+
+/* Estilos footer */
+
 footer {
     padding: 5px;
+    color: white;
 }
 
 footer p {
     margin: 0;
-    color: white;
 }
 
 footer a:hover {

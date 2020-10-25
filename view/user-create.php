@@ -63,7 +63,11 @@ require_once 'navbar.php';
             <p>Copyright &copy; Sena 2019</p>
         </div>
         <div class="col">
-            <div>Icons made by <a href="https://www.flaticon.es/autores/freepik" title="Freepik">Freepik and <a href="https://www.flaticon.es/autores/monkik" title="monkik">monkik</a> </a> from <a href="https://www.flaticon.es/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
+            <div>Icons made by <a href="https://www.flaticon.es/autores/freepik" title="Freepik">Freepik and <a
+                        href="https://www.flaticon.es/autores/monkik" title="monkik">monkik</a> </a> from <a
+                    href="https://www.flaticon.es/" title="Flaticon">www.flaticon.com</a> is licensed by <a
+                    href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0"
+                    target="_blank">CC 3.0 BY</a></div>
         </div>
     </div>
 </footer>

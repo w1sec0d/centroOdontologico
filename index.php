@@ -34,8 +34,7 @@
         <div class="row">
             <nav class="navbar navbar-expand navbar-light bg-light sticky-top w-100">
                 <a class="navbar-brand">
-                    <img src="./assets/img/logoMarca.png" alt="Centro Odontológico Mundo Oral" width="100" height="30"
-                        loading="lazy">
+                    <img src="./assets/img/logoMarca.png" alt="Centro Odontológico Mundo Oral" width="100" height="30" loading="lazy">
                 </a>
                 <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapsableMenu">
                     <span class="navbar-toggler-icon"></span>
@@ -67,8 +66,7 @@
                             <h1 class="carousel-caption-resize1">Centro Odontológico Mundo Oral
                             </h1>
                             <p class="carousel-caption-resize2">Tu mejor experiencia en clínica dental</p>
-                            <a href="https://api.whatsapp.com/send?phone=0573112180112" class="btn btn-success"
-                                id="boton-whatsapp">
+                            <a href="https://api.whatsapp.com/send?phone=0573112180112" class="btn btn-success" id="boton-whatsapp">
                                 <i class="fab fa-whatsapp"></i>
                                 ¡Escríbenos y agenda tu cita!
                             </a>
@@ -99,8 +97,7 @@
                         <img class="d-block w-100" src="./assets/img/consultorio4.png">
                         <div class="carousel-caption">
                             <h1 class="carousel-caption-resize3">¡No esperes más!</h1>
-                            <a href="https://api.whatsapp.com/send?phone=0573112180112" class="btn btn-success"
-                                id="boton-whatsapp">
+                            <a href="https://api.whatsapp.com/send?phone=0573112180112" class="btn btn-success" id="boton-whatsapp">
                                 <i class="fab fa-whatsapp"></i>
                                 ¡Escríbenos y agenda tu cita!
                             </a>
@@ -194,10 +191,7 @@
                             Nuestra Ubicación
                         </h1>
                         <div class="mapa">
-                            <iframe
-                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3976.8420902200896!2d-74.17204138589855!3d4.622246643621478!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e3f9ff830f0b35f%3A0xecf906ecf70f72e3!2sCentro%20Odontologico%20Mundo%20Oral!5e0!3m2!1sen!2sco!4v1602031475425!5m2!1sen!2sco"
-                                width="600" height="450" frameborder="0" style="border:0;" allowfullscreen=""
-                                aria-hidden="false" tabindex="0"></iframe>
+                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3976.8420902200896!2d-74.17204138589855!3d4.622246643621478!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e3f9ff830f0b35f%3A0xecf906ecf70f72e3!2sCentro%20Odontologico%20Mundo%20Oral!5e0!3m2!1sen!2sco!4v1602031475425!5m2!1sen!2sco" width="600" height="450" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
                         </div>
                     </div>
                 </div>
@@ -208,9 +202,8 @@
                 <i class="fas fa-shoe-prints"></i>
                 ¡Siguenos!
             </h1>
-            <br style="">
-            <a href="https://www.facebook.com/Centro-odontologico-mundo-oral-1400646953307029" class="fa fa-facebook"
-                target="_BLANK"></a>
+            <br>
+            <a href="https://www.facebook.com/Centro-odontologico-mundo-oral-1400646953307029" class="fa fa-facebook" target="_BLANK"></a>
             <a href="https://www.instagram.com/dradianahermida/" class="fa fa-instagram" target="_BLANK"></a>
         </div>
         <footer class="row align-items-center justify-content-center text-center bg-dark">
@@ -220,42 +213,41 @@
             </div>
             <div class="col">
                 <p>
-                    Imágenes y recursos visuales creados por <a href="https://www.freepik.es/"
-                        target="_BLANK">www.freepik.es</a>
+                    Imágenes y recursos visuales creados por <a href="https://www.freepik.es/" target="_BLANK">www.freepik.es</a>
                 </p>
             </div>
         </footer>
     </div>
     <script>
-    window.onload = function() { //Cuando el documento carga, se ejecuta el código
-        function resizeText() {
-            jQuery(".carousel-caption-resize1").fitText(1.2);
-            jQuery(".carousel-caption-resize2").fitText(2);
-            jQuery(".carousel-caption-resize3").fitText(1.8);
-            jQuery(".carousel-caption-resize4").fitText(2.2);
-            jQuery(".resize1").fitText(2, {
-                minFontSize: '20px',
-                maxFontSize: '40px'
-            });
-            jQuery(".resize2").fitText(2, {
-                minFontSize: '20px',
-                maxFontSize: '30px'
-            });
-            jQuery(".resize3").fitText(3, {
-                minFontSize: '20px',
-                maxFontSize: '40px'
-            });
+        window.onload = function() { //Cuando el documento carga, se ejecuta el código
+            function resizeText() {
+                jQuery(".carousel-caption-resize1").fitText(1.2);
+                jQuery(".carousel-caption-resize2").fitText(2);
+                jQuery(".carousel-caption-resize3").fitText(1.8);
+                jQuery(".carousel-caption-resize4").fitText(2.2);
+                jQuery(".resize1").fitText(2, {
+                    minFontSize: '20px',
+                    maxFontSize: '40px'
+                });
+                jQuery(".resize2").fitText(2, {
+                    minFontSize: '20px',
+                    maxFontSize: '30px'
+                });
+                jQuery(".resize3").fitText(3, {
+                    minFontSize: '20px',
+                    maxFontSize: '40px'
+                });
 
-        }
+            }
 
-        resizeText();
-        $('.carousel').carousel({ //Establece cada cuando el carousel hace slide
-            interval: 5000
-        })
-        $('#carousel').on('slid.bs.carousel', function() { //Se ejecuta cada vez que se hace un slide
             resizeText();
-        })
-    }
+            $('.carousel').carousel({ //Establece cada cuando el carousel hace slide
+                interval: 5000
+            })
+            $('#carousel').on('slid.bs.carousel', function() { //Se ejecuta cada vez que se hace un slide
+                resizeText();
+            })
+        }
     </script>
 </body>
 

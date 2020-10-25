@@ -1,14 +1,8 @@
-<?php
-session_start();
-?>
-
-<nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top w-100">
+<nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top w-100" id="navbar">
     <a class="navbar-brand" href="#">
-        <img src="../assets/img/logoMarca.png" width="100" height="30" alt="Centro Odontológico Mundo Oral"
-            loading="lazy">
+        <img src="../assets/img/logoMarca.png" width="100" height="30" alt="Centro Odontológico Mundo Oral" loading="lazy">
     </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapsableMenu"
-        aria-controls="navbarCollapsableMenu" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapsableMenu" aria-controls="navbarCollapsableMenu" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
 
@@ -21,25 +15,25 @@ session_start();
                 </a>
             </li>
             <?php
-                if ($_SESSION["rolUsuarioNavegando"] == 1 or $_SESSION["rolUsuarioNavegando"] == 0) {       //Dependiendo del rol, se muestran ciertos permisos
-                    echo
+            if ($_SESSION["rolUsuarioNavegando"] == 1 or $_SESSION["rolUsuarioNavegando"] == 0) {       //Dependiendo del rol, se muestran ciertos permisos
+                echo
                     "
                     <li class='nav-item dropdown d-flex align-items-center'>
                         <a class='nav-link dropdown-toggle' href='#' id='navbarDropdown' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
                         <i class='fas fa-users fa-fw'></i>Usuarios
                         </a>
                         <div class='dropdown-menu' aria-labelledby='navbarDropdown'>
-                            <a class='dropdown-item' href='./user-crud.php'>Gestión de Usuarios</a>
+                            <a class='dropdown-item' href='./crud.php'>Gestión de Usuarios</a>
                             <div class='dropdown-divider'></div>
                             <a class='dropdown-item' href='./user-backup.php'>Recuperar Usuarios</a>
                         </div>
                     </li>
                     ";
-                };
+            };
 
-                if ($_SESSION["rolUsuarioNavegando"] == 2 or $_SESSION["rolUsuarioNavegando"] == 0) {
-                    echo "<li class='nav-item d-flex align-items-center' id='doctor'><a class='nav-link' href='gestionar-cita-medico.php'><i class='fas fa-book fa-fw'></i> Agenda Médica </a></li>";
-                };
+            if ($_SESSION["rolUsuarioNavegando"] == 2 or $_SESSION["rolUsuarioNavegando"] == 0) {
+                echo "<li class='nav-item d-flex align-items-center' id='doctor'><a class='nav-link' href='gestionar-cita-medico.php'><i class='fas fa-book fa-fw'></i> Agenda Médica </a></li>";
+            };
             ?>
 
             <li class='nav-item d-flex align-items-center'>
@@ -60,7 +54,7 @@ session_start();
             </li>
             <?php
             if ($_SESSION["rolUsuarioNavegando"] == 1 or $_SESSION["rolUsuarioNavegando"] == 0) {
-                echo("<li class='nav-item dropdown d-flex align-items-center' id='reports'><a class='nav-link dropdown-toggle' href='#' id='navbarDropdownMenuLink' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'><i class='fas fa-chart-bar fa-fw'></i> Reportes </a><div class='dropdown-menu' aria-labelledby='navbarDropdownMenuLink'><a class='dropdown-item' href='#'>Citas por médico</a><a class='dropdown-item' href='#'>Asistencia pacientes</a><a class='dropdown-item' href='#'>Historia Clínica</a><a class='dropdown-item' href='#'>Estado de Citas</a></div></li>");
+                echo ("<li class='nav-item dropdown d-flex align-items-center' id='reports'><a class='nav-link dropdown-toggle' href='#' id='navbarDropdownMenuLink' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'><i class='fas fa-chart-bar fa-fw'></i> Reportes </a><div class='dropdown-menu' aria-labelledby='navbarDropdownMenuLink'><a class='dropdown-item' href='#'>Citas por médico</a><a class='dropdown-item' href='#'>Asistencia pacientes</a><a class='dropdown-item' href='#'>Historia Clínica</a><a class='dropdown-item' href='#'>Estado de Citas</a></div></li>");
             };
             ?>
             <li class='nav-item d-flex align-items-center' id="boton-cerrarSesion">
