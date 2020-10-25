@@ -23,16 +23,28 @@
                         <i class='fas fa-users fa-fw'></i>Usuarios
                         </a>
                         <div class='dropdown-menu' aria-labelledby='navbarDropdown'>
-                            <a class='dropdown-item' href='./crud.php'>Gestión de Usuarios</a>
+                            <a class='dropdown-item' href='./crud.php?tablaCrud=0'>Gestión de Usuarios</a>
                             <div class='dropdown-divider'></div>
-                            <a class='dropdown-item' href='./user-backup.php'>Recuperar Usuarios</a>
+                            <a class='dropdown-item' href='./recuperar.php?tablaCrud=0'>Recuperar Usuarios</a>
                         </div>
                     </li>
                     ";
             };
 
             if ($_SESSION["rolUsuarioNavegando"] == 2 or $_SESSION["rolUsuarioNavegando"] == 0) {
-                echo "<li class='nav-item d-flex align-items-center' id='doctor'><a class='nav-link' href='gestionar-cita-medico.php'><i class='fas fa-book fa-fw'></i> Agenda Médica </a></li>";
+                echo
+                    "
+                <li class='nav-item dropdown d-flex align-items-center'>
+                    <a class='nav-link dropdown-toggle' href='#' id='navbarDropdown' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
+                    <i class='fas fa-book fa-fw'></i>Agenda médica
+                    </a>
+                    <div class='dropdown-menu' aria-labelledby='navbarDropdown'>
+                        <a class='dropdown-item' href='./crud.php?tablaCrud=1'>Gestión de agenda</a>
+                        <div class='dropdown-divider'></div>
+                        <a class='dropdown-item' href='./recuperar.php?tablaCrud=1'>Recuperar agenda</a>
+                    </div>
+                </li>
+                ";
             };
             ?>
 

@@ -517,10 +517,10 @@ SELECT fechaAgenda as Fecha, horaAgenda as Hora, consultorio AS Consultorio FROM
 
 SELECT * FROM VISTA_MEDICO_215478365;
 
--- CREATE OR REPLACE VIEW AGENDA_MEDICA AS
-SELECT * FROM AGENDA INNER JOIN PACIENTE ON AGENDA.idPacienteFK = PACIENTE.idPaciente;
-SELECT idAgenda, fechaAgenda, horaAgenda, consultorio, idPaciente, nombrePaciente, idMedico, nombreMedico 
-FROM (SELECT A.idAgenda, A.fechaAgenda,A.horaAgenda,A.consultorio,P.idPaciente,CONCAT(P.nombrePaciente," ",P.apellidoPaciente) AS nombrePaciente, idMedicoFK FROM AGENDA as A LEFT JOIN PACIENTE as P ON A.idPacienteFK = P.idPaciente) AS AGENDA_PACIENTE INNER JOIN (SELECT idMedico,CONCAT(nombreMedico, " ",apellidoMedico) as "nombreMedico") AS MEDICO ON AGENDA_PACIENTE.idMedicoFK = MEDICO.idMedico;
+CREATE OR REPLACE VIEW AGENDA_MEDICA AS
+SELECT idAgenda, horaAgenda as "Fecha y hora agenda", consultorio, estadoAgenda, idPaciente, nombrePaciente, idMedico, nombreMedico FROM (SELECT A.idAgenda, A.fechaAgenda,A.horaAgenda,A.consultorio,A.estadoAgenda,P.idPaciente,CONCAT(P.nombrePaciente," ",P.apellidoPaciente) AS nombrePaciente, idMedicoFK FROM AGENDA as A LEFT JOIN PACIENTE as P ON A.idPacienteFK = P.idPaciente) AS AGENDA_PACIENTE INNER JOIN (SELECT idMedico,CONCAT(nombreMedico, " ",apellidoMedico) as "nombreMedico" FROM MEDICO) AS MEDICO ON AGENDA_PACIENTE.idMedicoFK = MEDICO.idMedico;
+
+SELECT * FROM AGENDA_MEDICA WHERE estadoAgenda = true;
 -- Procedimientos almacenados
 
 -- REGISTRAR USUARIO

@@ -1,6 +1,27 @@
 <?php
 session_start();
 require_once 'header.php';
+
+switch ($_REQUEST["tablaCrud"]) {
+    case 0:
+        $gestion = "usuarios";
+        break;
+    case 1:
+        $gestion = "agenda médica";
+        break;
+    case 2:
+        $gestion = "citas";
+        break;
+    case 3:
+        $gestion = "historia clínica";
+        break;
+    case 4:
+        $gestion = "exámenes";
+        break;
+    case 5:
+        $gestion = "reportes";
+        break;
+}
 ?>
 <div class="container-fluid" id="container-modulo">
     <input type="number" value="<?php echo $_REQUEST["tablaCrud"] ?>" id="idTablaCrud" style="display: none;"> <!-- Contiene el numero de tablaCrud para poder cargarlo en javascript -->
@@ -58,20 +79,6 @@ require_once 'header.php';
                                 <td><?php echo $mostrar["estadoUsuario"] ? 'Activo' : 'Inactivo' ?></td>
                             </tr>
                         <?php
-                            if (isset($_REQUEST["recuperado"])) {
-                                echo
-                                    "
-                                    <script>
-                                    Swal.fire({
-                                        icon: 'info',
-                                        title: 'Usuario recuperado Correctamente',
-                                        html: 'Puedes ' +
-                                        '<a href=\"./crud.php\">ir al módulo gestión de usuarios</a>' +
-                                        ' para editar el usuario'
-                                    })
-                                    </script>
-                                    ";
-                            }
                         }
                         ?>
                     </tbody>
@@ -80,6 +87,7 @@ require_once 'header.php';
         </div>
     </div>
     <script>
+        // Alerta para cuando se recupera un usuario
         <?php
         if (isset($_REQUEST["recuperado"])) {
         ?>
@@ -93,8 +101,6 @@ require_once 'header.php';
         <?php
         }
         ?>
-
-
         $(document).ready(function() {
             var tablaCrud = document.getElementById("idTablaCrud").value;
 

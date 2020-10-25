@@ -51,7 +51,7 @@ switch ($_REQUEST["tablaCrud"]) {
                                 <th>Nombre</th>
                                 <th>Apellido</th>
                                 <th>Correo</th>
-                                <th>Telefono</th>
+                                <th>Teléfono</th>
                                 <th>Dirección</th>
                                 <th>Contraseña</th>
                                 <th>Rol</th>
@@ -99,8 +99,7 @@ switch ($_REQUEST["tablaCrud"]) {
                             <tr>
                                 <th>Acciones</th>
                                 <th>Número de agenda</th>
-                                <th>Fecha</th>
-                                <th>Hora</th>
+                                <th>Fecha y hora</th>
                                 <th>Consultorio</th>
                                 <th>Medico</th>
                                 <th>Paciente</th>
@@ -118,7 +117,7 @@ switch ($_REQUEST["tablaCrud"]) {
                                 <tr>
                                     <td>
                                         <div class="btn-group">
-                                            <a href="crud.php?editar=<?php echo $arrayConsulta["idAgenda"] ?>" class="boton-editar">
+                                            <a href="crud.php?editar=<?php echo $arrayConsulta["idAgenda"] ?>&tablaCrud=1" class="boton-editar">
                                                 <span style="color: White;">
                                                     <i class="fas fa-edit fa-fw"></i>
                                                 </span>
@@ -130,14 +129,13 @@ switch ($_REQUEST["tablaCrud"]) {
                                             </a>
                                         </div>
                                     </td>
-                                    <td><?php echo $arrayConsulta["idAgenda "] ?></td>
-                                    <td><?php echo $arrayConsulta["nombreUsuario"] ?></td>
-                                    <td><?php echo $arrayConsulta["apellidoUsuario"] ?></td>
-                                    <td><?php echo $arrayConsulta["correoUsuario"] ?></td>
-                                    <td><?php echo $arrayConsulta["telefonoUsuario"] ?></td>
-                                    <td><?php echo $arrayConsulta["direccionUsuario"] ?></td>
-                                    <td><?php echo $arrayConsulta["passwordUsuario"] ?></td>
-                                    <td><?php echo $arrayConsulta["rolUsuario"] ?></td>
+                                    <td><?php echo $arrayConsulta["idAgenda"] ?></td>
+                                    <td><?php echo $arrayConsulta["Fecha y hora agenda"] ?></td>
+                                    <td><?php echo $arrayConsulta["consultorio"] ?></td>
+                                    <td><?php echo $arrayConsulta["nombreMedico"] ?></td>
+                                    <td><?php echo $arrayConsulta["nombrePaciente"] ?></td>
+                                    <td><?php echo $arrayConsulta["idMedico"] ?></td>
+                                    <td><?php echo $arrayConsulta["idPaciente"] ?></td>
                                 </tr>
                             <?php
                             }
@@ -202,7 +200,7 @@ switch ($_REQUEST["tablaCrud"]) {
             reverseButtons: true
         }).then((result) => {
             if (result.value) {
-                window.location.href = "../controller/controller.php?eliminar=true&tablaCrud=<?php echo $_REQUEST["tablaCrud"] ?>&idUsuario=" + id;
+                window.location.href = "../controller/controller.php?eliminar=true&tablaCrud=<?php echo $_REQUEST["tablaCrud"] ?>&id=" + id;
             } else if (
                 result.dismiss === Swal.DismissReason.cancel
             ) {
@@ -252,7 +250,7 @@ switch ($_REQUEST["tablaCrud"]) {
             icon: 'info',
             title: 'Usuario eliminado Correctamente',
             html: 'Puedes ' +
-                '<a href=\"./recuperar.php\">ir al módulo recuperar usuarios</a>' +
+                '<a href=\"./recuperar.php?tablaCrud=0\">ir al módulo recuperar usuarios</a>' +
                 ' para recuperar el usuario'
         });
     <?php
@@ -344,7 +342,7 @@ switch ($_REQUEST["tablaCrud"]) {
                         '       <input type=\'email\' name=\'correoUsuario\' class=\'form-control\' required>' +
                         '   </div>' +
                         '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
-                        '       <label for=\'telefonoUsuario\'>Telefono</label>' +
+                        '       <label for=\'telefonoUsuario\'>Teléfono</label>' +
                         '       <input type=\'number\' name=\'telefonoUsuario\' class=\'form-control\' required>' +
                         '   </div>' +
                         '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
@@ -431,7 +429,7 @@ switch ($_REQUEST["tablaCrud"]) {
                         '       <input type=\'email\' name=\'correoUsuario\' class=\'form-control\' value=\'<?php echo $correoUsuario ?>\' required>' +
                         '   </div>' +
                         '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
-                        '       <label for=\'telefonoUsuario\'>Telefono</label>' +
+                        '       <label for=\'telefonoUsuario\'>Teléfono</label>' +
                         '       <input type=\'number\' name=\'telefonoUsuario\' class=\'form-control\' value=\'<?php echo $telefonoUsuario ?>\' required>' +
                         '   </div>' +
                         '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
@@ -452,17 +450,54 @@ switch ($_REQUEST["tablaCrud"]) {
                         '       <input type=\'text\' name=\'passwordUsuario\' class=\'form-control\' value=\'<?php echo $passwordUsuario ?>\' required>' +
                         '   </div>' +
                         '   <div class=\'col-sm-12 col-md-6 form-group\'>' +
-                        '       <input type=\'submit\' name=\'actualizar\' class=\'btn btn-primary btn-lg w-100\' value=\'Editar Usuario\'>' +
+                        '       <input type=\'submit\' name=\'actualizar\' class=\'btn btn-primary btn-lg w-100\' value=\'Guardar Cambios\'>' +
                         '   </div>' +
                         '</div>' +
                         '</form>'
                 });
-                <?php
-                break;
-                ?>
-
-    <?php
+            <?php
             }
+            break;
+        case 1:
+            ?>
+
+            function crear() {
+                Swal.fire({
+                    width: '85%',
+                    title: '👩‍⚕️ Crear Agenda Médica',
+                    showCloseButton: true,
+                    allowOutsideClick: false,
+                    showConfirmButton: false,
+                    html: '<form action=\'../controller/controller.php?tablaCrud=\'<?php echo $_REQUEST["tablaCrud"] ?>\' method=\'POST\'>' +
+                        '<div class=\'row align-items-center justify-content-center\'>' +
+                        '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
+                        '       <label for=\'fecha\'>Fecha Agenda Médica</label>' +
+                        '       <input type=\'date\' name=\'fecha\' class=\'form-control\' required/>' +
+                        '   </div>' +
+                        '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
+                        '       <label for=\'hora\'>Hora Agenda Médica</label>' +
+                        '       <input type=\'time\' name=\'hora\' class=\'form-control\'required>' +
+                        '   </div>' +
+                        '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
+                        '       <label for=\'consultorio\'>Número de consultorio</label>' +
+                        '       <input type=\'number\' name=\'consultorio\' class=\'form-control\' min="1" required>' +
+                        '   </div>' +
+                        '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
+                        '       <label for=\'idDoctor\'>Número de documento doctor</label>' +
+                        '       <input type=\'number\' name=\'idDoctor\' class=\'form-control\' min="1" required>' +
+                        '   </div>' +
+                        '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
+                        '       <label for=\'idPaciente\'>Número de documento paciente</label>' +
+                        '       <input type=\'number\' name=\'idPaciente\' class=\'form-control\' min="1" required>' +
+                        '   </div>' +
+                        '   <div class=\'col-sm-12 col-md-6 form-group\'>' +
+                        '       <input type=\'submit\' name=\'crear\' class=\'btn btn-primary btn-lg w-100\' value=\'Crear Agenda\'>' +
+                        '   </div>' +
+                        '</div>' +
+                        '</form>'
+                });
+            }
+    <?php
     }
     ?>
 

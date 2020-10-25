@@ -57,62 +57,66 @@ if (isset($_REQUEST["login"])) {        //En caso de hacer login
     }
 }
 if (isset($_REQUEST["tablaCrud"])) {
-    if (isset($_REQUEST["crear"])) {  //En caso de querer crear
-        $idUsuario = $_REQUEST["idUsuario"];
-        $nombreUsuario = $_REQUEST["nombreUsuario"];
-        $apellidoUsuario = $_REQUEST["apellidoUsuario"];
-        $correoUsuario = $_REQUEST["correoUsuario"];
-        $telefonoUsuario = $_REQUEST["telefonoUsuario"];
-        $direccionUsuario = $_REQUEST["direccionUsuario"];
-        $passwordUsuario = $_REQUEST["passwordUsuario"];
-        $rolUsuario = $_REQUEST["rolUsuario"];
+    switch ($_REQUEST["tablaCrud"]) {
+        case 0:
+            if (isset($_REQUEST["crear"])) {  //En caso de querer crear
+                $idUsuario = $_REQUEST["idUsuario"];
+                $nombreUsuario = $_REQUEST["nombreUsuario"];
+                $apellidoUsuario = $_REQUEST["apellidoUsuario"];
+                $correoUsuario = $_REQUEST["correoUsuario"];
+                $telefonoUsuario = $_REQUEST["telefonoUsuario"];
+                $direccionUsuario = $_REQUEST["direccionUsuario"];
+                $passwordUsuario = $_REQUEST["passwordUsuario"];
+                $rolUsuario = $_REQUEST["rolUsuario"];
 
-        $insertUsuario = "INSERT INTO USUARIO(idUsuario, nombreUsuario, apellidoUsuario, correoUsuario, telefonoUsuario, direccionUsuario, passwordUsuario, rolUsuario, estadoUsuario) VALUES ('$idUsuario', '$nombreUsuario', '$apellidoUsuario', '$correoUsuario', '$telefonoUsuario', '$direccionUsuario', '$passwordUsuario', '$rolUsuario', true);";
-        $resultadoInsertUsuario = mysqli_query($conection, $insertUsuario);
-        if ($resultadoInsertUsuario) {
-            header("Location: ../view/crud.php?registroCorrecto=1&tablaCrud=0");
-        } else {
-            header("Location: ../view/crud.php?registroCorrecto=0&tablaCrud=0");
-        }
-    } elseif (isset($_REQUEST["actualizar"])) { //En caso de actualizar
-        $idUsuario = $_REQUEST["idUsuario"];
-        $nombreUsuario = $_REQUEST["nombreUsuario"];
-        $apellidoUsuario = $_REQUEST["apellidoUsuario"];
-        $correoUsuario = $_REQUEST["correoUsuario"];
-        $telefonoUsuario = $_REQUEST["telefonoUsuario"];
-        $direccionUsuario = $_REQUEST["direccionUsuario"];
-        $passwordUsuario = $_REQUEST["passwordUsuario"];
-        $rolUsuario = $_REQUEST["rolUsuario"];
+                $insertUsuario = "INSERT INTO USUARIO(idUsuario, nombreUsuario, apellidoUsuario, correoUsuario, telefonoUsuario, direccionUsuario, passwordUsuario, rolUsuario, estadoUsuario) VALUES ('$idUsuario', '$nombreUsuario', '$apellidoUsuario', '$correoUsuario', '$telefonoUsuario', '$direccionUsuario', '$passwordUsuario', '$rolUsuario', true);";
+                $resultadoInsertUsuario = mysqli_query($conection, $insertUsuario);
+                if ($resultadoInsertUsuario) {
+                    header("Location: ../view/crud.php?registroCorrecto=1&tablaCrud=0");
+                } else {
+                    header("Location: ../view/crud.php?registroCorrecto=0&tablaCrud=0");
+                }
+            } elseif (isset($_REQUEST["actualizar"])) { //En caso de actualizar
+                $idUsuario = $_REQUEST["idUsuario"];
+                $nombreUsuario = $_REQUEST["nombreUsuario"];
+                $apellidoUsuario = $_REQUEST["apellidoUsuario"];
+                $correoUsuario = $_REQUEST["correoUsuario"];
+                $telefonoUsuario = $_REQUEST["telefonoUsuario"];
+                $direccionUsuario = $_REQUEST["direccionUsuario"];
+                $passwordUsuario = $_REQUEST["passwordUsuario"];
+                $rolUsuario = $_REQUEST["rolUsuario"];
 
-        $updateUsuario = "UPDATE USUARIO SET nombreUsuario = '$nombreUsuario', apellidoUsuario = '$apellidoUsuario', correoUsuario = '$correoUsuario', telefonoUsuario = '$telefonoUsuario', direccionUsuario = '$direccionUsuario',passwordUsuario = '$passwordUsuario', rolUsuario = '$rolUsuario' WHERE idUsuario = '$idUsuario'";
-        $resultadoUpdateUsuario = mysqli_query($conection, $updateUsuario);
+                $updateUsuario = "UPDATE USUARIO SET nombreUsuario = '$nombreUsuario', apellidoUsuario = '$apellidoUsuario', correoUsuario = '$correoUsuario', telefonoUsuario = '$telefonoUsuario', direccionUsuario = '$direccionUsuario',passwordUsuario = '$passwordUsuario', rolUsuario = '$rolUsuario' WHERE idUsuario = '$idUsuario'";
+                $resultadoUpdateUsuario = mysqli_query($conection, $updateUsuario);
 
-        if ($resultadoUpdateUsuario) {
-            header("Location: ../view/crud.php?actualizacionCorrecta=1&tablaCrud=0");
-        }
-    } elseif (isset($_REQUEST["eliminar"])) {       //En caso de Eliminar
-        $idUsuario = $_REQUEST["idUsuario"];
-        $consultaInactivacion = "UPDATE USUARIO SET estadoUsuario = false WHERE idUsuario = $idUsuario";
-        $resultadoConsultaInactivacion = mysqli_query($conection, $consultaInactivacion);
-        if ($resultadoConsultaInactivacion) {
-            header("Location: ../view/crud.php?eliminacionCorrecta=true&tablaCrud=0");
-        } else {
-            echo $consultaInactivacion;
-        }
-    } elseif (isset($_REQUEST["recuperar"])) {
-        $idUsuario = $_REQUEST["idUsuario"];
+                if ($resultadoUpdateUsuario) {
+                    header("Location: ../view/crud.php?actualizacionCorrecta=1&tablaCrud=0");
+                }
+            } elseif (isset($_REQUEST["eliminar"])) {       //En caso de Eliminar
+                $idUsuario = $_REQUEST["id"];
+                $consultaInactivacion = "UPDATE USUARIO SET estadoUsuario = false WHERE idUsuario = $idUsuario";
+                $resultadoConsultaInactivacion = mysqli_query($conection, $consultaInactivacion);
+                if ($resultadoConsultaInactivacion) {
+                    header("Location: ../view/crud.php?eliminacionCorrecta=true&tablaCrud=0");
+                } else {
+                    echo $consultaInactivacion;
+                }
+            } elseif (isset($_REQUEST["recuperar"])) {
+                $idUsuario = $_REQUEST["idUsuario"];
 
-        $query = "UPDATE USUARIO SET estadoUsuario = true WHERE idUsuario = $idUsuario";
-        $result = mysqli_query($conection, $query);
+                $query = "UPDATE USUARIO SET estadoUsuario = true WHERE idUsuario = $idUsuario";
+                $result = mysqli_query($conection, $query);
 
-        if ($result) {
-            header("Location: ../view/recuperar.php?recuperado=true&tablaCrud=0");
-        } else {
-            echo "fail";
-        }
-    } elseif (isset($_REQUEST["logout"])) {
-        session_start();
-        session_destroy();
-        header("location:../index.php");
+                if ($result) {
+                    header("Location: ../view/recuperar.php?recuperado=true&tablaCrud=0");
+                } else {
+                    echo "fail";
+                }
+            }
+            break;
     }
+} elseif (isset($_REQUEST["logout"])) {
+    session_start();
+    session_destroy();
+    header("location:../index.php");
 }
