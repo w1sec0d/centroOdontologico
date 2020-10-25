@@ -97,7 +97,7 @@ if (isset($_REQUEST["tablaCrud"])) {
         if ($resultadoConsultaInactivacion) {
             header("Location: ../view/crud.php?eliminacionCorrecta=true&tablaCrud=0");
         } else {
-            echo ":(";
+            echo $consultaInactivacion;
         }
     } elseif (isset($_REQUEST["recuperar"])) {
         $idUsuario = $_REQUEST["idUsuario"];
@@ -105,7 +105,11 @@ if (isset($_REQUEST["tablaCrud"])) {
         $query = "UPDATE USUARIO SET estadoUsuario = true WHERE idUsuario = $idUsuario";
         $result = mysqli_query($conection, $query);
 
-        header("Location: ../view/recuperar.php?recuperado=true&tablaCrud=0");
+        if ($result) {
+            header("Location: ../view/recuperar.php?recuperado=true&tablaCrud=0");
+        } else {
+            echo "fail";
+        }
     } elseif (isset($_REQUEST["logout"])) {
         session_start();
         session_destroy();

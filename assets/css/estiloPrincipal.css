@@ -48,7 +48,7 @@ h3 {
 .navbar {
     font-weight: bold;
     padding: 0.5rem;
-    transition: top 0.5s;
+    transition: all 0.5s;
 }
 
 .navbar-brand {

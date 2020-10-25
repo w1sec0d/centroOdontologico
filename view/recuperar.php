@@ -3,6 +3,8 @@ session_start();
 require_once 'header.php';
 ?>
 <div class="container-fluid" id="container-modulo">
+    <input type="number" value="<?php echo $_REQUEST["tablaCrud"] ?>" id="idTablaCrud" style="display: none;"> <!-- Contiene el numero de tablaCrud para poder cargarlo en javascript -->
+
     <div class="row">
         <?php
         require_once "navbar.php";
@@ -39,7 +41,7 @@ require_once 'header.php';
                         ?>
                             <tr>
                                 <td class="bg-info">
-                                    <a href="#" onclick="confirmarRestauracion(<?php echo $mostrar['idUsuario'] ?>)">
+                                    <a href="#" onclick="confirmarRestauracion(<?php echo $mostrar['idUsuario'] ?>,<?php echo $_REQUEST['tablaCrud'] ?>)">
                                         <span style="color: White;">
                                             <i class="fas fa-trash-restore"></i>
                                         </span>
@@ -64,7 +66,7 @@ require_once 'header.php';
                                         icon: 'info',
                                         title: 'Usuario recuperado Correctamente',
                                         html: 'Puedes ' +
-                                        '<a href=\"./user-crud.php\">ir al módulo gestión de usuarios</a>' +
+                                        '<a href=\"./crud.php\">ir al módulo gestión de usuarios</a>' +
                                         ' para editar el usuario'
                                     })
                                     </script>
@@ -80,18 +82,22 @@ require_once 'header.php';
     <script>
         <?php
         if (isset($_REQUEST["recuperado"])) {
-            echo "
+        ?>
             Swal.fire({
                 icon: 'info',
                 title: 'Usuario recuperado Correctamente',
                 html: 'Puedes ' +
-                '<a href=\"./crud.php\">ir al módulo gestión de usuarios</a>' +
-                ' para editar el usuario'
+                    '<a href="./crud.php?tablaCrud=<?php echo $_REQUEST["tablaCrud"] ?>">ir al módulo gestión de usuarios</a>' +
+                    ' para editar el usuario'
             })
-            ";
+        <?php
         }
         ?>
+
+
         $(document).ready(function() {
+            var tablaCrud = document.getElementById("idTablaCrud").value;
+
             $('#tablaCrud').DataTable({
                 language: spanishTable,
                 fixedHeader: true,
@@ -128,7 +134,7 @@ require_once 'header.php';
             }
         }
 
-        function confirmarRestauracion(id) {
+        function confirmarRestauracion(id, tablaCrud) {
             const swalWithBootstrapButtons = Swal.mixin({
                 customClass: {
                     confirmButton: 'btn btn-success',
@@ -147,7 +153,7 @@ require_once 'header.php';
                 reverseButtons: true
             }).then((result) => {
                 if (result.value) {
-                    window.location.href = "../controller/controller.php?recuperar=true&idUsuario=" + id;
+                    window.location.href = "../controller/controller.php?recuperar=true&tablaCrud=" + tablaCrud + "&idUsuario=" + id;
                 } else if (
                     result.dismiss === Swal.DismissReason.cancel
                 ) {

@@ -72,7 +72,7 @@ switch ($_REQUEST["tablaCrud"]) {
                                                     <i class="fas fa-edit fa-fw"></i>
                                                 </span>
                                             </a>
-                                            <a href="#" onclick="confirmacionInactivar(<?php echo $arrayConsulta['idUsuario'] ?>)" class="boton-eliminar">
+                                            <a href="#" onclick="confirmacionInactivar(<?php echo $arrayConsulta['idUsuario'] ?>,<?php echo $_REQUEST['tablaCrud'] ?>)" class="boton-eliminar">
                                                 <span style="color: White;">
                                                     <i class="fas fa-trash-alt fa-fw"></i>
                                                 </span>
@@ -148,161 +148,335 @@ switch ($_REQUEST["tablaCrud"]) {
             </div>
         </div>
     </div>
-    <script src="../assets/js/app.js"></script>
+
     <?php
     require_once "./footer.php";
-    //Sección de alertas
-    if (isset($_REQUEST["registroCorrecto"])) {
-        if ($_REQUEST["registroCorrecto"]) {
-            echo "
-        <script type='text/javascript'>
+    ?>
+</div>
+<script>
+    var spanishTable = { // Variable que almacena la traduccion a español de la tabla
+        "sProcessing": "Procesando...",
+        "sLengthMenu": "Mostrar _MENU_ registros",
+        "sZeroRecords": "No se encontraron resultados",
+        "sEmptyTable": "Ningún dato disponible en esta tabla",
+        "sInfo": "Registros del _START_ al _END_ de un total de _TOTAL_ ",
+        "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+        "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+        "sInfoPostFix": "",
+        "sSearch": "Buscar:",
+        "sUrl": "",
+        "sInfoThousands": ",",
+        "sLoadingRecords": "Cargando...",
+        "oPaginate": {
+            "sFirst": "Primero",
+            "sLast": "Último",
+            "sNext": "Siguiente",
+            "sPrevious": "Anterior"
+        },
+        "oAria": {
+            "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+            "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+        },
+        "buttons": {
+            "copy": "Copiar",
+            "colvis": "Visibilidad"
+        }
+    }
+    // Alertas y confirmaciones
+    function confirmacionInactivar(id, tablaCrud) {
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+                confirmButton: 'btn btn-success',
+                cancelButton: 'btn btn-danger'
+            },
+            buttonsStyling: false
+        })
+
+        swalWithBootstrapButtons.fire({
+            title: '¿Estás seguro de eliminar el registro?',
+            text: "De todas formas, podrás recuperarlo en el módulo de recuperar <?php echo $gestion ?>",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Si, Eliminar Registro',
+            cancelButtonText: 'No, Cancelar',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.value) {
+                window.location.href = "../controller/controller.php?eliminar=true&tablaCrud=<?php echo $_REQUEST["tablaCrud"] ?>&idUsuario=" + id;
+            } else if (
+                result.dismiss === Swal.DismissReason.cancel
+            ) {
+                swalWithBootstrapButtons.fire(
+                    'Operación Cancelada',
+                    'El registro NO ha sido eliminado',
+                    'info'
+                )
+            }
+        })
+    }
+
+    <?php
+    if (isset($_REQUEST["actualizacionCorrecta"])) {
+    ?>
         Swal.fire({
             icon: 'success',
-            title: 'Usuario Registrado Correctamente',
+            title: 'Usuario actualizado correctamente',
+            showCloseButton: true,
             timer: 5000
-        }); 
-        </script>  
-        ";
-        } else {
-            echo "
-        <script type='text/javascript'>
+        });
+        <?php
+    }
+    if (isset($_REQUEST["registroCorrecto"])) {
+        if ($_REQUEST["registroCorrecto"]) {
+        ?>
+            Swal.fire({
+                icon: 'success',
+                title: 'Usuario Registrado Correctamente',
+                timer: 5000
+            });
+        <?php
+        }
+    }
+    if (isset($_REQUEST["registroIncorrecto"])) {
+        ?>
         Swal.fire({
             icon: 'error',
             title: 'Has intentado registrar un usuario existente',
             text: 'Si necesitas editar los datos de algún usuario, puedes hacerlo desde gestión de usuarios'
-        }); 
-        </script>  
-        ";
-        }
-    } else if (isset($_REQUEST["actualizacionCorrecta"])) {
-        echo ("
-        <script type='text/javascript'>
+        });
+    <?php
+    }
+    if (isset($_REQUEST["eliminacionCorrecta"])) {
+    ?>
         Swal.fire({
-            icon: 'success',
-            title: 'Usuario actualizado correctamente',
-            showCloseButton:true,
-            timer:5000
-        }); 
-        </script>   
-        ");
-    } else if (isset($_REQUEST["eliminacionCorrecta"])) {
-        echo "
-        <script>
-            Swal.fire({
-                icon: 'info',
-                title: 'Usuario eliminado Correctamente',
-                html: 'Puedes ' +
+            icon: 'info',
+            title: 'Usuario eliminado Correctamente',
+            html: 'Puedes ' +
                 '<a href=\"./recuperar.php\">ir al módulo recuperar usuarios</a>' +
                 ' para recuperar el usuario'
-            })
-        </script>
-        ";
-    }
-    if (isset($_REQUEST["tablaCrud"])) {
-        $tablaCrud = $_REQUEST["tablaCrud"];
-        switch ($_REQUEST["tablaCrud"]) {
-            case 0:
-                if (isset($_REQUEST["editar"])) {   //Si el usuario desea editar, se le muestra 
-                    $idUsuario = $_REQUEST["editar"];
-
-                    $consultaUsuario = "SELECT * FROM USUARIO WHERE idUsuario = $idUsuario";
-                    $resultadoConsultaUsuario = mysqli_query($conection, $consultaUsuario);
-                    $arrayConsultaUsuario = mysqli_fetch_array($resultadoConsultaUsuario);
-
-                    $nombreUsuario = $arrayConsultaUsuario["nombreUsuario"];
-                    $apellidoUsuario = $arrayConsultaUsuario["apellidoUsuario"];
-                    $correoUsuario = $arrayConsultaUsuario["correoUsuario"];
-                    $telefonoUsuario = $arrayConsultaUsuario["telefonoUsuario"];
-                    $direccionUsuario = $arrayConsultaUsuario["direccionUsuario"];
-                    $rolUsuario = $arrayConsultaUsuario["rolUsuario"];
-                    $estadoUsuario = $arrayConsultaUsuario["estadoUsuario"];
-                    $passwordUsuario = $arrayConsultaUsuario["passwordUsuario"];
-
-                    $administrador = "";         //Haran que una u otra opcion se seleccionen al editar
-                    $secretaria = "";
-                    $medico = "";
-                    $paciente = "";
-                    switch ($rolUsuario) {
-                        case 'Administrador':
-                            $administrador = "selected";
-                            break;
-
-                        case 'Secretaria':
-                            $secretaria = "selected";
-                            break;
-
-                        case 'Medico':
-                            $medico = "selected";
-                            break;
-                        case 'Paciente':
-                            $paciente = "selected";
-                            break;
-                    }
-
-                    echo "
-                    <script>
-                    Swal.fire({
-                        width: '85%',
-                        title: '✏️ Editar usuario con el número de identificación $idUsuario',
-                        showCloseButton: true,
-                        allowOutsideClick: false,
-                        showConfirmButton: false,
-                        html: '<form action=\'../controller/controller.php?tablaCrud=$tablaCrud\' method=\'POST\'>' +
-                            '<div class=\'row align-items-center justify-content-center\'>' +
-                            '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
-                            '       <input type=\'number\' name=\'idUsuario\' class=\'form-control\' value=\'$idUsuario\' style=\'display:none\'/>' +
-                            '       <label for=\'nombreUsuario\'>Nombre</label>' +
-                            '       <input type=\'text\' name=\'nombreUsuario\' class=\'form-control\' value=\'$nombreUsuario\' required/>' +
-                            '   </div>' +
-                            '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
-                            '       <label for=\'apellidoUsuario\'>Apellido</label>' +
-                            '       <input type=\'text\' name=\'apellidoUsuario\' class=\'form-control\' value=\'$apellidoUsuario\' required>' +
-                            '   </div>' +
-                            '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
-                            '       <label for=\'correoUsuario\'>Correo</label>' +
-                            '       <input type=\'email\' name=\'correoUsuario\' class=\'form-control\' value=\'$correoUsuario\' required>' +
-                            '   </div>' +
-                            '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
-                            '       <label for=\'telefonoUsuario\'>Telefono</label>' +
-                            '       <input type=\'number\' name=\'telefonoUsuario\' class=\'form-control\' value=\'$telefonoUsuario\' required>' +
-                            '   </div>' +
-                            '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
-                            '       <label for=\'direccionUsuario\'>Direccion</label>' +
-                            '       <input type=\'text\' name=\'direccionUsuario\' class=\'form-control\' value=\'$direccionUsuario\' required>' +
-                            '   </div>' +
-                            '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
-                            '       <label for=\'rolUsuario\'>Rol</label>' +
-                            '       <select name=\'rolUsuario\' class=\'form-control\' required>' +
-                            '           <option value=\'Administrador\' $administrador>Administrador</option>' +
-                            '           <option value=\'Secretaria\' $secretaria>Secretaria</option>' +
-                            '           <option value=\'Medico\' $medico>Medico</option>' +
-                            '           <option value=\'Paciente\' $paciente>Paciente</option>' +
-                            '       </select>' +
-                            '   </div>' +
-                            '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
-                            '       <label for=\'passwordUsuario\'>Contraseña</label>' +
-                            '       <input type=\'text\' name=\'passwordUsuario\' class=\'form-control\' value=\'$passwordUsuario\' required>' +
-                            '   </div>' +
-                            '   <div class=\'col-sm-12 col-md-6 form-group\'>' +
-                            '       <input type=\'submit\' name=\'actualizar\' class=\'btn btn-primary btn-lg w-100\' value=\'Editar Usuario\'>' +
-                            '   </div>' +
-                            '</div>' +
-                            '</form>'
-                    });
-                    </script>
-                    ";
-                }
-                break;
-
-            default:
-                # code...
-                break;
-        }
+        });
+    <?php
     }
     ?>
 
-</div>
+    window.onload = function() {
 
+        window.onscroll = function() { //Al hacer scroll, esconde el navbar 
+            var navbar = document.getElementById('navbar');
+            if (window.pageYOffset > 0) {
+                navbar.style.top = '-70px'
+            } else {
+                navbar.style.top = '0'
+            }
+        }
+
+        $('#tablaCrud').DataTable({
+            language: spanishTable, //establece el idioma
+            fixedHeader: true,
+            colReorder: true,
+            responsive: true,
+            "columnDefs": [{ // Hace que algunas columnas no sean ordenables
+                "orderable": false,
+                "targets": 0
+            }],
+            dom: 'fBtlp', // Establece los elementos a mostrar en la tabla
+            buttons: [{
+                    text: '<a onclick="crear()"><i class="fas fa-plus-circle fa-fw"></i> Crear <?php echo $gestion ?></a>',
+                    titleAttr: 'Crear <?php echo $gestion ?>',
+                    className: 'boton boton-crear'
+                },
+                {
+                    text: '<a onclick="recuperar()"><i class="fas fa-trash-restore fa-fw"></i> Recuperar <?php echo $gestion ?></a>',
+                    titleAttr: 'Recuperar <?php echo $gestion ?>',
+                    className: 'boton boton-recuperar'
+                },
+                {
+                    extend: 'excelHtml5',
+                    text: '<i class="fas fa-file-excel fa-fw"></i> Exportar Excel ',
+                    titleAttr: 'Exportar a Excel',
+                    className: 'boton boton-excel'
+                },
+                {
+                    extend: 'print',
+                    text: '<i class="fas fa-print fa-fw"></i> Imprimir',
+                    titleAttr: 'Imprimir',
+                    className: 'boton boton-imprimir'
+                }
+            ]
+        });
+
+
+    }
+
+    // Funciones de la CRUD (muestran formulario respectivo)
+    function recuperar() {
+        window.location.href = "./recuperar.php?tablaCrud=<?php echo $_REQUEST["tablaCrud"] ?>";
+    }
+
+    <?php
+    switch ($_REQUEST["tablaCrud"]) {
+        case 0:
+    ?>
+
+            function crear() {
+                Swal.fire({
+                    width: '85%',
+                    title: '🧑 Crear Usuario',
+                    showCloseButton: true,
+                    allowOutsideClick: false,
+                    showConfirmButton: false,
+                    html: '<form action=\'../controller/controller.php\' method=\'POST\'>' +
+                        '<div class=\'row align-items-center justify-content-center\'>' +
+                        '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
+                        '       <label for=\'idUsuario\'>Número de documento</label>' +
+                        '       <input type=\'number\' name=\'idUsuario\' class=\'form-control\' required/>' +
+                        '   </div>' +
+                        '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
+                        '       <label for=\'nombreUsuario\'>Nombre</label>' +
+                        '       <input type=\'text\' name=\'nombreUsuario\' class=\'form-control\' required/>' +
+                        '   </div>' +
+                        '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
+                        '       <label for=\'apellidoUsuario\'>Apellido</label>' +
+                        '       <input type=\'text\' name=\'apellidoUsuario\' class=\'form-control\'required>' +
+                        '   </div>' +
+                        '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
+                        '       <label for=\'correoUsuario\'>Correo</label>' +
+                        '       <input type=\'email\' name=\'correoUsuario\' class=\'form-control\' required>' +
+                        '   </div>' +
+                        '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
+                        '       <label for=\'telefonoUsuario\'>Telefono</label>' +
+                        '       <input type=\'number\' name=\'telefonoUsuario\' class=\'form-control\' required>' +
+                        '   </div>' +
+                        '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
+                        '       <label for=\'direccionUsuario\'>Direccion</label>' +
+                        '       <input type=\'text\' name=\'direccionUsuario\' class=\'form-control\' required>' +
+                        '   </div>' +
+                        '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
+                        '       <label for=\'rolUsuario\'>Rol</label>' +
+                        '       <select name=\'rolUsuario\' class=\'form-control\' required>' +
+                        '           <option value=\'Administrador\'>Administrador</option>' +
+                        '           <option value=\'Secretaria\'>Secretaria</option>' +
+                        '           <option value=\'Medico\'>Medico</option>' +
+                        '           <option value=\'Paciente\'>Paciente</option>' +
+                        '       </select>' +
+                        '   </div>' +
+                        '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
+                        '       <label for=\'passwordUsuario\'>Contraseña</label>' +
+                        '       <input type=\'text\' name=\'passwordUsuario\' class=\'form-control\' required>' +
+                        '   </div>' +
+                        '   <div class=\'col-sm-12 col-md-6 form-group\'>' +
+                        '       <input type=\'submit\' name=\'crear\' class=\'btn btn-primary btn-lg w-100\' value=\'Crear Usuario\'>' +
+                        '   </div>' +
+                        '</div>' +
+                        '</form>'
+                });
+            }
+            <?php
+            if (isset($_REQUEST["editar"])) {   //Si el usuario desea editar, se le muestra 
+                $idUsuario = $_REQUEST["editar"];
+
+                $consultaUsuario = "SELECT * FROM USUARIO WHERE idUsuario = $idUsuario";
+                $resultadoConsultaUsuario = mysqli_query($conection, $consultaUsuario);
+                $arrayConsultaUsuario = mysqli_fetch_array($resultadoConsultaUsuario);
+
+                $nombreUsuario = $arrayConsultaUsuario["nombreUsuario"];
+                $apellidoUsuario = $arrayConsultaUsuario["apellidoUsuario"];
+                $correoUsuario = $arrayConsultaUsuario["correoUsuario"];
+                $telefonoUsuario = $arrayConsultaUsuario["telefonoUsuario"];
+                $direccionUsuario = $arrayConsultaUsuario["direccionUsuario"];
+                $rolUsuario = $arrayConsultaUsuario["rolUsuario"];
+                $estadoUsuario = $arrayConsultaUsuario["estadoUsuario"];
+                $passwordUsuario = $arrayConsultaUsuario["passwordUsuario"];
+
+                $administrador = "";         //Haran que una u otra opcion se seleccionen al editar
+                $secretaria = "";
+                $medico = "";
+                $paciente = "";
+                switch ($rolUsuario) {
+                    case 'Administrador':
+                        $administrador = "selected";
+                        break;
+
+                    case 'Secretaria':
+                        $secretaria = "selected";
+                        break;
+
+                    case 'Medico':
+                        $medico = "selected";
+                        break;
+                    case 'Paciente':
+                        $paciente = "selected";
+                        break;
+                }
+            ?>
+                Swal.fire({
+                    width: '85%',
+                    title: '✏️ Editar usuario con el número de identificación <?php echo $idUsuario ?>',
+                    showCloseButton: true,
+                    allowOutsideClick: false,
+                    showConfirmButton: false,
+                    html: '<form action=\'../controller/controller.php?tablaCrud=\'<?php echo $_REQUEST["tablaCrud"] ?>\' method=\'POST\'>' +
+                        '<div class=\'row align-items-center justify-content-center\'>' +
+                        '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
+                        '       <input type=\'number\' name=\'idUsuario\' class=\'form-control\' value=\'<?php echo $idUsuario ?>\' style=\'display:none\'/>' +
+                        '       <label for=\'nombreUsuario\'>Nombre</label>' +
+                        '       <input type=\'text\' name=\'nombreUsuario\' class=\'form-control\' value=\'<?php echo $nombreUsuario ?>\' required/>' +
+                        '   </div>' +
+                        '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
+                        '       <label for=\'apellidoUsuario\'>Apellido</label>' +
+                        '       <input type=\'text\' name=\'apellidoUsuario\' class=\'form-control\' value=\'<?php echo $apellidoUsuario ?>\' required>' +
+                        '   </div>' +
+                        '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
+                        '       <label for=\'correoUsuario\'>Correo</label>' +
+                        '       <input type=\'email\' name=\'correoUsuario\' class=\'form-control\' value=\'<?php echo $correoUsuario ?>\' required>' +
+                        '   </div>' +
+                        '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
+                        '       <label for=\'telefonoUsuario\'>Telefono</label>' +
+                        '       <input type=\'number\' name=\'telefonoUsuario\' class=\'form-control\' value=\'<?php echo $telefonoUsuario ?>\' required>' +
+                        '   </div>' +
+                        '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
+                        '       <label for=\'direccionUsuario\'>Direccion</label>' +
+                        '       <input type=\'text\' name=\'direccionUsuario\' class=\'form-control\' value=\'<?php echo $direccionUsuario ?>\' required>' +
+                        '   </div>' +
+                        '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
+                        '       <label for=\'rolUsuario\'>Rol</label>' +
+                        '       <select name=\'rolUsuario\' class=\'form-control\' required>' +
+                        '           <option value=\'Administrador\' <?php echo $administrador ?>>Administrador</option>' +
+                        '           <option value=\'Secretaria\' <?php echo $secretaria ?>>Secretaria</option>' +
+                        '           <option value=\'Medico\' <?php echo $medico ?>>Medico</option>' +
+                        '           <option value=\'Paciente\' <?php echo $paciente ?>>Paciente</option>' +
+                        '       </select>' +
+                        '   </div>' +
+                        '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
+                        '       <label for=\'passwordUsuario\'>Contraseña</label>' +
+                        '       <input type=\'text\' name=\'passwordUsuario\' class=\'form-control\' value=\'<?php echo $passwordUsuario ?>\' required>' +
+                        '   </div>' +
+                        '   <div class=\'col-sm-12 col-md-6 form-group\'>' +
+                        '       <input type=\'submit\' name=\'actualizar\' class=\'btn btn-primary btn-lg w-100\' value=\'Editar Usuario\'>' +
+                        '   </div>' +
+                        '</div>' +
+                        '</form>'
+                });
+                <?php
+                break;
+                ?>
+
+    <?php
+            }
+    }
+    ?>
+
+    // Titulos y textos responsive
+    jQuery(".modulo-titulo").fitText(1, {
+        minFontSize: '30px',
+        maxFontSize: '70px'
+    })
+
+    jQuery(".swal2-title").fitText(1, {
+        minFontSize: '10px',
+        maxFontSize: '25px'
+    });
+</script>
 </body>
 
 </html>
