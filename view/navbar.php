@@ -49,18 +49,18 @@
             ?>
 
             <li class='nav-item d-flex align-items-center'>
-                <a class='nav-link' href='gestionar-cita.php'>
+                <a class='nav-link' href='./crud.php?tablaCrud=2'>
                     <i class='fas fa-user-nurse fa-fw'></i> Citas
                 </a>
             </li>
 
             <li class='nav-item d-flex align-items-center'>
-                <a class='nav-link' href='registrar-historia.php'>
+                <a class='nav-link' href='./crud.php?tablaCrud=3'>
                     <i class='fas fa-clinic-medical fa-fw'></i> Historia Clínica
                 </a>
             </li>
             <li class='nav-item d-flex align-items-center'>
-                <a class='nav-link' href="registrar-examen.php">
+                <a class='nav-link' href="./crud.php?tablaCrud=4">
                     <i class='fas fa-syringe fa-fw'></i> Exámenes de Laboratorio
                 </a>
             </li>

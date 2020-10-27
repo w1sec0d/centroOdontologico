@@ -75,7 +75,7 @@ CREATE TABLE EXAMEN(
     FOREIGN KEY(idHistoriaFK) REFERENCES HISTORIA_CLINICA(idHistoria)
 );
 CREATE TABLE AGENDA(
-	idAgenda NVARCHAR(4) UNIQUE,
+	idAgenda INT AUTO_INCREMENT,
     PRIMARY KEY(idAgenda),
     fechaAgenda DATE NOT NULL,
     horaAgenda DATETIME NOT NULL,
@@ -351,10 +351,10 @@ INSERT INTO AGENDA(idAgenda,fechaAgenda,horaAgenda,consultorio,estadoAgenda,idMe
 
 -- Registros para realizar pruebas
 
-INSERT INTO `consultorio`.`usuario` (`idUsuario`, `nombreUsuario`, `apellidoUsuario`, `correoUsuario`, `telefonoUsuario`, `direccionUsuario`, `passwordUsuario`, `rolUsuario`, `estadoUsuario`) VALUES ('000', 'Admin', 'Admin', 'administrador@gmail.com', '324234324234', 'Carrera 34 #43-23 S', '12345', 'Admin', true);
-INSERT INTO `consultorio`.`USUARIO` (`idUsuario`, `nombreUsuario`, `apellidoUsuario`, `correoUsuario`, `telefonoUsuario`, `direccionUsuario`, `passwordUsuario`, `rolUsuario`, `estadoUsuario`) VALUES ('001', 'Secretaria', 'Alcachofa', 'secretaria@gmail.com', '3564984808', 'Calle 24', '12345', 'Secretaria', true);
-INSERT INTO `consultorio`.`USUARIO` (`idUsuario`, `nombreUsuario`, `apellidoUsuario`, `correoUsuario`, `telefonoUsuario`, `direccionUsuario`, `passwordUsuario`, `rolUsuario`, `estadoUsuario`) VALUES ('002', 'Medico', 'Caicedo', 'medico@gmail.com', '3265488945', 'Calle 24', '12345', 'Medico', true);
-INSERT INTO `consultorio`.`USUARIO` (`idUsuario`, `nombreUsuario`, `apellidoUsuario`, `correoUsuario`, `telefonoUsuario`, `direccionUsuario`, `passwordUsuario`, `rolUsuario`, `estadoUsuario`) VALUES ('003', 'Paciente', 'David', 'paciente@gmail.com', '2645646598', 'Calle 24', '12345', 'Paciente', true);
+INSERT INTO `consultorio`.`usuario` (`idUsuario`, `nombreUsuario`, `apellidoUsuario`, `correoUsuario`, `telefonoUsuario`, `direccionUsuario`, `passwordUsuario`, `rolUsuario`, `estadoUsuario`) VALUES ('0', 'Admin', 'Admin', 'administrador@gmail.com', '324234324234', 'Carrera 34 #43-23 S', '12345', 'Admin', true);
+INSERT INTO `consultorio`.`USUARIO` (`idUsuario`, `nombreUsuario`, `apellidoUsuario`, `correoUsuario`, `telefonoUsuario`, `direccionUsuario`, `passwordUsuario`, `rolUsuario`, `estadoUsuario`) VALUES ('1', 'Secretaria', 'Alcachofa', 'secretaria@gmail.com', '3564984808', 'Calle 24', '12345', 'Secretaria', true);
+INSERT INTO `consultorio`.`USUARIO` (`idUsuario`, `nombreUsuario`, `apellidoUsuario`, `correoUsuario`, `telefonoUsuario`, `direccionUsuario`, `passwordUsuario`, `rolUsuario`, `estadoUsuario`) VALUES ('2', 'Medico', 'Caicedo', 'medico@gmail.com', '3265488945', 'Calle 24', '12345', 'Medico', true);
+INSERT INTO `consultorio`.`USUARIO` (`idUsuario`, `nombreUsuario`, `apellidoUsuario`, `correoUsuario`, `telefonoUsuario`, `direccionUsuario`, `passwordUsuario`, `rolUsuario`, `estadoUsuario`) VALUES ('3', 'Paciente', 'David', 'paciente@gmail.com', '2645646598', 'Calle 24', '12345', 'Paciente', true);
 
 -- CONSULTA DE NÚMERO DE REGISTROS (COUNT)
 SELECT COUNT(idUsuario) AS "CANTIDAD DE USUARIOS" FROM USUARIO; 
@@ -373,9 +373,10 @@ SELECT REPLACE('Julio','o','a');
 -- SELECT
 SELECT * FROM USUARIO;
 SELECT * FROM PACIENTE;
-SELECT * FROM AGENDA;
-SELECT * FROM EXAMEN;
 SELECT * FROM MEDICO;
+SELECT * FROM CONSULTA_MEDICA;
+SELECT * FROM EXAMEN;
+SELECT * FROM AGENDA;
 
 SELECT * FROM USUARIO WHERE nombreUsuario = 'Carlos' AND apellidoUsuario = 'Ramirez';
 SELECT * FROM USUARIO WHERE nombreUsuario = 'Luz' AND apellidoUsuario = 'Muñoz';
@@ -518,9 +519,11 @@ SELECT fechaAgenda as Fecha, horaAgenda as Hora, consultorio AS Consultorio FROM
 SELECT * FROM VISTA_MEDICO_215478365;
 
 CREATE OR REPLACE VIEW AGENDA_MEDICA AS
-SELECT idAgenda, horaAgenda as "Fecha y hora agenda", consultorio, estadoAgenda, idPaciente, nombrePaciente, idMedico, nombreMedico FROM (SELECT A.idAgenda, A.fechaAgenda,A.horaAgenda,A.consultorio,A.estadoAgenda,P.idPaciente,CONCAT(P.nombrePaciente," ",P.apellidoPaciente) AS nombrePaciente, idMedicoFK FROM AGENDA as A LEFT JOIN PACIENTE as P ON A.idPacienteFK = P.idPaciente) AS AGENDA_PACIENTE INNER JOIN (SELECT idMedico,CONCAT(nombreMedico, " ",apellidoMedico) as "nombreMedico" FROM MEDICO) AS MEDICO ON AGENDA_PACIENTE.idMedicoFK = MEDICO.idMedico;
+SELECT idAgenda, horaAgenda as "Fecha y hora agenda", consultorio, estadoAgenda, idPaciente, nombrePaciente, idMedico, nombreMedico FROM (SELECT A.idAgenda, A.fechaAgenda,A.horaAgenda,A.consultorio,A.estadoAgenda,P.idPaciente,CONCAT(P.nombrePaciente," ",P.apellidoPaciente) AS nombrePaciente, idMedicoFK FROM AGENDA as A LEFT JOIN PACIENTE as P ON A.idPacienteFK = P.idPaciente) AS AGENDA_PACIENTE LEFT JOIN (SELECT idMedico,CONCAT(nombreMedico, " ",apellidoMedico) as "nombreMedico" FROM MEDICO) AS MEDICO ON AGENDA_PACIENTE.idMedicoFK = MEDICO.idMedico;
 
-SELECT * FROM AGENDA_MEDICA WHERE estadoAgenda = true;
+SELECT * FROM AGENDA;
+SELECT * FROM AGENDA_MEDICA;
+
 -- Procedimientos almacenados
 
 -- REGISTRAR USUARIO

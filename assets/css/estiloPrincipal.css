@@ -35,6 +35,10 @@ body::-webkit-scrollbar-thumb {
     border-radius: 5px;
 }
 
+.hidden {
+    display: none;
+}
+
 h1,
 h2,
 h3 {

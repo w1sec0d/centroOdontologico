@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once 'header.php';
+require_once '../model/database.php';
 
 switch ($_REQUEST["tablaCrud"]) {
     case 0:
@@ -32,57 +33,100 @@ switch ($_REQUEST["tablaCrud"]) {
         ?>
     </div>
     <div class="row">
-        <h1 class="modulo-titulo w-100">Recuperación de usuarios</h1>
+        <h1 class="modulo-titulo w-100">Recuperación de <?php echo $gestion ?></h1>
     </div>
     <div class="row justify-content-center align-items-center" id="row-tabla">
         <div id="container-tabla">
             <div class="table-responsive">
-                <table class="table" id="tablaCrud">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th scope="col" class="bg-success">Recuperar</th>
-                            <th scope="col">Identificación</th>
-                            <th scope="col">Nombre</th>
-                            <th scope="col">Apellido</th>
-                            <th scope="col">Correo</th>
-                            <th scope="col">Telefono</th>
-                            <th scope="col">Dirección</th>
-                            <th scope="col">Password</th>
-                            <th scope="col">Rol</th>
-                            <th scope="col">Estado</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                        require_once '../model/database.php';
-                        $sql = "SELECT * FROM USUARIO WHERE estadoUsuario = false";
-                        $result = mysqli_query($conection, $sql);
-
-                        while ($mostrar = mysqli_fetch_array($result)) {
-                        ?>
+                <?php if ($_REQUEST["tablaCrud"] == 0 && ($_SESSION["rolUsuarioNavegando"] == 0 || $_SESSION["rolUsuarioNavegando"] == 1)) { ?>
+                    <table class="table" id="tablaCrud">
+                        <thead class="thead-dark">
                             <tr>
-                                <td class="bg-info">
-                                    <a href="#" onclick="confirmarRestauracion(<?php echo $mostrar['idUsuario'] ?>,<?php echo $_REQUEST['tablaCrud'] ?>)">
-                                        <span style="color: White;">
-                                            <i class="fas fa-trash-restore"></i>
-                                        </span>
-                                    </a>
-                                </td>
-                                <td><?php echo $mostrar["idUsuario"] ?></td>
-                                <td><?php echo $mostrar["nombreUsuario"] ?></td>
-                                <td><?php echo $mostrar["apellidoUsuario"] ?></td>
-                                <td><?php echo $mostrar["correoUsuario"] ?></td>
-                                <td><?php echo $mostrar["telefonoUsuario"] ?></td>
-                                <td><?php echo $mostrar["direccionUsuario"] ?></td>
-                                <td><?php echo $mostrar["passwordUsuario"] ?></td>
-                                <td><?php echo $mostrar["rolUsuario"] ?></td>
-                                <td><?php echo $mostrar["estadoUsuario"] ? 'Activo' : 'Inactivo' ?></td>
+                                <th scope="col" class="bg-success">Recuperar</th>
+                                <th scope="col">Identificación</th>
+                                <th scope="col">Nombre</th>
+                                <th scope="col">Apellido</th>
+                                <th scope="col">Correo</th>
+                                <th scope="col">Telefono</th>
+                                <th scope="col">Dirección</th>
+                                <th scope="col">Password</th>
+                                <th scope="col">Rol</th>
+                                <th scope="col">Estado</th>
                             </tr>
-                        <?php
-                        }
-                        ?>
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            <?php
+                            $sql = "SELECT * FROM USUARIO WHERE estadoUsuario = false";
+                            $result = mysqli_query($conection, $sql);
+
+                            while ($arrayConsulta = mysqli_fetch_array($result)) {
+                            ?>
+                                <tr>
+                                    <td class="bg-info">
+                                        <a href="#" onclick="confirmarRestauracion(<?php echo $arrayConsulta['idUsuario'] ?>,<?php echo $_REQUEST['tablaCrud'] ?>)">
+                                            <span style="color: White;">
+                                                <i class="fas fa-trash-restore"></i>
+                                            </span>
+                                        </a>
+                                    </td>
+                                    <td><?php echo $arrayConsulta["idUsuario"] ?></td>
+                                    <td><?php echo $arrayConsulta["nombreUsuario"] ?></td>
+                                    <td><?php echo $arrayConsulta["apellidoUsuario"] ?></td>
+                                    <td><?php echo $arrayConsulta["correoUsuario"] ?></td>
+                                    <td><?php echo $arrayConsulta["telefonoUsuario"] ?></td>
+                                    <td><?php echo $arrayConsulta["direccionUsuario"] ?></td>
+                                    <td><?php echo $arrayConsulta["passwordUsuario"] ?></td>
+                                    <td><?php echo $arrayConsulta["rolUsuario"] ?></td>
+                                    <td><?php echo $arrayConsulta["estadoUsuario"] ? 'Activo' : 'Inactivo' ?></td>
+                                </tr>
+                            <?php
+                            }
+                            ?>
+                        </tbody>
+                    </table>
+                <?php } else if ($_REQUEST["tablaCrud"] == 1 && ($_SESSION["rolUsuarioNavegando"] == 0 || $_SESSION["rolUsuarioNavegando"] == 2)) { ?>
+                    <table class="table" id="tablaCrud">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>Acciones</th>
+                                <th>Número de agenda</th>
+                                <th>Fecha y hora</th>
+                                <th>Consultorio</th>
+                                <th>Medico</th>
+                                <th>Paciente</th>
+                                <th>Identificación Médico</th>
+                                <th>Identificación Paciente</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            $consulta = "SELECT * FROM AGENDA_MEDICA WHERE estadoAgenda = true";
+                            $resultadoConsulta = mysqli_query($conection, $consulta);
+
+                            while ($arrayConsulta = mysqli_fetch_array($resultadoConsulta)) {
+                            ?>
+                                <tr>
+                                    <td class="bg-info">
+                                        <a href="#" onclick="confirmarRestauracion(<?php echo $arrayConsulta['idAgenda'] ?>,<?php echo $arrayConsulta['tablaCrud'] ?>)">
+                                            <span style="color: White;">
+                                                <i class="fas fa-trash-restore"></i>
+                                            </span>
+                                        </a>
+                                    </td>
+                                    <td><?php echo $arrayConsulta["idAgenda"] ?></td>
+                                    <td><?php echo $arrayConsulta["Fecha y hora agenda"] ?></td>
+                                    <td><?php echo $arrayConsulta["consultorio"] ?></td>
+                                    <td><?php echo $arrayConsulta["nombreMedico"] ?></td>
+                                    <td><?php echo $arrayConsulta["nombrePaciente"] ?></td>
+                                    <td><?php echo $arrayConsulta["idMedico"] ?></td>
+                                    <td><?php echo $arrayConsulta["idPaciente"] ?></td>
+                                </tr>
+                            <?php
+                            }
+                            ?>
+                        </tbody>
+                    </table>
+                <?php } ?>
             </div>
         </div>
     </div>
@@ -102,8 +146,6 @@ switch ($_REQUEST["tablaCrud"]) {
         }
         ?>
         $(document).ready(function() {
-            var tablaCrud = document.getElementById("idTablaCrud").value;
-
             $('#tablaCrud').DataTable({
                 language: spanishTable,
                 fixedHeader: true,
