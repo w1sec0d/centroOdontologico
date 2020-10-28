@@ -351,9 +351,11 @@ INSERT INTO AGENDA(idAgenda,fechaAgenda,horaAgenda,consultorio,estadoAgenda,idMe
 
 -- Registros para realizar pruebas
 
-INSERT INTO `consultorio`.`usuario` (`idUsuario`, `nombreUsuario`, `apellidoUsuario`, `correoUsuario`, `telefonoUsuario`, `direccionUsuario`, `passwordUsuario`, `rolUsuario`, `estadoUsuario`) VALUES ('0', 'Admin', 'Admin', 'administrador@gmail.com', '324234324234', 'Carrera 34 #43-23 S', '12345', 'Admin', true);
+INSERT INTO `consultorio`.`USUARIO` (`idUsuario`, `nombreUsuario`, `apellidoUsuario`, `correoUsuario`, `telefonoUsuario`, `direccionUsuario`, `passwordUsuario`, `rolUsuario`, `estadoUsuario`) VALUES ('0', 'Admin', 'Admin', 'administrador@gmail.com', '324234324234', 'Carrera 34 #43-23 S', '12345', 'Admin', true);
 INSERT INTO `consultorio`.`USUARIO` (`idUsuario`, `nombreUsuario`, `apellidoUsuario`, `correoUsuario`, `telefonoUsuario`, `direccionUsuario`, `passwordUsuario`, `rolUsuario`, `estadoUsuario`) VALUES ('1', 'Secretaria', 'Alcachofa', 'secretaria@gmail.com', '3564984808', 'Calle 24', '12345', 'Secretaria', true);
 INSERT INTO `consultorio`.`USUARIO` (`idUsuario`, `nombreUsuario`, `apellidoUsuario`, `correoUsuario`, `telefonoUsuario`, `direccionUsuario`, `passwordUsuario`, `rolUsuario`, `estadoUsuario`) VALUES ('2', 'Medico', 'Caicedo', 'medico@gmail.com', '3265488945', 'Calle 24', '12345', 'Medico', true);
+INSERT INTO `consultorio`.`MEDICO` (`idMedico`, `nombreMedico`, `apellidoMedico`, `telefonoMedico`, `correoMedico`, `especialidadMedico`, `tarjetaProfesional`, `estadoMedico`, `idUsuarioFK`) VALUES ('2', 'Medico', 'Caicedo', '3265488945', 'medico@gmail.com', 'Ortodoncista', '23423423', true, '2');
+INSERT INTO `consultorio`.`PACIENTE` (`idPaciente`, `nombrePaciente`, `apellidoPaciente`, `direccionPaciente`, `telefonoPaciente`, `fechaNacimiento`, `estadoPaciente`, `idUsuarioFK`) VALUES ('3', 'Paciente', 'David', 'paciente@gmail.com', '2645646598', '2003-12-30', true, '3');
 INSERT INTO `consultorio`.`USUARIO` (`idUsuario`, `nombreUsuario`, `apellidoUsuario`, `correoUsuario`, `telefonoUsuario`, `direccionUsuario`, `passwordUsuario`, `rolUsuario`, `estadoUsuario`) VALUES ('3', 'Paciente', 'David', 'paciente@gmail.com', '2645646598', 'Calle 24', '12345', 'Paciente', true);
 
 -- CONSULTA DE NÚMERO DE REGISTROS (COUNT)

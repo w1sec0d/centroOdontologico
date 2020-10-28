@@ -241,6 +241,50 @@ if (isset($_REQUEST["tablaCrud"])) {
         case 2:
             break;
         case 3:
+            if (isset($_REQUEST["crear"])) {
+                $idPaciente = $_REQUEST["idPaciente"];
+                $estatura = $_REQUEST["estatura"];
+                $peso = $_REQUEST["peso"];
+                $antecedentesFamiliares = $_REQUEST["antecedentesFamiliares"];
+                $alergias = $_REQUEST["alergias"];
+
+                $consultaPacienteValido = "SELECT * FROM PACIENTE WHERE idPaciente = '$idPaciente'";
+                $resultadoPacienteValido = mysqli_query($conection, $consultaPacienteValido);
+                if (mysqli_num_rows($resultadoPacienteValido) > 0) {
+                    $consultaPacienteHistoria = "SELECT * FROM HISTORIA_CLINICA WHERE idPacienteFK = '$idPaciente'";
+                    $resultadoPacienteHistoria = mysqli_query($conection, $consultaPacienteHistoria);
+                    if (mysqli_num_rows($resultadoPacienteHistoria) > 0) {
+                        header("Location: ../view/crud.php?historiaCreada=true&tablaCrud=3");
+                    } else {
+                        $insertHistoria = "INSERT INTO HISTORIA_CLINICA VALUES (NULL,$estatura,$peso,'$antecedentesFamiliares','$alergias','$idPaciente')";
+                        $resultadoInsertHistoria = mysqli_query($conection, $insertHistoria);
+                        if ($resultadoInsertHistoria) {
+                            header("Location: ../view/crud.php?registroHistoriaCorrecto=true&tablaCrud=3");
+                        }
+                    }
+                } else {
+                    header("Location: ../view/crud.php?usuarioIncorrecto=true&tablaCrud=3");
+                }
+            } else if (isset($_REQUEST["actualizar"])) {
+                $idHistoria = $_REQUEST["idHistoria"];
+                $estatura = $_REQUEST["estatura"];
+                $peso = $_REQUEST["peso"];
+                $antecedentesFamiliares = $_REQUEST["antecedentesFamiliares"];
+                $alergias = $_REQUEST["alergias"];
+                $idPaciente = $_REQUEST["idPaciente"];
+
+                $consultaPacienteValido = "SELECT * FROM PACIENTE WHERE idPaciente = '$idPaciente'";
+                $resultadoPacienteValido = mysqli_query($conection, $consultaPacienteValido);
+                if (mysqli_num_rows($resultadoPacienteValido) > 0) {
+                    $updateHistoria = "UPDATE HISTORIA_CLINICA SET estatura = $estatura, peso = $peso, antecedentesFamiliares = '$antecedentesFamiliares', alergias = '$alergias' WHERE idHistoria = '$idHistoria'";
+                    $resultadoUpdateHistoria = mysqli_query($conection, $updateHistoria);
+                    if ($resultadoUpdateHistoria) {
+                        header("Location: ../view/crud.php?actualizacionHistoria=true&tablaCrud=3");
+                    }
+                } else {
+                    header("Location: ../view/crud.php?usuarioIncorrecto=true&tablaCrud=3");
+                }
+            }
             break;
         case 4:
             if (isset($_REQUEST["crear"])) {

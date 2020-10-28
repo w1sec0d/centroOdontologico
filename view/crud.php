@@ -229,14 +229,9 @@ switch ($_REQUEST["tablaCrud"]) { //Estbalece que se está gestinando
                                 <tr>
                                     <td>
                                         <div class="btn-group">
-                                            <a href="crud.php?editar=<?php echo $arrayConsulta["idAgenda"] ?>&tablaCrud=3" class="boton-editar">
+                                            <a href="crud.php?editar=<?php echo $arrayConsulta["idHistoria"] ?>&tablaCrud=3" class="boton-editar" style="border-radius: 5px;">
                                                 <span style="color: White;">
                                                     <i class="fas fa-edit fa-fw"></i>
-                                                </span>
-                                            </a>
-                                            <a href="#" onclick="confirmacionInactivar(<?php echo $arrayConsulta['idAgenda'] ?>)" class="boton-eliminar">
-                                                <span style="color: White;">
-                                                    <i class="fas fa-trash-alt fa-fw"></i>
                                                 </span>
                                             </a>
                                         </div>
@@ -489,6 +484,30 @@ switch ($_REQUEST["tablaCrud"]) { //Estbalece que se está gestinando
                 ' para recuperar la agenda'
         });
     <?php
+    } else if (isset($_REQUEST["historiaCreada"])) {
+    ?>
+        Swal.fire({
+            icon: 'info',
+            title: 'El usuario que ingresaste ya tiene una historia clínica',
+            showCloseButton: true
+        });
+    <?php
+    } else if (isset($_REQUEST["registroHistoriaCorrecto"])) {
+    ?>
+        Swal.fire({
+            icon: 'success',
+            title: 'La historia clínica se ha registrado con éxito',
+            showCloseButton: true
+        });
+    <?php
+    } else if (isset($_REQUEST["actualizacionHistoria"])) {
+    ?>
+        Swal.fire({
+            icon: 'success',
+            title: 'La historia clínica se ha actualizado con éxito',
+            showCloseButton: true
+        });
+    <?php
     }
     ?>
     window.onload = function() {
@@ -517,7 +536,7 @@ switch ($_REQUEST["tablaCrud"]) { //Estbalece que se está gestinando
                     className: 'boton boton-crear'
                 },
                 <?php
-                if ($_REQUEST["tablaCrud"] != 4) {
+                if ($_REQUEST["tablaCrud"] != 4 && $_REQUEST["tablaCrud"] != 3) {
                 ?> {
                         text: '<a onclick="recuperar()"><i class="fas fa-trash-restore fa-fw"></i> Recuperar <?php echo $gestion ?></a>',
                         titleAttr: 'Recuperar <?php echo $gestion ?>',
@@ -878,27 +897,27 @@ switch ($_REQUEST["tablaCrud"]) { //Estbalece que se está gestinando
                     showCloseButton: true,
                     allowOutsideClick: false,
                     showConfirmButton: false,
-                    html: '<form action=\'../controller/controller.php?tablaCrud=1\' method=\'POST\'>' +
+                    html: '<form action=\'../controller/controller.php?tablaCrud=3\' method=\'POST\'>' +
                         '<div class=\'row align-items-center justify-content-center\'>' +
                         '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
                         '       <label for=\'idPaciente\'>Identificación Paciente</label>' +
-                        '       <input type=\'date\' name=\'idPaciente\' class=\'form-control\' required/>' +
+                        '       <input type=\'number\' name=\'idPaciente\' class=\'form-control\' required/>' +
                         '   </div>' +
                         '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
-                        '       <label for=\'estatura\'>Estatura</label>' +
-                        '       <input type=\'number\' name=\'estatura\' class=\'form-control\' min="0" required>' +
+                        '       <label for=\'estatura\'>Estatura (en metros)</label>' +
+                        '       <input type=\'number\' name=\'estatura\' class=\'form-control\' min="0" step="0.01" required>' +
                         '   </div>' +
                         '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
-                        '       <label for=\'peso\'>Peso (en kg)</label>' +
+                        '       <label for=\'peso\'>Peso (en kilogramos)</label>' +
                         '       <input type=\'number\' name=\'peso\' class=\'form-control\' min="0" required>' +
                         '   </div>' +
                         '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
-                        '       <label for=\'alergias\'>Alergias</label>' +
-                        '       <input type=\'text\' name=\'idMedico\' class=\'form-control\' min="0">' +
+                        '       <label for=\'antecedentesFamiliares\'>Antecedentes familiares</label>' +
+                        '       <textarea name=\'antecedentesFamiliares\' class=\'form-control\'></textarea>' +
                         '   </div>' +
                         '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
-                        '       <label for=\'idPaciente\'>Número de documento paciente</label>' +
-                        '       <input type=\'number\' name=\'idPaciente\' class=\'form-control\' min="0">' +
+                        '       <label for=\'alergias\'>Alergias</label>' +
+                        '       <textarea name=\'alergias\' class=\'form-control\'></textarea>' +
                         '   </div>' +
                         '   <div class=\'col-sm-12 col-md-6 form-group\'>' +
                         '       <input type=\'submit\' name=\'crear\' class=\'btn btn-primary btn-lg w-100\' value=\'Crear Agenda\'>' +
@@ -907,6 +926,51 @@ switch ($_REQUEST["tablaCrud"]) { //Estbalece que se está gestinando
                         '</form>'
                 });
             }
+            <?php
+            if (isset($_REQUEST["editar"])) {
+                $id = $_REQUEST["editar"];
+                $consultaHistoria = "SELECT * FROM HISTORIA_CLINICA WHERE idHistoria = '$id'";
+                $resultadoConsultaHistoria = mysqli_query($conection, $consultaHistoria);
+                $arrayConsultaHistoria = mysqli_fetch_array($resultadoConsultaHistoria);
+            ?>
+                Swal.fire({
+                    width: '85%',
+                    title: '🏥 Editar Historia Clínica',
+                    showCloseButton: true,
+                    allowOutsideClick: false,
+                    showConfirmButton: false,
+                    html: '<form action=\'../controller/controller.php?tablaCrud=3\' method=\'POST\'>' +
+                        '<div class=\'row align-items-center justify-content-center\'>' +
+                        '   <input type=\'number\' name=\'idHistoria\' class=\'form-contro hidden\' value=\'<?php echo $id ?>\' required/>' +
+                        '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
+                        '       <label for=\'idPaciente\'>Identificación Paciente</label>' +
+                        '       <input type=\'number\' name=\'idPaciente\' class=\'form-control\' value=\'<?php echo $arrayConsultaHistoria["idPacienteFK"] ?>\' required/>' +
+                        '   </div>' +
+                        '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
+                        '       <label for=\'estatura\'>Estatura (en metros)</label>' +
+                        '       <input type=\'number\' name=\'estatura\' class=\'form-control\' min="0" step="0.01" value=\'<?php echo $arrayConsultaHistoria["estatura"] ?>\' required>' +
+                        '   </div>' +
+                        '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
+                        '       <label for=\'peso\'>Peso (en kilogramos)</label>' +
+                        '       <input type=\'number\' name=\'peso\' class=\'form-control\' min="0" value=\'<?php echo $arrayConsultaHistoria["peso"] ?>\' required>' +
+                        '   </div>' +
+                        '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
+                        '       <label for=\'antecedentesFamiliares\'>Antecedentes familiares</label>' +
+                        '       <textarea name=\'antecedentesFamiliares\' class=\'form-control\'><?php echo $arrayConsultaHistoria["antecedentesFamiliares"] ?></textarea>' +
+                        '   </div>' +
+                        '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
+                        '       <label for=\'alergias\'>Alergias</label>' +
+                        '       <textarea name=\'alergias\' class=\'form-control\'><?php echo $arrayConsultaHistoria["alergias"] ?></textarea>' +
+                        '   </div>' +
+                        '   <div class=\'col-sm-12 col-md-6 form-group\'>' +
+                        '       <input type=\'submit\' name=\'actualizar\' class=\'btn btn-primary btn-lg w-100\' value=\'Editar Historia Clínica\'>' +
+                        '   </div>' +
+                        '</div>' +
+                        '</form>'
+                });
+            <?php
+            }
+            ?>
         <?php
             break;
         case 4:
