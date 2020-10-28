@@ -1,5 +1,6 @@
 <?php
 require_once '../model/database.php';   //Conecta con la BD
+
 if (isset($_REQUEST["login"])) {        //En caso de hacer login
     $_SESSION["idUsuario"] = $_REQUEST["idUsuario"];
     $_SESSION["passwordUsuario"] = $_REQUEST["passwordUsuario"];
@@ -60,10 +61,11 @@ if (isset($_REQUEST["login"])) {        //En caso de hacer login
     session_destroy();
     header("location:../index.php");
 }
+
 if (isset($_REQUEST["tablaCrud"])) {
     switch ($_REQUEST["tablaCrud"]) {
         case 0:
-            if (isset($_REQUEST["crear"])) {  //En caso de querer crear
+            if (isset($_REQUEST["crear"])) {  //En caso de querer Crear
                 $idUsuario = $_REQUEST["idUsuario"];
                 $nombreUsuario = $_REQUEST["nombreUsuario"];
                 $apellidoUsuario = $_REQUEST["apellidoUsuario"];
@@ -101,7 +103,7 @@ if (isset($_REQUEST["tablaCrud"])) {
                 } else {
                     header("Location: ../view/crud.php?registroIncorrecto=1&tablaCrud=0");
                 }
-            } elseif (isset($_REQUEST["actualizar"])) { //En caso de actualizar
+            } else if (isset($_REQUEST["actualizar"])) { //En caso de Actualizar
                 $idUsuario = $_REQUEST["idUsuario"];
                 $nombreUsuario = $_REQUEST["nombreUsuario"];
                 $apellidoUsuario = $_REQUEST["apellidoUsuario"];
@@ -122,7 +124,7 @@ if (isset($_REQUEST["tablaCrud"])) {
                             $updateMedico = "UPDATE MEDICO SET nombreMedico = '$nombreUsuario', apellidoMedico = '$apellidoUsuario', telefonoMedico = '$telefonoUsuario', correoMedico = '$correoUsuario',especialidadMedico = '$especialidadMedico',tarjetaProfesional = '$tarjetaProfesional',idUsuarioFK = '$idUsuario' WHERE idMedico = '$idUsuario'";
                             $resultadoUpdateMedico = mysqli_query($conection, $updateMedico);
                             if ($resultadoUpdateMedico) {
-                                header("Location: ../view/crud.php?actualizacionCorrecta=1&tablaCrud=0");
+                                header("Location: ../view/crud.php?actualizacionCorrecta=true&tablaCrud=0");
                             }
                             break;
                         case "Paciente":
@@ -130,15 +132,15 @@ if (isset($_REQUEST["tablaCrud"])) {
                             $updatePaciente = "UPDATE PACIENTE SET idPaciente = '$idUsuario', nombrePaciente = '$nombreUsuario',apellidoPaciente = '$apellidoUsuario',direccionPaciente = '$direccionUsuario',telefonoPaciente = '$telefonoUsuario',fechaNacimiento = '$fechaNacimiento',idUsuarioFK = '$idUsuario' WHERE idPaciente = '$idUsuario'";
                             $resultadoUpdatePaciente = mysqli_query($conection, $updatePaciente);
                             if ($resultadoUpdatePaciente) {
-                                header("Location: ../view/crud.php?actualizacionCorrecta=1&tablaCrud=0");
+                                header("Location: ../view/crud.php?actualizacionCorrecta=true&tablaCrud=0");
                             }
                             break;
                         default:
-                            header("Location: ../view/crud.php?actualizacionCorrecta=1&tablaCrud=0");
+                            header("Location: ../view/crud.php?actualizacionCorrecta=true&tablaCrud=0");
                             break;
                     }
                 }
-            } elseif (isset($_REQUEST["eliminar"])) {       //En caso de Eliminar
+            } else if (isset($_REQUEST["eliminar"])) {       //En caso de Eliminar
                 $idUsuario = $_REQUEST["id"];
                 $consultaInactivacion = "UPDATE USUARIO SET estadoUsuario = false WHERE idUsuario = $idUsuario";
                 $resultadoConsultaInactivacion = mysqli_query($conection, $consultaInactivacion);
@@ -147,16 +149,14 @@ if (isset($_REQUEST["tablaCrud"])) {
                 } else {
                     echo $consultaInactivacion;
                 }
-            } elseif (isset($_REQUEST["recuperar"])) {
-                $idUsuario = $_REQUEST["idUsuario"];
+            } else if (isset($_REQUEST["recuperar"])) {      //En caso de Recuperar
+                $idUsuario = $_REQUEST["id"];
 
                 $query = "UPDATE USUARIO SET estadoUsuario = true WHERE idUsuario = $idUsuario";
                 $result = mysqli_query($conection, $query);
 
                 if ($result) {
                     header("Location: ../view/recuperar.php?recuperado=true&tablaCrud=0");
-                } else {
-                    echo "fail";
                 }
             }
             break;
@@ -165,7 +165,7 @@ if (isset($_REQUEST["tablaCrud"])) {
                 $fecha = $_REQUEST["fecha"];
                 $hora = $fecha . " " . $_REQUEST["hora"];
                 $consultorio = $_REQUEST["consultorio"];
-                $idDoctor = $_REQUEST["idDoctor"];
+                $idMedico = $_REQUEST["idMedico"];
                 $idPaciente = $_REQUEST["idPaciente"];
 
                 if ($idDoctor == "" && $idPaciente == "") {
@@ -174,7 +174,7 @@ if (isset($_REQUEST["tablaCrud"])) {
                     $pacienteValido = "SELECT * FROM USUARIO WHERE idUsuario = '$idPaciente' AND rolUsuario = 'Paciente'";
                     $resultadoPacienteValido = mysqli_query($conection, $pacienteValido);
                     if (mysqli_num_rows($resultadoPacienteValido) > 0) {
-                        $crearAgenda = "INSERT INTO AGENDA(fechaAgenda,horaAgenda,consultorio,estadoAgenda,idMedicoFK,idPacienteFK) VALUES('$fecha','$hora','$consultorio',true,null,'$idPaciente')";
+                        $crearAgenda = "INSERT INTO AGENDA(fechaAgenda,horaAgenda,consultorio,estadoAgenda,idMedicoFK,idPacienteFK) VALUES('$fecha','$hora','$consultorio',true,null,$idPaciente)";
                     } else {
                         header("Location: ../view/crud.php?registroPacienteIncorrecto=1&tablaCrud=1");
                     }
@@ -182,19 +182,19 @@ if (isset($_REQUEST["tablaCrud"])) {
                     $doctorValido = "SELECT * FROM USUARIO WHERE idUsuario = '$idDoctor' AND rolUsuario = 'Paciente'";
                     $resultadoDoctorValido = mysqli_query($conection, $doctorValido);
                     if (mysqli_num_rows($resultadoDoctorValido) > 0) {
-                        $crearAgenda = "INSERT INTO AGENDA(fechaAgenda,horaAgenda,consultorio,estadoAgenda,idMedicoFK,idPacienteFK) VALUES('$fecha','$hora','$consultorio',true,$idDoctor,null)";
+                        $crearAgenda = "INSERT INTO AGENDA(fechaAgenda,horaAgenda,consultorio,estadoAgenda,idMedicoFK,idPacienteFK) VALUES('$fecha','$hora','$consultorio',true,$idMedico,null)";
                     } else {
                         header("Location: ../view/crud.php?registroDoctorIncorrecto=1&tablaCrud=1");
                     }
                 } else {
-                    $doctorValido = "SELECT * FROM USUARIO WHERE idUsuario = $idDoctor AND rolUsuario = 'Medico'";
-                    $resultadoPacienteValido = mysqli_query($conection, $doctorValido);
+                    $medicoValido = "SELECT * FROM USUARIO WHERE idUsuario = $idMedico AND rolUsuario = 'Medico'";
+                    $resultadoMedicoValido = mysqli_query($conection, $medicoValido);
 
                     $pacienteValido = "SELECT * FROM USUARIO WHERE idUsuario = $idPaciente AND rolUsuario = 'Paciente'";
                     $resultadoDoctorValido = mysqli_query($conection, $pacienteValido);
 
-                    if ($resultadoPacienteValido && $resultadoDoctorValido) {
-                        $crearAgenda = "INSERT INTO AGENDA(fechaAgenda,horaAgenda,consultorio,estadoAgenda,idMedicoFK,idPacienteFK) VALUES('$fecha','$hora','$consultorio',true,$idDoctor,$idPaciente)";
+                    if ($resultadoPacienteValido && $resultadoMedicoValido) {
+                        $crearAgenda = "INSERT INTO AGENDA(fechaAgenda,horaAgenda,consultorio,estadoAgenda,idMedicoFK,idPacienteFK) VALUES('$fecha','$hora','$consultorio',true,$idMedico,$idPaciente)";
                     } else {
                         header("Location: ../view/crud.php?agendaIncorrecta=1&tablaCrud=1");
                     }
@@ -205,6 +205,88 @@ if (isset($_REQUEST["tablaCrud"])) {
                 } else {
                     header("Location: ../view/crud.php?agendaIncorrecta=1&tablaCrud=1");
                 }
+            } else if (isset($_REQUEST["actualizar"])) {
+                $idAgenda = $_REQUEST["idAgenda"];
+                $fechaAgenda = $_REQUEST["fechaAgenda"];
+                $horaAgenda = $_REQUEST["horaAgenda"];
+                $consultorio = $_REQUEST["consultorio"];
+                $idMedico = $_REQUEST["idMedico"];
+                $idPaciente = $_REQUEST["idPaciente"];
+                $hora = $fechaAgenda . " " . $horaAgenda;
+
+                $updateAgenda = "UPDATE AGENDA SET fechaAgenda = '$fechaAgenda', horaAgenda = '$hora', consultorio = '$consultorio', idMedicoFK = $idMedico, idPacienteFK = $idPaciente WHERE idAgenda = '$idAgenda'";
+                $resultadoUpdateAgenda = mysqli_query($conection, $updateAgenda);
+                if ($resultadoUpdateAgenda) {
+                    header("Location: ../view/crud.php?actualizacionAgenda=true&tablaCrud=1");
+                }
+            } else if (isset($_REQUEST["eliminar"])) {
+                $idAgenda = $_REQUEST["id"];
+
+                $consultaInactivacion = "UPDATE AGENDA SET estadoAgenda = false WHERE idAgenda = $idAgenda";
+                $resultadoConsultaInactivacion = mysqli_query($conection, $consultaInactivacion);
+                if ($resultadoConsultaInactivacion) {
+                    header("Location: ../view/crud.php?inactivacionAgenda=true&tablaCrud=1");
+                }
+            } else if (isset($_REQUEST["recuperar"])) {
+                $idAgenda = $_REQUEST["id"];
+
+                $reactivarAgenda = "UPDATE AGENDA SET estadoAgenda = true WHERE idAgenda = '$idAgenda'";
+                $resultadoReactivarAgenda = mysqli_query($conection, $reactivarAgenda);
+
+                if ($resultadoReactivarAgenda) {
+                    header("Location: ../view/recuperar.php?recuperadoAgenda=true&tablaCrud=1");
+                }
             }
+            break;
+        case 2:
+            break;
+        case 3:
+            break;
+        case 4:
+            if (isset($_REQUEST["crear"])) {
+                $idPaciente = $_REQUEST["idPaciente"];
+                $valor = $_REQUEST["valor"];
+                $fecha = $_REQUEST["fecha"];
+                $tipo = $_REQUEST["tipo"];
+
+                $consultaIdHistoria = "SELECT idHistoria FROM HISTORIA_CLINICA WHERE idPacienteFK = '$idPaciente'";
+                $resultadoConsultaHistoria = mysqli_query($conection, $consultaIdHistoria);
+
+                if (mysqli_num_rows($resultadoConsultaHistoria) > 0) {
+                    $arrayConsultaHistoria = mysqli_fetch_array($resultadoConsultaHistoria);
+                    $idHistoria = $arrayConsultaHistoria["idHistoria"];
+
+                    $insertExamen = "INSERT INTO EXAMEN VALUES(null,$valor,'$fecha','$tipo','$idHistoria')";
+                    $resultadoExamen = mysqli_query($conection, $insertExamen);
+                    if ($resultadoExamen) {
+                        header("Location: ../view/crud.php?registroExamen=true&tablaCrud=4");
+                    }
+                } else {
+                    header("Location: ../view/crud.php?usuarioIncorrecto=true&tablaCrud=4");
+                }
+            } else if (isset($_REQUEST["actualizar"])) {
+                $idExamen = $_REQUEST["idExamen"];
+                $idPaciente = $_REQUEST["idPaciente"];
+                $valor = $_REQUEST["valor"];
+                $fechaExamen = $_REQUEST["fecha"];
+                $tipoExamen = $_REQUEST["tipo"];
+
+                $consultaIdHistoria = "SELECT idHistoria FROM HISTORIA_CLINICA WHERE idPacienteFK = '$idPaciente'";
+                $resultadoConsultaHistoria = mysqli_query($conection, $consultaIdHistoria);
+                if (mysqli_num_rows($resultadoConsultaHistoria) > 0) {
+                    $arrayConsultaHistoria = mysqli_fetch_array($resultadoConsultaHistoria);
+                    $idHistoria = $arrayConsultaHistoria["idHistoria"];
+                    $updateExamen = "UPDATE EXAMEN SET valor = $valor, fechaExamen = '$fechaExamen', tipoExamen = '$tipoExamen',idHistoriaFK = '$idHistoria' WHERE idExamen = '$idExamen'";
+                    $resultadoUpdateExamen = mysqli_query($conection, $updateExamen);
+                    if ($resultadoUpdateExamen) {
+                        header("Location: ../view/crud.php?actualizacionExamen=true&tablaCrud=4");
+                    } else {
+                        echo $updateExamen;
+                    }
+                } else {
+                    header("Location: ../view/crud.php?usuarioIncorrecto=true&tablaCrud=4");
+                }
+            }
+            break;
     }
 }

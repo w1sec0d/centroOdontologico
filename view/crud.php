@@ -37,7 +37,19 @@ switch ($_REQUEST["tablaCrud"]) { //Estbalece que se está gestinando
         ?>
     </div>
     <div class="row">
-        <h1 class="modulo-titulo w-100">Gestión de <?php echo $gestion ?></h1>
+        <h1 class="modulo-titulo w-100">
+            Gestión de <?php echo $gestion ?>
+            <?php
+            if (isset($_REQUEST["id"])) {
+                $consultaNombre = "SELECT nombrePaciente FROM VISTA_CONSULTA_MEDICA";
+                $resultadoConsultaNombre = mysqli_query($conection, $consultaNombre);
+                $arrayConsultaNombre = mysqli_fetch_array($resultadoConsultaNombre);
+
+                echo $arrayConsultaNombre["nombrePaciente"];
+            }
+            ?>
+        </h1>
+
     </div>
     <div class="row justify-content-center align-items-center" id="row-tabla">
         <div id="container-tabla">
@@ -73,7 +85,7 @@ switch ($_REQUEST["tablaCrud"]) { //Estbalece que se está gestinando
                                                     <i class="fas fa-edit fa-fw"></i>
                                                 </span>
                                             </a>
-                                            <a href="#" onclick="confirmacionInactivar(<?php echo $arrayConsulta['idUsuario'] ?>,<?php echo $_REQUEST['tablaCrud'] ?>)" class="boton-eliminar">
+                                            <a href="#" onclick="confirmacionInactivar(<?php echo $arrayConsulta['idUsuario'] ?>)" class="boton-eliminar">
                                                 <span style="color: White;">
                                                     <i class="fas fa-trash-alt fa-fw"></i>
                                                 </span>
@@ -148,16 +160,21 @@ switch ($_REQUEST["tablaCrud"]) { //Estbalece que se está gestinando
                         <thead class="thead-dark">
                             <tr>
                                 <th>Acciones</th>
+                                <th>Paciente</th>
                                 <th>Número de consulta</th>
                                 <th>Fecha y hora consulta</th>
                                 <th>Motivo</th>
                                 <th>Enfermedad</th>
-                                <th>Número de historia clínica</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php
-                            $consulta = "SELECT * FROM CONSULTA_MEDICA";
+                            if (isset($_REQUEST["id"])) {
+                                $id = $_REQUEST["id"];
+                                $consulta = "SELECT * FROM VISTA_CONSULTA_MEDICA WHERE idPacienteFK = '$id'";
+                            } else {
+                                $consulta = "SELECT * FROM VISTA_CONSULTA_MEDICA";
+                            }
                             $resultadoConsulta = mysqli_query($conection, $consulta);
 
                             while ($arrayConsulta = mysqli_fetch_array($resultadoConsulta)) {
@@ -177,11 +194,11 @@ switch ($_REQUEST["tablaCrud"]) { //Estbalece que se está gestinando
                                             </a>
                                         </div>
                                     </td>
+                                    <td><?php echo $arrayConsulta["nombrePaciente"] ?></td>
                                     <td><?php echo $arrayConsulta["idConsulta"] ?></td>
                                     <td><?php echo $arrayConsulta["horaConsulta"] ?></td>
                                     <td><?php echo $arrayConsulta["motivoConsulta"] ?></td>
                                     <td><?php echo $arrayConsulta["enfermedad"] ?></td>
-                                    <td><?php echo $arrayConsulta["idHistoriaFK"] ?></td>
                                 </tr>
                             <?php
                             }
@@ -198,7 +215,8 @@ switch ($_REQUEST["tablaCrud"]) { //Estbalece que se está gestinando
                                 <th>Peso</th>
                                 <th>Antecedentes familiares</th>
                                 <th>Alergias</th>
-                                <th>Id Paciente</th>
+                                <th>Identificación Paciente</th>
+                                <th>Ver historial de citas</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -211,7 +229,7 @@ switch ($_REQUEST["tablaCrud"]) { //Estbalece que se está gestinando
                                 <tr>
                                     <td>
                                         <div class="btn-group">
-                                            <a href="crud.php?editar=<?php echo $arrayConsulta["idAgenda"] ?>&tablaCrud=1" class="boton-editar">
+                                            <a href="crud.php?editar=<?php echo $arrayConsulta["idAgenda"] ?>&tablaCrud=3" class="boton-editar">
                                                 <span style="color: White;">
                                                     <i class="fas fa-edit fa-fw"></i>
                                                 </span>
@@ -229,6 +247,13 @@ switch ($_REQUEST["tablaCrud"]) { //Estbalece que se está gestinando
                                     <td><?php echo $arrayConsulta["antecedentesFamiliares"] ?></td>
                                     <td><?php echo $arrayConsulta["alergias"] ?></td>
                                     <td><?php echo $arrayConsulta["idPacienteFK"] ?></td>
+                                    <td>
+                                        <a href="crud.php?tablaCrud=2&id=<?php echo $arrayConsulta["idPacienteFK"] ?>" class="boton-citas">
+                                            <span style="color: White;">
+                                                <i class="fas fa-eye fa-fw"></i>
+                                            </span>
+                                        </a>
+                                    </td>
                                 </tr>
                             <?php
                             }
@@ -240,40 +265,33 @@ switch ($_REQUEST["tablaCrud"]) { //Estbalece que se está gestinando
                         <thead class="thead-dark">
                             <tr>
                                 <th>Acciones</th>
-                                <th>Id Exámen</th>
+                                <th>Identificación Paciente</th>
+                                <th>Nombre Paciente</th>
                                 <th>Valor</th>
                                 <th>Fecha</th>
                                 <th>Tipo</th>
-                                <th>Id Historia</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php
-                            $consulta = "SELECT * FROM EXAMEN";
+                            $consulta = "SELECT * FROM VISTA_EXAMEN";
                             $resultadoConsulta = mysqli_query($conection, $consulta);
 
                             while ($arrayConsulta = mysqli_fetch_array($resultadoConsulta)) {
                             ?>
                                 <tr>
                                     <td>
-                                        <div class="btn-group">
-                                            <a href="crud.php?editar=<?php echo $arrayConsulta["idAgenda"] ?>&tablaCrud=1" class="boton-editar">
-                                                <span style="color: White;">
-                                                    <i class="fas fa-edit fa-fw"></i>
-                                                </span>
-                                            </a>
-                                            <a href="#" onclick="confirmacionInactivar(<?php echo $arrayConsulta['idAgenda'] ?>)" class="boton-eliminar">
-                                                <span style="color: White;">
-                                                    <i class="fas fa-trash-alt fa-fw"></i>
-                                                </span>
-                                            </a>
-                                        </div>
+                                        <a href="crud.php?editar=<?php echo $arrayConsulta["idExamen"] ?>&tablaCrud=4" class="boton-editar" style="border-radius: 5px;">
+                                            <span style="color: White;">
+                                                <i class="fas fa-edit fa-fw"></i>
+                                            </span>
+                                        </a>
                                     </td>
-                                    <td><?php echo $arrayConsulta["idExamen"] ?></td>
-                                    <td><?php echo $arrayConsulta["valor"] ?></td>
+                                    <td><?php echo $arrayConsulta["idPacienteFK"] ?></td>
+                                    <td><?php echo $arrayConsulta["nombrePaciente"] ?></td>
+                                    <td>$<?php echo $arrayConsulta["valor"] ?></td>
                                     <td><?php echo $arrayConsulta["fechaExamen"] ?></td>
                                     <td><?php echo $arrayConsulta["tipoExamen"] ?></td>
-                                    <td><?php echo $arrayConsulta["idHistoriaFK"] ?></td>
                                 </tr>
                             <?php
                             }
@@ -319,7 +337,7 @@ switch ($_REQUEST["tablaCrud"]) { //Estbalece que se está gestinando
         }
     }
     // Alertas y confirmaciones
-    function confirmacionInactivar(id, tablaCrud) {
+    function confirmacionInactivar(id) {
         const swalWithBootstrapButtons = Swal.mixin({
             customClass: {
                 confirmButton: 'btn btn-success',
@@ -351,7 +369,7 @@ switch ($_REQUEST["tablaCrud"]) { //Estbalece que se está gestinando
         })
     }
 
-    <?php
+    <?php //Sección de alertas
     if (isset($_REQUEST["actualizacionCorrecta"])) {
     ?>
         Swal.fire({
@@ -361,8 +379,7 @@ switch ($_REQUEST["tablaCrud"]) { //Estbalece que se está gestinando
             timer: 5000
         });
         <?php
-    }
-    if (isset($_REQUEST["registroCorrecto"])) {
+    } else if (isset($_REQUEST["registroCorrecto"])) {
         if ($_REQUEST["registroCorrecto"]) {
         ?>
             Swal.fire({
@@ -372,8 +389,7 @@ switch ($_REQUEST["tablaCrud"]) { //Estbalece que se está gestinando
             });
         <?php
         }
-    }
-    if (isset($_REQUEST["registroIncorrecto"])) {
+    } else if (isset($_REQUEST["registroIncorrecto"])) {
         ?>
         Swal.fire({
             icon: 'error',
@@ -381,8 +397,7 @@ switch ($_REQUEST["tablaCrud"]) { //Estbalece que se está gestinando
             text: 'Si necesitas editar los datos de algún usuario, puedes hacerlo desde gestión de usuarios'
         });
     <?php
-    }
-    if (isset($_REQUEST["eliminacionCorrecta"])) {
+    } else if (isset($_REQUEST["eliminacionCorrecta"])) {
     ?>
         Swal.fire({
             icon: 'info',
@@ -392,8 +407,7 @@ switch ($_REQUEST["tablaCrud"]) { //Estbalece que se está gestinando
                 ' para recuperar el usuario'
         });
     <?php
-    }
-    if (isset($_REQUEST["registroPacienteIncorrecto"])) {
+    } else if (isset($_REQUEST["registroPacienteIncorrecto"])) {
     ?>
         Swal.fire({
             icon: 'error',
@@ -401,8 +415,7 @@ switch ($_REQUEST["tablaCrud"]) { //Estbalece que se está gestinando
             footer: 'Porfavor, inténtalo de nuevo'
         });
     <?php
-    }
-    if (isset($_REQUEST["registroDoctorIncorrecto"])) {
+    } else if (isset($_REQUEST["registroDoctorIncorrecto"])) {
     ?>
         Swal.fire({
             icon: 'error',
@@ -410,8 +423,7 @@ switch ($_REQUEST["tablaCrud"]) { //Estbalece que se está gestinando
             footer: 'Porfavor, inténtalo de nuevo'
         });
     <?php
-    }
-    if (isset($_REQUEST["agendaCorrecta"])) {
+    } else if (isset($_REQUEST["agendaCorrecta"])) {
     ?>
         Swal.fire({
             icon: 'success',
@@ -420,13 +432,61 @@ switch ($_REQUEST["tablaCrud"]) { //Estbalece que se está gestinando
             timer: 5000
         });
     <?php
-    }
-    if (isset($_REQUEST["agendaIncorrecta"])) {
+    } else if (isset($_REQUEST["agendaIncorrecta"])) {
     ?>
         Swal.fire({
             icon: 'error',
             title: 'Has ingresado una identificación de doctor y/o paciente que no existe',
             footer: 'Porfavor, inténtalo de nuevo'
+        });
+    <?php
+    } else if (isset($_REQUEST["actualizacionAgenda"])) {
+    ?>
+        Swal.fire({
+            icon: 'success',
+            title: 'El agenda ha sido actualizada',
+            timer: 5000,
+            showCloseButton: true
+        });
+    <?php
+    } else if (isset($_REQUEST["inactivacionAgenda"])) {
+    ?>
+        Swal.fire({
+            icon: 'success',
+            title: 'El agenda ha sido eliminada',
+            showCloseButton: true,
+            html: 'Puedes ' +
+                '<a href=\"./recuperar.php?tablaCrud=1\">ir al módulo recuperar agenda médica</a>' +
+                ' para recuperar la agenda'
+        });
+    <?php
+    } else if (isset($_REQUEST["actualizacionExamen"])) {
+    ?>
+        Swal.fire({
+            icon: 'success',
+            title: 'El agenda ha sido actualizada',
+            timer: 5000,
+            showCloseButton: true
+        });
+    <?php
+    } else if (isset($_REQUEST["usuarioIncorrecto"])) {
+    ?>
+        Swal.fire({
+            icon: 'error',
+            title: 'Has ingresado una identificación de usuario que no existe',
+            footer: 'Porfavor, inténtalo de nuevo',
+            showCloseButton: true
+        });
+    <?php
+    } else if (isset($_REQUEST["inactivacionExamen"])) {
+    ?>
+        Swal.fire({
+            icon: 'success',
+            title: 'El exámen ha sido eliminado',
+            showCloseButton: true,
+            html: 'Puedes ' +
+                '<a href=\"./recuperar.php?tablaCrud=1\">ir al módulo recuperar agenda médica</a>' +
+                ' para recuperar la agenda'
         });
     <?php
     }
@@ -456,12 +516,16 @@ switch ($_REQUEST["tablaCrud"]) { //Estbalece que se está gestinando
                     titleAttr: 'Crear <?php echo $gestion ?>',
                     className: 'boton boton-crear'
                 },
-                {
-                    text: '<a onclick="recuperar()"><i class="fas fa-trash-restore fa-fw"></i> Recuperar <?php echo $gestion ?></a>',
-                    titleAttr: 'Recuperar <?php echo $gestion ?>',
-                    className: 'boton boton-recuperar'
-                },
-                {
+                <?php
+                if ($_REQUEST["tablaCrud"] != 4) {
+                ?> {
+                        text: '<a onclick="recuperar()"><i class="fas fa-trash-restore fa-fw"></i> Recuperar <?php echo $gestion ?></a>',
+                        titleAttr: 'Recuperar <?php echo $gestion ?>',
+                        className: 'boton boton-recuperar'
+                    },
+                <?php
+                }
+                ?> {
                     extend: 'excelHtml5',
                     text: '<i class="fas fa-file-excel fa-fw"></i> Exportar Excel ',
                     titleAttr: 'Exportar a Excel',
@@ -710,7 +774,6 @@ switch ($_REQUEST["tablaCrud"]) { //Estbalece que se está gestinando
             }
             break;
         case 1:
-            echo "alert('caso1')";
             ?>
 
             function crear() {
@@ -720,7 +783,7 @@ switch ($_REQUEST["tablaCrud"]) { //Estbalece que se está gestinando
                     showCloseButton: true,
                     allowOutsideClick: false,
                     showConfirmButton: false,
-                    html: '<form action=\'../controller/controller.php?tablaCrud=1\' method = \'POST\'>' +
+                    html: '<form action=\'../controller/controller.php?tablaCrud=1\' method=\'POST\'>' +
                         '<div class=\'row align-items-center justify-content-center\'>' +
                         '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
                         '       <label for=\'fecha\'>Fecha Agenda Médica</label>' +
@@ -736,7 +799,7 @@ switch ($_REQUEST["tablaCrud"]) { //Estbalece que se está gestinando
                         '   </div>' +
                         '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
                         '       <label for=\'idDoctor\'>Número de documento doctor</label>' +
-                        '       <input type=\'number\' name=\'idDoctor\' class=\'form-control\' min="0">' +
+                        '       <input type=\'number\' name=\'idMedico\' class=\'form-control\' min="0">' +
                         '   </div>' +
                         '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
                         '       <label for=\'idPaciente\'>Número de documento paciente</label>' +
@@ -756,7 +819,11 @@ switch ($_REQUEST["tablaCrud"]) { //Estbalece que se está gestinando
                 $resultadoConsultaAgenda = mysqli_query($conection, $consultaAgenda);
 
                 $arrayConsultaAgenda = mysqli_fetch_array($resultadoConsultaAgenda);
-                $fechaAgenda = $arrayConsultaAgenda["Fecha y hora agenda"];
+                $fechaAgenda = $arrayConsultaAgenda["fechaAgenda"];
+                $horaAgenda = $arrayConsultaAgenda["horaAgenda"];
+                $consultorio = $arrayConsultaAgenda["consultorio"];
+                $idMedico = $arrayConsultaAgenda["idMedico"];
+                $idPaciente = $arrayConsultaAgenda["idPaciente"];
             ?>
                 Swal.fire({
                     width: '85%',
@@ -766,21 +833,68 @@ switch ($_REQUEST["tablaCrud"]) { //Estbalece que se está gestinando
                     showConfirmButton: false,
                     html: '<form action=\'../controller/controller.php?tablaCrud=1\' method=\'POST\'>' +
                         '<div class=\'row align-items-center justify-content-center\'>' +
+                        '   <input type=\'number\' name=\'idAgenda\' class=\'form-control hidden\' value=\'<?php echo $idAgenda ?>\' required/>' +
                         '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
                         '       <label for=\'fecha\'>Fecha Agenda Médica</label>' +
-                        '       <input type=\'date\' name=\'fecha\' class=\'form-control\' value=\'<?php echo $fechaAgenda ?>\' required/>' +
+                        '       <input type=\'date\' name=\'fechaAgenda\' class=\'form-control\' value=\'<?php echo $fechaAgenda ?>\' required/>' +
                         '   </div>' +
                         '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
                         '       <label for=\'hora\'>Hora Agenda Médica</label>' +
-                        '       <input type=\'time\' name=\'hora\' class=\'form-control\'required>' +
+                        '       <input type=\'time\' name=\'horaAgenda\' class=\'form-control\' value=\'<?php echo $horaAgenda ?>\' required>' +
                         '   </div>' +
                         '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
                         '       <label for=\'consultorio\'>Número de consultorio</label>' +
-                        '       <input type=\'number\' name=\'consultorio\' class=\'form-control\' min="1" required>' +
+                        '       <input type=\'number\' name=\'consultorio\' class=\'form-control\' min="1" value=\'<?php echo $consultorio ?>\' required>' +
                         '   </div>' +
                         '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
                         '       <label for=\'idDoctor\'>Número de documento doctor</label>' +
-                        '       <input type=\'number\' name=\'idDoctor\' class=\'form-control\' min="0">' +
+                        '       <input type=\'number\' name=\'idMedico\' class=\'form-control\' value=\'<?php echo $idMedico ?>\' min="0">' +
+                        '   </div>' +
+                        '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
+                        '       <label for=\'idPaciente\'>Número de documento paciente</label>' +
+                        '       <input type=\'number\' name=\'idPaciente\' class=\'form-control\' value=\'<?php echo $idPaciente ?>\' min="0">' +
+                        '   </div>' +
+                        '   <div class=\'col-sm-12 col-md-6 form-group\'>' +
+                        '       <input type=\'submit\' name=\'actualizar\' class=\'btn btn-primary btn-lg w-100\' value=\'Editar Agenda\'>' +
+                        '   </div>' +
+                        '</div>' +
+                        '</form>'
+                });
+            <?php
+            }
+            break;
+        case 2:
+            ?>
+
+        <?php
+            break;
+        case 3:
+        ?>
+
+            function crear() {
+                Swal.fire({
+                    width: '85%',
+                    title: '🏥 Crear Historia Clínica',
+                    showCloseButton: true,
+                    allowOutsideClick: false,
+                    showConfirmButton: false,
+                    html: '<form action=\'../controller/controller.php?tablaCrud=1\' method=\'POST\'>' +
+                        '<div class=\'row align-items-center justify-content-center\'>' +
+                        '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
+                        '       <label for=\'idPaciente\'>Identificación Paciente</label>' +
+                        '       <input type=\'date\' name=\'idPaciente\' class=\'form-control\' required/>' +
+                        '   </div>' +
+                        '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
+                        '       <label for=\'estatura\'>Estatura</label>' +
+                        '       <input type=\'number\' name=\'estatura\' class=\'form-control\' min="0" required>' +
+                        '   </div>' +
+                        '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
+                        '       <label for=\'peso\'>Peso (en kg)</label>' +
+                        '       <input type=\'number\' name=\'peso\' class=\'form-control\' min="0" required>' +
+                        '   </div>' +
+                        '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
+                        '       <label for=\'alergias\'>Alergias</label>' +
+                        '       <input type=\'text\' name=\'idMedico\' class=\'form-control\' min="0">' +
                         '   </div>' +
                         '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
                         '       <label for=\'idPaciente\'>Número de documento paciente</label>' +
@@ -792,10 +906,84 @@ switch ($_REQUEST["tablaCrud"]) { //Estbalece que se está gestinando
                         '</div>' +
                         '</form>'
                 });
-            <?php
             }
+        <?php
+            break;
+        case 4:
+        ?>
+
+            function crear() {
+                Swal.fire({
+                    width: '85%',
+                    title: '💉 Registrar Exámen Médico',
+                    showCloseButton: true,
+                    allowOutsideClick: false,
+                    showConfirmButton: false,
+                    html: '<form action=\'../controller/controller.php?tablaCrud=4\' method=\'POST\'>' +
+                        '<div class=\'row align-items-center justify-content-center\'>' +
+                        '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
+                        '       <label for=\'idPaciente\'>Identificación Paciente</label>' +
+                        '       <input type=\'number\' name=\'idPaciente\' class=\'form-control\' min="1" required/>' +
+                        '   </div>' +
+                        '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
+                        '       <label for=\'valor\'>Valor (en pesos)</label>' +
+                        '       <input type=\'number\' name=\'valor\' class=\'form-control\' min="0" required>' +
+                        '   </div>' +
+                        '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
+                        '       <label for=\'fecha\'>Fecha</label>' +
+                        '       <input type=\'date\' name=\'fecha\' class=\'form-control\' required>' +
+                        '   </div>' +
+                        '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
+                        '       <label for=\'tipo\'>Tipo de exámen</label>' +
+                        '       <input type=\'text\' name=\'tipo\' class=\'form-control\' required>' +
+                        '   </div>' +
+                        '   <div class=\'col-sm-12 col-md-6 form-group\'>' +
+                        '       <input type=\'submit\' name=\'crear\' class=\'btn btn-primary btn-lg w-100\' value=\'Registrar Exámen\'>' +
+                        '   </div>' +
+                        '</div>' +
+                        '</form>'
+                });
+            }
+            <?php
+            if (isset($_REQUEST["editar"])) {
+                $consultaExamen = "SELECT * FROM VISTA_EXAMEN";
+                $resultadoConsultaExamen = mysqli_query($conection, $consultaExamen);
+                $arrayConsultaExamen = mysqli_fetch_array($resultadoConsultaExamen);
             ?>
+                Swal.fire({
+                    width: '85%',
+                    title: '💉 Editar exámen médico',
+                    showCloseButton: true,
+                    allowOutsideClick: false,
+                    showConfirmButton: false,
+                    html: '<form action=\'../controller/controller.php?tablaCrud=4\' method=\'POST\'>' +
+                        '<input type=\'number\' name=\'idExamen\' class=\'form-control hidden\' value=\'<?php echo $arrayConsultaExamen["idExamen"] ?>\' required/>' +
+                        '<div class=\'row align-items-center justify-content-center\'>' +
+                        '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
+                        '       <label for=\'idPaciente\'>Identificación Paciente</label>' +
+                        '       <input type=\'number\' name=\'idPaciente\' class=\'form-control\' min="1" value=\'<?php echo $arrayConsultaExamen["idPacienteFK"] ?>\' required/>' +
+                        '   </div>' +
+                        '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
+                        '       <label for=\'valor\'>Valor (en pesos)</label>' +
+                        '       <input type=\'number\' name=\'valor\' class=\'form-control\' min="0" value=\'<?php echo $arrayConsultaExamen["valor"] ?>\' required>' +
+                        '   </div>' +
+                        '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
+                        '       <label for=\'fecha\'>Fecha</label>' +
+                        '       <input type=\'date\' name=\'fecha\' class=\'form-control\' value=\'<?php echo $arrayConsultaExamen["fechaExamen"] ?>\' required>' +
+                        '   </div>' +
+                        '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
+                        '       <label for=\'tipo\'>Tipo de exámen</label>' +
+                        '       <input type=\'text\' name=\'tipo\' class=\'form-control\' value=\'<?php echo $arrayConsultaExamen["tipoExamen"] ?>\' required>' +
+                        '   </div>' +
+                        '   <div class=\'col-sm-12 col-md-6 form-group\'>' +
+                        '       <input type=\'submit\' name=\'actualizar\' class=\'btn btn-primary btn-lg w-100\' value=\'Editar Exámen\'>' +
+                        '   </div>' +
+                        '</div>' +
+                        '</form>'
+                });
     <?php
+            }
+            break;
     }
     ?>
 

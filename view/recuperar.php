@@ -100,14 +100,14 @@ switch ($_REQUEST["tablaCrud"]) {
                         </thead>
                         <tbody>
                             <?php
-                            $consulta = "SELECT * FROM AGENDA_MEDICA WHERE estadoAgenda = true";
+                            $consulta = "SELECT * FROM AGENDA_MEDICA WHERE estadoAgenda = false";
                             $resultadoConsulta = mysqli_query($conection, $consulta);
 
                             while ($arrayConsulta = mysqli_fetch_array($resultadoConsulta)) {
                             ?>
                                 <tr>
                                     <td class="bg-info">
-                                        <a href="#" onclick="confirmarRestauracion(<?php echo $arrayConsulta['idAgenda'] ?>,<?php echo $arrayConsulta['tablaCrud'] ?>)">
+                                        <a href="#" onclick="confirmarRestauracion(<?php echo $arrayConsulta['idAgenda'] ?>,<?php echo $_REQUEST['tablaCrud'] ?>)">
                                             <span style="color: White;">
                                                 <i class="fas fa-trash-restore"></i>
                                             </span>
@@ -131,6 +131,37 @@ switch ($_REQUEST["tablaCrud"]) {
         </div>
     </div>
     <script>
+        function confirmarRestauracion(id, tablaCrud) {
+            const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: 'btn btn-success',
+                    cancelButton: 'btn btn-danger'
+                },
+                buttonsStyling: false
+            })
+
+            swalWithBootstrapButtons.fire({
+                title: '¿Estás seguro de restaurar el usuario?',
+                text: "De todas formas, podrás eliminarlo después",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Si, Recuperar Registro',
+                cancelButtonText: 'No, Cancelar',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.value) {
+                    window.location.href = "../controller/controller.php?recuperar=true&tablaCrud=" + tablaCrud + "&id=" + id;
+                } else if (
+                    result.dismiss === Swal.DismissReason.cancel
+                ) {
+                    Swal.fire({
+                        icon: info,
+                        title: 'Operación Cancelada',
+                        text: 'Tu usuario no ha sido restaurado :)'
+                    })
+                }
+            })
+        }
         // Alerta para cuando se recupera un usuario
         <?php
         if (isset($_REQUEST["recuperado"])) {
@@ -142,6 +173,18 @@ switch ($_REQUEST["tablaCrud"]) {
                     '<a href="./crud.php?tablaCrud=<?php echo $_REQUEST["tablaCrud"] ?>">ir al módulo gestión de usuarios</a>' +
                     ' para editar el usuario'
             })
+        <?php
+        }
+        if (isset($_REQUEST["recuperadoAgenda"])) {
+        ?>
+            Swal.fire({
+                icon: 'success',
+                title: 'Tu agenda ha sido restaurada',
+                showCloseButton: true,
+                html: 'Puedes ' +
+                    '<a href=\"./crud.php?tablaCrud=1\">ir al módulo de gestión de agenda</a>' +
+                    ' para editar la agenda'
+            });
         <?php
         }
         ?>
@@ -180,38 +223,6 @@ switch ($_REQUEST["tablaCrud"]) {
                 "copy": "Copiar",
                 "colvis": "Visibilidad"
             }
-        }
-
-        function confirmarRestauracion(id, tablaCrud) {
-            const swalWithBootstrapButtons = Swal.mixin({
-                customClass: {
-                    confirmButton: 'btn btn-success',
-                    cancelButton: 'btn btn-danger'
-                },
-                buttonsStyling: false
-            })
-
-            swalWithBootstrapButtons.fire({
-                title: '¿Estás seguro de restaurar el usuario?',
-                text: "De todas formas, podrás eliminarlo después",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Si, Recuperar Registro',
-                cancelButtonText: 'No, Cancelar',
-                reverseButtons: true
-            }).then((result) => {
-                if (result.value) {
-                    window.location.href = "../controller/controller.php?recuperar=true&tablaCrud=" + tablaCrud + "&idUsuario=" + id;
-                } else if (
-                    result.dismiss === Swal.DismissReason.cancel
-                ) {
-                    Swal.fire({
-                        icon: info,
-                        title: 'Operación Cancelada',
-                        text: 'Tu usuario no ha sido restaurado :)'
-                    })
-                }
-            })
         }
 
         jQuery(".modulo-titulo").fitText(1, {

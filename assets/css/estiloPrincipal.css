@@ -419,6 +419,12 @@ h1 {
     padding: 5px;
 }
 
+.boton-citas {
+    background-color: #343A40;
+    padding: 5px;
+    border-radius: 5px;
+}
+
 .swal2-confirm,
 .swal2-cancel {
     margin: 5px;

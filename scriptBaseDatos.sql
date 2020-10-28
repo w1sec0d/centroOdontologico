@@ -40,7 +40,7 @@ CREATE TABLE PACIENTE(
     FOREIGN KEY(idUsuarioFK) REFERENCES USUARIO(idUsuario)
 );
 CREATE TABLE HISTORIA_CLINICA(
-	idHistoria NVARCHAR(6) UNIQUE,
+	idHistoria INT AUTO_INCREMENT,
     PRIMARY KEY(idHistoria),
     estatura DOUBLE NOT NULL,
     peso DOUBLE NOT NULL,
@@ -50,28 +50,28 @@ CREATE TABLE HISTORIA_CLINICA(
     FOREIGN KEY(idPacienteFK) REFERENCES PACIENTE(idPaciente)
 );
 CREATE TABLE CONSULTA_MEDICA(
-	idConsulta NVARCHAR(20) UNIQUE,
+	idConsulta INT AUTO_INCREMENT,
     PRIMARY KEY(idConsulta),
     horaConsulta DATETIME NOT NULL,
     motivoConsulta TEXT NOT NULL,
     enfermedad TEXT NOT NULL,
-    idHistoriaFK NVARCHAR(12) UNIQUE,
+    idHistoriaFK INT NOT NULL,
     FOREIGN KEY(idHistoriaFK) REFERENCES HISTORIA_CLINICA(idHistoria)
 );
 CREATE TABLE DIAGNOSTICO(
 	idDiagnostico NVARCHAR(20) UNIQUE,
     PRIMARY KEY(idDiagnostico),
     descripcion TEXT NOT NULL,
-    idConsultaFK NVARCHAR(20),
+    idConsultaFK INT,
     FOREIGN KEY(idConsultaFK) REFERENCES CONSULTA_MEDICA(idConsulta)
 );
 CREATE TABLE EXAMEN(
-	idExamen NVARCHAR(20) UNIQUE,
+	idExamen INT AUTO_INCREMENT,
     PRIMARY KEY(idExamen),
     valor NUMERIC NOT NULL,
     fechaExamen DATE NOT NULL,
     tipoExamen NVARCHAR(50) NOT NULL,
-    idHistoriaFK NVARCHAR(6) UNIQUE,
+    idHistoriaFK INT NOT NULL,
     FOREIGN KEY(idHistoriaFK) REFERENCES HISTORIA_CLINICA(idHistoria)
 );
 CREATE TABLE AGENDA(
@@ -91,7 +91,7 @@ CREATE TABLE AGENDA(
 
 -- Usuarios
 INSERT INTO USUARIO(idUsuario,nombreUsuario,apellidoUsuario,correoUsuario,telefonoUsuario,direccionUsuario,passwordUsuario,rolUsuario,estadoUsuario)
-VALUES (119311659,'Carlos','Ramirez','cadavid4003@gmail.com',3002146746,'Carrera 87 #48-50 Sur',12345,'Paciente',true),
+VALUES (1193116959,'Carlos','Ramirez','cadavid4003@gmail.com',3002146746,'Carrera 87 #48-50 Sur',12345,'Paciente',true),
 (896579845,'Julian','Contreras','justanemail@gmail.com',3256589784,'Carrera 57 #89-51',988648,'Medico',true),
 (659268459,'Sofia','Hernandez','hanna245@gmail.com',3125692458,'Carrera 85 #35-59','mypass','Paciente',true),
 (986539647,'Juan','Ramirez','jacar@gmail.com',3112584658,'Carrera 87 #48-50 Sur',12345,'Paciente',true),
@@ -185,7 +185,7 @@ VALUES (116598748,'Laura','Callejo','google2331@gmail.com',3596895748,'Carrera 6
 INSERT INTO PACIENTE(idPaciente,nombrePaciente,apellidoPaciente,direccionPaciente,telefonoPaciente,fechaNacimiento,estadoPaciente,idUsuarioFK)
 VALUES('116598748','Laura','Callejo','Carrera 67 #18-50B',3596895748,'2004-01-29',true,116598748),
 ('225698359','Camilo','Ramirez','Carrera 2 #53-50 Sur','3269896599','1967-10-28',true,'225698359'),
-('119311659','Carlos','Ramirez','Carrera 87 #48-50 Sur','3002146746','2003-07-15',true,'119311659'),
+('1193116959','Carlos','Ramirez','Carrera 87 #48-50 Sur','3002146746','2003-07-15',true,'1193116959'),
 ('179498639','Felipe','Caro','Calle 87 #29-37','3256948759','2012-08-20',true,'179498639'),
 ('659268459','Sofia','Hernandez','Carrera 85 #35-59','3125692458','2004-04-16',true,'659268459'),
 ('659326587', 'Juan', 'Paz', 'Carrera 42 Bis #98-65', '3215689787','1999-12-31',true,'659326587'),
@@ -212,7 +212,7 @@ VALUES('116598748','Laura','Callejo','Carrera 67 #18-50B',3596895748,'2004-01-29
 -- HISTORIA CLINICA
 INSERT INTO HISTORIA_CLINICA(idHistoria,estatura,peso,antecedentesFamiliares,alergias,idPacienteFK) VALUES
 (1,1.8,65,'Ninguno','Polvo',116598748),
-(2,1.56,70,'Valvula bicuspide','Miel',119311659),
+(2,1.56,70,'Valvula bicuspide','Miel',1193116959),
 (3,1.54,50,'Ansiedad','Aceite vegetal',132135458),
 (4,1.90,55.6,'Ninguno','Comida de gato',179498639),
 (5,1.15,40,'Depresión','Ninguna',210101175),
@@ -324,7 +324,7 @@ INSERT INTO EXAMEN(idExamen,valor,fechaExamen,tipoExamen,idHistoriaFK) VALUES
 -- Agenda
 INSERT INTO AGENDA(idAgenda,fechaAgenda,horaAgenda,consultorio,estadoAgenda,idMedicoFK,idPacienteFK)VALUES
 (1,'2004-01-29','2004-01-29 13:23:44','20',true,112121547,116598748),
-(2,'2003-07-15','2003-07-15 10:01:29','14',true,200459678,119311659),
+(2,'2003-07-15','2003-07-15 10:01:29','14',true,200459678,1193116959),
 (3,'2010-09-10','2010-09-10 09:00:50','01',true,215478365,132135458),
 (4,'2012-08-20','2012-08-20 07:54:47','12',true,223365987,179498639),
 (5,'1920-05-28','1920-05-28 13:14:14','25',true,223565578,210101175),
@@ -519,8 +519,16 @@ SELECT fechaAgenda as Fecha, horaAgenda as Hora, consultorio AS Consultorio FROM
 SELECT * FROM VISTA_MEDICO_215478365;
 
 CREATE OR REPLACE VIEW AGENDA_MEDICA AS
-SELECT idAgenda, horaAgenda as "Fecha y hora agenda", consultorio, estadoAgenda, idPaciente, nombrePaciente, idMedico, nombreMedico FROM (SELECT A.idAgenda, A.fechaAgenda,A.horaAgenda,A.consultorio,A.estadoAgenda,P.idPaciente,CONCAT(P.nombrePaciente," ",P.apellidoPaciente) AS nombrePaciente, idMedicoFK FROM AGENDA as A LEFT JOIN PACIENTE as P ON A.idPacienteFK = P.idPaciente) AS AGENDA_PACIENTE LEFT JOIN (SELECT idMedico,CONCAT(nombreMedico, " ",apellidoMedico) as "nombreMedico" FROM MEDICO) AS MEDICO ON AGENDA_PACIENTE.idMedicoFK = MEDICO.idMedico;
+SELECT idAgenda, horaAgenda as "Fecha y hora agenda", fechaAgenda, TIME(horaAgenda) as horaAgenda, consultorio, estadoAgenda, idPaciente, nombrePaciente, idMedico, nombreMedico FROM (SELECT A.idAgenda, A.fechaAgenda,A.horaAgenda,A.consultorio,A.estadoAgenda,P.idPaciente,CONCAT(P.nombrePaciente," ",P.apellidoPaciente) AS nombrePaciente, idMedicoFK FROM AGENDA as A LEFT JOIN PACIENTE as P ON A.idPacienteFK = P.idPaciente) AS AGENDA_PACIENTE LEFT JOIN (SELECT idMedico,CONCAT(nombreMedico, " ",apellidoMedico) as "nombreMedico" FROM MEDICO) AS MEDICO ON AGENDA_PACIENTE.idMedicoFK = MEDICO.idMedico;
 
+CREATE OR REPLACE VIEW VISTA_EXAMEN AS
+SELECT SUBCONSULTA.*, CONCAT(PACIENTE.nombrePaciente," ",PACIENTE.apellidoPaciente) as nombrePaciente FROM (SELECT EXAMEN.*,HISTORIA_CLINICA.idPacienteFK FROM EXAMEN INNER JOIN HISTORIA_CLINICA ON EXAMEN.idHistoriaFK = HISTORIA_CLINICA.idHistoria) AS SUBCONSULTA INNER JOIN PACIENTE ON SUBCONSULTA.idPacienteFK = PACIENTE.idPaciente;
+
+CREATE OR REPLACE VIEW VISTA_CONSULTA_MEDICA AS
+SELECT SUBCONSULTA.*,CONCAT(nombrePaciente," ", apellidoPaciente) as nombrePaciente FROM (SELECT CONSULTA_MEDICA.*, HISTORIA_CLINICA.idPacienteFK FROM CONSULTA_MEDICA INNER JOIN HISTORIA_CLINICA ON CONSULTA_MEDICA.idConsulta = HISTORIA_CLINICA.idHistoria) AS SUBCONSULTA INNER JOIN PACIENTE ON SUBCONSULTA.idPacienteFK = PACIENTE.idPaciente;
+
+SELECT * FROM VISTA_EXAMEN;
+SELECT * FROM VISTA_CONSULTA_MEDICA;
 SELECT * FROM AGENDA;
 SELECT * FROM AGENDA_MEDICA;
 
