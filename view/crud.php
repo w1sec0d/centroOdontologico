@@ -851,7 +851,7 @@ switch ($_REQUEST["tablaCrud"]) { //Estbalece que se está gestinando
                     showCloseButton: true,
                     allowOutsideClick: false,
                     showConfirmButton: false,
-                    html: '<form action=\'../controller/controller.php?tablaCrud=\'<?php echo $_REQUEST["tablaCrud"] ?>\'\' method=\'POST\'>' +
+                    html: '<form action=\'../controller/controller.php?tablaCrud=0\' method=\'POST\'>' +
                         '<div class=\'row align-items-center justify-content-center\'>' +
                         '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
                         '       <input type=\'number\' name=\'idUsuario\' class=\'form-control\' value=\'<?php echo $idUsuario ?>\' style=\'display:none\'/>' +
