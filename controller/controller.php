@@ -63,7 +63,7 @@ if (isset($_REQUEST["login"])) {        //En caso de hacer login
     header("location:../index.php");
 }
 
-if (isset($_REQUEST["tablaCrud"])) {
+if (isset($_REQUEST["tablaCrud"])) { //Dependiendo de la tabla a la que se le desee hacer crud, ejecuta un case u otro
     switch ($_REQUEST["tablaCrud"]) {
         case 0:
             if (isset($_REQUEST["crear"])) {  //En caso de querer Crear
