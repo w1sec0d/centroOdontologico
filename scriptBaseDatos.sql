@@ -325,21 +325,21 @@ INSERT INTO EXAMEN(idExamen,valor,fechaExamen,tipoExamen,idHistoriaFK) VALUES
 INSERT INTO AGENDA(idAgenda,fechaAgenda,horaAgenda,consultorio,estadoAgenda,idMedicoFK,idPacienteFK)VALUES
 (1,'2004-01-29','2004-01-29 13:23:44','20',true,112121547,116598748),
 (2,'2003-07-15','2003-07-15 10:01:29','14',true,200459678,1193116959),
-(3,'2010-09-10','2010-09-10 09:00:50','01',true,215478365,132135458),
+(3,'2010-09-10','2010-09-10 09:00:50','01',true,215478365,null),
 (4,'2012-08-20','2012-08-20 07:54:47','12',true,223365987,179498639),
 (5,'1920-05-28','1920-05-28 13:14:14','25',true,223565578,210101175),
-(6,'2020-03-12','2020-03-12 14:41:25','01',true,235565779,212114775),
+(6,'2020-03-12','2020-03-12 14:41:25','01',true,235565779,null),
 (7,'1960-12-31','1960-12-31 17:14:14','02',true,248756278,213213544),
 (8,'2007-04-25','2007-04-25 20:10:47','25',true,325987658,223165456),
 (9,'1967-10-28','1967-10-28 19:50:36','40',true,336597845,225698359),
 (10,'2004-07-14','2004-07-14 20:40:28','20',true,359684447,324544458),
-(11,'2001-11-30','2001-11-30 11:20:36','01',true,377895685,331321211),
+(11,'2001-11-30','2001-11-30 11:20:36','01',true,377895685,null),
 (12,'1980-04-17','1980-04-17 14:24:59','02',true,397548628,332165452),
 (13,'1970-04-14','1970-04-14 15:40:54','03',true,454587896,343545557),
 (14,'1990-05-20','1990-05-20 14:41:40','05',true,546378912,489879846),
 (15,'2017-10-01','2017-10-01 13:04:15','06',true,650138984,531124545),
 (16,'1998-01-11','1998-01-11 09:40:58','08',true,655884798,532135453),
-(17,'1980-11-20','1980-11-20 07:20:10','09',true,658957246,546546787),
+(17,'1980-11-20','1980-11-20 07:20:10','09',true,658957246,null),
 (18,'2004-04-27','2004-04-27 17:50:23','10',true,659226598,651321324),
 (19,'2007-07-26','2007-07-26 08:05:15','05',true,659888745,654154544),
 (20,'2004-04-16','2004-04-16 22:30:14','15',true,669858897,659268459),
@@ -355,8 +355,10 @@ INSERT INTO `consultorio`.`USUARIO` (`idUsuario`, `nombreUsuario`, `apellidoUsua
 INSERT INTO `consultorio`.`USUARIO` (`idUsuario`, `nombreUsuario`, `apellidoUsuario`, `correoUsuario`, `telefonoUsuario`, `direccionUsuario`, `passwordUsuario`, `rolUsuario`, `estadoUsuario`) VALUES ('1', 'Secretaria', 'Alcachofa', 'secretaria@gmail.com', '3564984808', 'Calle 24', '12345', 'Secretaria', true);
 INSERT INTO `consultorio`.`USUARIO` (`idUsuario`, `nombreUsuario`, `apellidoUsuario`, `correoUsuario`, `telefonoUsuario`, `direccionUsuario`, `passwordUsuario`, `rolUsuario`, `estadoUsuario`) VALUES ('2', 'Medico', 'Caicedo', 'medico@gmail.com', '3265488945', 'Calle 24', '12345', 'Medico', true);
 INSERT INTO `consultorio`.`MEDICO` (`idMedico`, `nombreMedico`, `apellidoMedico`, `telefonoMedico`, `correoMedico`, `especialidadMedico`, `tarjetaProfesional`, `estadoMedico`, `idUsuarioFK`) VALUES ('2', 'Medico', 'Caicedo', '3265488945', 'medico@gmail.com', 'Ortodoncista', '23423423', true, '2');
-INSERT INTO `consultorio`.`PACIENTE` (`idPaciente`, `nombrePaciente`, `apellidoPaciente`, `direccionPaciente`, `telefonoPaciente`, `fechaNacimiento`, `estadoPaciente`, `idUsuarioFK`) VALUES ('3', 'Paciente', 'David', 'paciente@gmail.com', '2645646598', '2003-12-30', true, '3');
 INSERT INTO `consultorio`.`USUARIO` (`idUsuario`, `nombreUsuario`, `apellidoUsuario`, `correoUsuario`, `telefonoUsuario`, `direccionUsuario`, `passwordUsuario`, `rolUsuario`, `estadoUsuario`) VALUES ('3', 'Paciente', 'David', 'paciente@gmail.com', '2645646598', 'Calle 24', '12345', 'Paciente', true);
+INSERT INTO `consultorio`.`PACIENTE` (`idPaciente`, `nombrePaciente`, `apellidoPaciente`, `direccionPaciente`, `telefonoPaciente`, `fechaNacimiento`, `estadoPaciente`, `idUsuarioFK`) VALUES ('3', 'Paciente', 'David', 'paciente@gmail.com', '2645646598', '2003-12-30', true, '3');
+INSERT INTO `consultorio`.`historia_clinica` (`estatura`, `peso`, `antecedentesFamiliares`, `alergias`, `idPacienteFK`) VALUES ('1.4', '49', 'Ninguno', 'Ninguno ', '3');
+
 
 -- CONSULTA DE NÚMERO DE REGISTROS (COUNT)
 SELECT COUNT(idUsuario) AS "CANTIDAD DE USUARIOS" FROM USUARIO; 
@@ -527,10 +529,12 @@ CREATE OR REPLACE VIEW VISTA_EXAMEN AS
 SELECT SUBCONSULTA.*, CONCAT(PACIENTE.nombrePaciente," ",PACIENTE.apellidoPaciente) as nombrePaciente FROM (SELECT EXAMEN.*,HISTORIA_CLINICA.idPacienteFK FROM EXAMEN INNER JOIN HISTORIA_CLINICA ON EXAMEN.idHistoriaFK = HISTORIA_CLINICA.idHistoria) AS SUBCONSULTA INNER JOIN PACIENTE ON SUBCONSULTA.idPacienteFK = PACIENTE.idPaciente;
 
 CREATE OR REPLACE VIEW VISTA_CONSULTA_MEDICA AS
-SELECT SUBCONSULTA.*,CONCAT(nombrePaciente," ", apellidoPaciente) as nombrePaciente FROM (SELECT CONSULTA_MEDICA.*, HISTORIA_CLINICA.idPacienteFK FROM CONSULTA_MEDICA INNER JOIN HISTORIA_CLINICA ON CONSULTA_MEDICA.idConsulta = HISTORIA_CLINICA.idHistoria) AS SUBCONSULTA INNER JOIN PACIENTE ON SUBCONSULTA.idPacienteFK = PACIENTE.idPaciente;
+SELECT SUBCONSULTA.*,CONCAT(nombrePaciente," ", apellidoPaciente) as nombrePaciente FROM (SELECT CONSULTA_MEDICA.*, HISTORIA_CLINICA.idPacienteFK FROM CONSULTA_MEDICA INNER JOIN HISTORIA_CLINICA ON CONSULTA_MEDICA.idHistoriaFK = HISTORIA_CLINICA.idHistoria) AS SUBCONSULTA INNER JOIN PACIENTE ON SUBCONSULTA.idPacienteFK = PACIENTE.idPaciente;
 
 SELECT * FROM VISTA_EXAMEN;
-SELECT * FROM VISTA_CONSULTA_MEDICA;
+SELECT * FROM MEDICO;
+SELECT * FROM PACIENTE;
+SELECT * FROM VISTA_CONSULTA_MEDICA;	
 SELECT * FROM AGENDA;
 SELECT * FROM AGENDA_MEDICA;
 

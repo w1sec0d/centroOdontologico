@@ -79,20 +79,6 @@ if (isset($_REQUEST["showLoggedAlert"]) && isset($_SESSION["nombreUsuarioNavegan
                 </div>
             </a>
         </div>
-        <?php
-        if ($_SESSION["rolUsuarioNavegando"] == 1 or $_SESSION["rolUsuarioNavegando"] == 0) {
-        ?>
-            <div class="col-lg-4">
-                <a href="./crud.php?tablaCrud=6">
-                    <div class="modulo row justify-content-center align-items-center">
-                        <h1 class="w-100">Reportes</h1>
-                        <i class='fas fa-chart-bar fa-fw fa-7x'></i>
-                    </div>
-                </a>
-            </div>
-        <?php
-        }
-        ?>
     </div>
 </div>
 </body>

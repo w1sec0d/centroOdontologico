@@ -122,7 +122,12 @@ switch ($_REQUEST["tablaCrud"]) { //Estbalece que se está gestinando
                         </thead>
                         <tbody>
                             <?php
-                            $consulta = "SELECT * FROM AGENDA_MEDICA WHERE estadoAgenda = true";
+                            if ($_SESSION["rolUsuarioNavegando"] == 2) {
+                                $id = $_SESSION["idUsuarioNavegando"];
+                                $consulta = "SELECT * FROM AGENDA_MEDICA WHERE estadoAgenda = true AND idMedico = '$id'";
+                            } else {
+                                $consulta = "SELECT * FROM AGENDA_MEDICA WHERE estadoAgenda = true";
+                            }
                             $resultadoConsulta = mysqli_query($conection, $consulta);
 
                             while ($arrayConsulta = mysqli_fetch_array($resultadoConsulta)) {
@@ -155,57 +160,111 @@ switch ($_REQUEST["tablaCrud"]) { //Estbalece que se está gestinando
                             ?>
                         </tbody>
                     </table>
-                <?php } else if ($_REQUEST["tablaCrud"] == 2) { ?>
-                    <table class="table" id="tablaCrud">
-                        <thead class="thead-dark">
-                            <tr>
-                                <th>Acciones</th>
-                                <th>Paciente</th>
-                                <th>Número de consulta</th>
-                                <th>Fecha y hora consulta</th>
-                                <th>Motivo</th>
-                                <th>Enfermedad</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php
-                            if (isset($_REQUEST["id"])) {
-                                $id = $_REQUEST["id"];
-                                $consulta = "SELECT * FROM VISTA_CONSULTA_MEDICA WHERE idPacienteFK = '$id'";
-                            } else {
-                                $consulta = "SELECT * FROM VISTA_CONSULTA_MEDICA";
-                            }
-                            $resultadoConsulta = mysqli_query($conection, $consulta);
-
-                            while ($arrayConsulta = mysqli_fetch_array($resultadoConsulta)) {
-                            ?>
+                    <?php } else if ($_REQUEST["tablaCrud"] == 2) {
+                    if (isset($_REQUEST["crear"])) {
+                    ?>
+                        <table class="table" id="tablaCrud">
+                            <thead class="thead-dark">
                                 <tr>
-                                    <td>
-                                        <div class="btn-group">
-                                            <a href="crud.php?editar=<?php echo $arrayConsulta["idAgenda"] ?>&tablaCrud=1" class="boton-editar">
-                                                <span style="color: White;">
-                                                    <i class="fas fa-edit fa-fw"></i>
-                                                </span>
-                                            </a>
-                                            <a href="#" onclick="confirmacionInactivar(<?php echo $arrayConsulta['idAgenda'] ?>)" class="boton-eliminar">
-                                                <span style="color: White;">
-                                                    <i class="fas fa-trash-alt fa-fw"></i>
-                                                </span>
-                                            </a>
-                                        </div>
-                                    </td>
-                                    <td><?php echo $arrayConsulta["nombrePaciente"] ?></td>
-                                    <td><?php echo $arrayConsulta["idConsulta"] ?></td>
-                                    <td><?php echo $arrayConsulta["horaConsulta"] ?></td>
-                                    <td><?php echo $arrayConsulta["motivoConsulta"] ?></td>
-                                    <td><?php echo $arrayConsulta["enfermedad"] ?></td>
+                                    <th>Acciones</th>
+                                    <th>Número de agenda</th>
+                                    <th>Fecha y hora</th>
+                                    <th>Consultorio</th>
+                                    <th>Medico</th>
+                                    <th>Paciente</th>
+                                    <th>Identificación Médico</th>
+                                    <th>Identificación Paciente</th>
                                 </tr>
-                            <?php
-                            }
-                            ?>
-                        </tbody>
-                    </table>
-                <?php } else if ($_REQUEST["tablaCrud"] == 3) { ?>
+                            </thead>
+                            <tbody>
+                                <?php
+                                if ($_SESSION["rolUsuarioNavegando"] == 2) {
+                                    $id = $_SESSION["idUsuarioNavegando"];
+                                    $consulta = "SELECT * FROM AGENDA_MEDICA WHERE estadoAgenda = true AND idPaciente IS NULL AND idMedico = '$id'";
+                                } else {
+                                    $consulta = "SELECT * FROM AGENDA_MEDICA WHERE estadoAgenda = true AND idPaciente IS NULL";
+                                }
+
+                                $resultadoConsulta = mysqli_query($conection, $consulta);
+
+                                while ($arrayConsulta = mysqli_fetch_array($resultadoConsulta)) {
+                                ?>
+                                    <tr>
+                                        <td>
+                                            <div class="btn-group">
+                                                <a href="crud.php?registrarCita=<?php echo $arrayConsulta["idAgenda"] ?>&tablaCrud=2&crear=true" class="boton-editar" style="border-radius: 5px;">
+                                                    <span style="color: White;">
+                                                        <i class="fas fa-user-check"></i>
+                                                    </span>
+                                                </a>
+                                            </div>
+                                        </td>
+                                        <td><?php echo $arrayConsulta["idAgenda"] ?></td>
+                                        <td><?php echo $arrayConsulta["Fecha y hora agenda"] ?></td>
+                                        <td><?php echo $arrayConsulta["consultorio"] ?></td>
+                                        <td><?php echo $arrayConsulta["nombreMedico"] ?></td>
+                                        <td><?php echo $arrayConsulta["nombrePaciente"] ?></td>
+                                        <td><?php echo $arrayConsulta["idMedico"] ?></td>
+                                        <td><?php echo $arrayConsulta["idPaciente"] ?></td>
+                                    </tr>
+                                <?php
+                                }
+                                ?>
+                            </tbody>
+                        </table>
+                    <?php
+                    } else {
+                    ?>
+                        <table class="table" id="tablaCrud">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>Acciones</th>
+                                    <th>Paciente</th>
+                                    <th>Número de consulta</th>
+                                    <th>Fecha y hora consulta</th>
+                                    <th>Motivo</th>
+                                    <th>Enfermedad</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                if (isset($_REQUEST["id"])) {
+                                    $id = $_REQUEST["id"];
+                                    $consulta = "SELECT * FROM VISTA_CONSULTA_MEDICA WHERE idPacienteFK = '$id'";
+                                } else {
+                                    $consulta = "SELECT * FROM VISTA_CONSULTA_MEDICA";
+                                }
+                                if ($_SESSION["rolUsuarioNavegando"] == 3) {
+                                    $id = $_SESSION["idUsuarioNavegando"];
+                                    $consulta = "SELECT * FROM VISTA_CONSULTA_MEDICA WHERE idPacienteFK = '$id'";
+                                }
+                                $resultadoConsulta = mysqli_query($conection, $consulta);
+
+                                while ($arrayConsulta = mysqli_fetch_array($resultadoConsulta)) {
+                                ?>
+                                    <tr>
+                                        <td>
+                                            <div class="btn-group">
+                                                <a href="crud.php?editar=<?php echo $arrayConsulta["idConsulta"] ?>&tablaCrud=2" class="boton-editar" style="border-radius:5px">
+                                                    <span style="color: White;">
+                                                        <i class="fas fa-edit fa-fw"></i>
+                                                    </span>
+                                                </a>
+                                            </div>
+                                        </td>
+                                        <td><?php echo $arrayConsulta["nombrePaciente"] ?></td>
+                                        <td><?php echo $arrayConsulta["idConsulta"] ?></td>
+                                        <td><?php echo $arrayConsulta["horaConsulta"] ?></td>
+                                        <td><?php echo $arrayConsulta["motivoConsulta"] ?></td>
+                                        <td><?php echo $arrayConsulta["enfermedad"] ?></td>
+                                    </tr>
+                                <?php
+                                }
+                                ?>
+                            </tbody>
+                        </table>
+                    <?php }
+                } else if ($_REQUEST["tablaCrud"] == 3) { ?>
                     <table class="table" id="tablaCrud">
                         <thead class="thead-dark">
                             <tr>
@@ -221,7 +280,12 @@ switch ($_REQUEST["tablaCrud"]) { //Estbalece que se está gestinando
                         </thead>
                         <tbody>
                             <?php
-                            $consulta = "SELECT * FROM HISTORIA_CLINICA";
+                            if ($_SESSION["rolUsuarioNavegando"] == 3) {
+                                $id = $_SESSION["idUsuarioNavegando"];
+                                $consulta = "SELECT * FROM HISTORIA_CLINICA WHERE idPacienteFK = '$id'";
+                            } else {
+                                $consulta = "SELECT * FROM HISTORIA_CLINICA";
+                            }
                             $resultadoConsulta = mysqli_query($conection, $consulta);
 
                             while ($arrayConsulta = mysqli_fetch_array($resultadoConsulta)) {
@@ -269,7 +333,13 @@ switch ($_REQUEST["tablaCrud"]) { //Estbalece que se está gestinando
                         </thead>
                         <tbody>
                             <?php
-                            $consulta = "SELECT * FROM VISTA_EXAMEN";
+                            if ($_SESSION["rolUsuarioNavegando"] == 3) {
+                                $id = $_SESSION["idUsuarioNavegando"];
+                                $consulta = "SELECT * FROM VISTA_EXAMEN WHERE idPacienteFK = '$id'";
+                            } else {
+                                $consulta = "SELECT * FROM VISTA_EXAMEN";
+                            }
+
                             $resultadoConsulta = mysqli_query($conection, $consulta);
 
                             while ($arrayConsulta = mysqli_fetch_array($resultadoConsulta)) {
@@ -508,6 +578,43 @@ switch ($_REQUEST["tablaCrud"]) { //Estbalece que se está gestinando
             showCloseButton: true
         });
     <?php
+    } else if (isset($_REQUEST["citaCorrecta"])) {
+    ?>
+        Swal.fire({
+            icon: 'success',
+            title: 'El paciente se ha registrado a la cita correctamente',
+            showCloseButton: true
+        });
+    <?php
+    } else if (isset($_REQUEST["usuarioSinHistoria"])) {
+    ?>
+        Swal.fire({
+            icon: 'error',
+            title: 'Has intentado registrar un usuario sin historia clínica',
+            showCloseButton: true,
+            html: 'Puedes ' +
+                '<a href=\"./crud.php?tablaCrud=3\">ir al módulo gestionar historia clínica</a>' +
+                ' para abrir una historia clínica'
+        });
+    <?php
+    } else if (isset($_REQUEST["citaActualizada"])) {
+    ?>
+        Swal.fire({
+            icon: 'success',
+            title: 'Cita actualizada correctamente',
+            showCloseButton: true,
+            timer: 5000
+        });
+    <?php
+    } else if (isset($_REQUEST["actualizacionAgendaFallida"])) {
+    ?>
+        Swal.fire({
+            icon: 'error',
+            title: 'Has ingresado incorrectamente la id del doctor y/o paciente',
+            showCloseButton: true,
+            footer: 'Porfavor, intentalo de nuevo'
+        });
+    <?php
     }
     ?>
     window.onload = function() {
@@ -530,13 +637,23 @@ switch ($_REQUEST["tablaCrud"]) { //Estbalece que se está gestinando
                 "targets": 0
             }],
             dom: 'fBtlp', // Establece los elementos a mostrar en la tabla
-            buttons: [{
-                    text: '<a onclick="crear()"><i class="fas fa-plus-circle fa-fw"></i> Crear <?php echo $gestion ?></a>',
-                    titleAttr: 'Crear <?php echo $gestion ?>',
-                    className: 'boton boton-crear'
-                },
+            buttons: [
+                <?php if (!isset($_REQUEST["crear"])) { ?> {
+                        text: '<a onclick="crear()"><i class="fas fa-plus-circle fa-fw"></i> Crear <?php echo $gestion ?></a>',
+                        titleAttr: 'Crear <?php echo $gestion ?>',
+                        className: 'boton boton-crear'
+                    },
                 <?php
-                if ($_REQUEST["tablaCrud"] != 4 && $_REQUEST["tablaCrud"] != 3) {
+                } else {
+                ?> {
+                        text: '<a onclick="gestionar()"><i class="fas fa-plus-circle fa-fw"></i> Gestionar <?php echo $gestion ?></a>',
+                        titleAttr: 'Crear <?php echo $gestion ?>',
+                        className: 'boton boton-crear'
+                    },
+
+                <?php
+                }
+                if ($_REQUEST["tablaCrud"] != 4 && $_REQUEST["tablaCrud"] != 3 && $_REQUEST["tablaCrud"] != 2) {
                 ?> {
                         text: '<a onclick="recuperar()"><i class="fas fa-trash-restore fa-fw"></i> Recuperar <?php echo $gestion ?></a>',
                         titleAttr: 'Recuperar <?php echo $gestion ?>',
@@ -818,7 +935,11 @@ switch ($_REQUEST["tablaCrud"]) { //Estbalece que se está gestinando
                         '   </div>' +
                         '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
                         '       <label for=\'idDoctor\'>Número de documento doctor</label>' +
-                        '       <input type=\'number\' name=\'idMedico\' class=\'form-control\' min="0">' +
+                        '       <input type=\'number\' name=\'idMedico\' class=\'form-control\' min="0" value=\'<?php if ($_SESSION["rolUsuarioNavegando"] == 2) {
+                                                                                                                    echo $_SESSION["idUsuarioNavegando"];
+                                                                                                                } ?>\' <?php if ($_SESSION["rolUsuarioNavegando"] == 2) {
+                                                                                                                            echo "readonly";
+                                                                                                                        } ?>>' +
                         '   </div>' +
                         '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
                         '       <label for=\'idPaciente\'>Número de documento paciente</label>' +
@@ -867,7 +988,9 @@ switch ($_REQUEST["tablaCrud"]) { //Estbalece que se está gestinando
                         '   </div>' +
                         '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
                         '       <label for=\'idDoctor\'>Número de documento doctor</label>' +
-                        '       <input type=\'number\' name=\'idMedico\' class=\'form-control\' value=\'<?php echo $idMedico ?>\' min="0">' +
+                        '       <input type=\'number\' name=\'idMedico\' class=\'form-control\' value=\'<?php echo $idMedico ?>\' <?php if ($_SESSION["rolUsuarioNavegando"] == 2) {
+                                                                                                                                        echo "readonly";
+                                                                                                                                    } ?> min="0">' +
                         '   </div>' +
                         '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
                         '       <label for=\'idPaciente\'>Número de documento paciente</label>' +
@@ -885,10 +1008,90 @@ switch ($_REQUEST["tablaCrud"]) { //Estbalece que se está gestinando
         case 2:
             ?>
 
-        <?php
+            function crear() {
+                window.location.href = "./crud.php?tablaCrud=2&crear=true";
+            }
+
+            function gestionar() {
+                window.location.href = "./crud.php?tablaCrud=2";
+            }
+
+            <?php
+            if (isset($_REQUEST["registrarCita"])) {
+                $idAgenda = $_REQUEST["registrarCita"];
+            ?>
+                Swal.fire({
+                    width: '85%',
+                    title: '🧑 Registrar cita paciente',
+                    showCloseButton: true,
+                    allowOutsideClick: false,
+                    showConfirmButton: false,
+                    html: '<form action=\'../controller/controller.php?tablaCrud=2\' method=\'POST\'>' +
+                        '<div class=\'row align-items-center justify-content-center\'>' +
+                        '   <input type=\'number\' name=\'idAgenda\' class=\'form-control hidden\' value=\'<?php echo $idAgenda ?>\' required/>' +
+                        '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
+                        '       <label for=\'idPaciente\'>Identificación Paciente</label>' +
+                        '       <input type=\'number\' name=\'idPaciente\' class=\'form-control\' required value=\'<?php if ($_SESSION["rolUsuarioNavegando"] == 3) {
+                                                                                                                        echo $_SESSION["idUsuarioNavegando"];
+                                                                                                                    } ?>\' <?php if ($_SESSION["rolUsuarioNavegando"] == 3) {
+                                                                                                                                echo "readonly";
+                                                                                                                            } ?>/>' +
+                        '   </div>' +
+                        '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
+                        '       <label for=\'motivo\'>Motivo</label>' +
+                        '       <input type=\'text\' name=\'motivo\' class=\'form-control\' required/>' +
+                        '   </div>' +
+                        '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
+                        '       <label for=\'enfermedad\'>Enfermedad</label>' +
+                        '       <input type=\'text\' name=\'enfermedad\' class=\'form-control\' required/>' +
+                        '   </div>' +
+                        '   <div class=\'col-sm-12 col-md-6 form-group\'>' +
+                        '       <input type=\'submit\' name=\'crear\' class=\'btn btn-primary btn-lg w-100\' value=\'Registrar\'>' +
+                        '   </div>' +
+                        '</div>' +
+                        '</form>'
+                });
+            <?php
+            } else if (isset($_REQUEST["editar"])) {
+                $idConsulta = $_REQUEST["editar"];
+                $consultaCita = "SELECT *,TIME(horaConsulta) as horaConsulta, DATE(horaConsulta) as fechaConsulta FROM VISTA_CONSULTA_MEDICA WHERE idConsulta = '$idConsulta'";
+                $resultadoConsultaCita = mysqli_query($conection, $consultaCita);
+                $arrayConsultaCita = mysqli_fetch_array($resultadoConsultaCita);
+            ?>
+                Swal.fire({
+                    width: '85%',
+                    title: '🧑 Editar cita paciente',
+                    showCloseButton: true,
+                    allowOutsideClick: false,
+                    showConfirmButton: false,
+                    html: '<form action=\'../controller/controller.php?tablaCrud=2\' method=\'POST\'>' +
+                        '<div class=\'row align-items-center justify-content-center\'>' +
+                        '   <input type=\'number\' name=\'idConsulta\' class=\'form-control hidden\' value=\'<?php echo $arrayConsultaCita["idConsulta"] ?>\' required/>' +
+                        '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
+                        '       <label for=\'idPaciente\'>Identificación Paciente</label>' +
+                        '       <input type=\'number\' name=\'idPaciente\' class=\'form-control\' value=\'<?php echo $arrayConsultaCita["idPacienteFK"] ?>\' <?php if ($_SESSION["rolUsuarioNavegando"] == 3) {
+                                                                                                                                                                    echo "readonly";
+                                                                                                                                                                } ?> required/>' +
+                        '   </div>' +
+                        '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
+                        '       <label for=\'motivo\'>Motivo</label>' +
+                        '       <input type=\'text\' name=\'motivo\' class=\'form-control\' value=\'<?php echo $arrayConsultaCita["motivoConsulta"] ?>\' required/>' +
+                        '   </div>' +
+                        '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
+                        '       <label for=\'enfermedad\'>Enfermedad</label>' +
+                        '       <input type=\'text\' name=\'enfermedad\' class=\'form-control\' value=\'<?php echo $arrayConsultaCita["enfermedad"] ?>\' required/>' +
+                        '   </div>' +
+                        '   <div class=\'col-sm-12 col-md-6 form-group\'>' +
+                        '       <input type=\'submit\' name=\'actualizar\' class=\'btn btn-primary btn-lg w-100\' value=\'Editar Cita\'>' +
+                        '   </div>' +
+                        '</div>' +
+                        '</form>'
+                });
+            <?php
+            }
             break;
         case 3:
-        ?>
+            ?>
 
             function crear() {
                 Swal.fire({
@@ -901,7 +1104,11 @@ switch ($_REQUEST["tablaCrud"]) { //Estbalece que se está gestinando
                         '<div class=\'row align-items-center justify-content-center\'>' +
                         '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
                         '       <label for=\'idPaciente\'>Identificación Paciente</label>' +
-                        '       <input type=\'number\' name=\'idPaciente\' class=\'form-control\' required/>' +
+                        '       <input type=\'number\' name=\'idPaciente\' class=\'form-control\' required value=\'<?php if ($_SESSION["rolUsuarioNavegando"] == 3) {
+                                                                                                                        echo $_SESSION["idUsuarioNavegando"];
+                                                                                                                    } ?>\' <?php if ($_SESSION["rolUsuarioNavegando"] == 3) {
+                                                                                                                                echo "readonly";
+                                                                                                                            } ?>/>' +
                         '   </div>' +
                         '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
                         '       <label for=\'estatura\'>Estatura (en metros)</label>' +
@@ -944,7 +1151,9 @@ switch ($_REQUEST["tablaCrud"]) { //Estbalece que se está gestinando
                         '   <input type=\'number\' name=\'idHistoria\' class=\'form-contro hidden\' value=\'<?php echo $id ?>\' required/>' +
                         '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
                         '       <label for=\'idPaciente\'>Identificación Paciente</label>' +
-                        '       <input type=\'number\' name=\'idPaciente\' class=\'form-control\' value=\'<?php echo $arrayConsultaHistoria["idPacienteFK"] ?>\' required/>' +
+                        '       <input type=\'number\' name=\'idPaciente\' class=\'form-control\' value=\'<?php echo $arrayConsultaHistoria["idPacienteFK"] ?>\' <?php if ($_SESSION["rolUsuarioNavegando"] == 3) {
+                                                                                                                                                                        echo "readonly";
+                                                                                                                                                                    } ?> required/>' +
                         '   </div>' +
                         '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
                         '       <label for=\'estatura\'>Estatura (en metros)</label>' +
@@ -987,7 +1196,11 @@ switch ($_REQUEST["tablaCrud"]) { //Estbalece que se está gestinando
                         '<div class=\'row align-items-center justify-content-center\'>' +
                         '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
                         '       <label for=\'idPaciente\'>Identificación Paciente</label>' +
-                        '       <input type=\'number\' name=\'idPaciente\' class=\'form-control\' min="1" required/>' +
+                        '       <input type=\'number\' name=\'idPaciente\' class=\'form-control\' min="1" required value=\'<?php if ($_SESSION["rolUsuarioNavegando"] == 3) {
+                                                                                                                                echo $_SESSION["idUsuarioNavegando"];
+                                                                                                                            } ?>\' <?php if ($_SESSION["rolUsuarioNavegando"] == 3) {
+                                                                                                                                        echo "readonly";
+                                                                                                                                    } ?>/>' +
                         '   </div>' +
                         '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
                         '       <label for=\'valor\'>Valor (en pesos)</label>' +
@@ -1010,7 +1223,9 @@ switch ($_REQUEST["tablaCrud"]) { //Estbalece que se está gestinando
             }
             <?php
             if (isset($_REQUEST["editar"])) {
-                $consultaExamen = "SELECT * FROM VISTA_EXAMEN";
+                $id = $_REQUEST["editar"];
+
+                $consultaExamen = "SELECT * FROM VISTA_EXAMEN where idExamen = '$id'";
                 $resultadoConsultaExamen = mysqli_query($conection, $consultaExamen);
                 $arrayConsultaExamen = mysqli_fetch_array($resultadoConsultaExamen);
             ?>
@@ -1025,7 +1240,9 @@ switch ($_REQUEST["tablaCrud"]) { //Estbalece que se está gestinando
                         '<div class=\'row align-items-center justify-content-center\'>' +
                         '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
                         '       <label for=\'idPaciente\'>Identificación Paciente</label>' +
-                        '       <input type=\'number\' name=\'idPaciente\' class=\'form-control\' min="1" value=\'<?php echo $arrayConsultaExamen["idPacienteFK"] ?>\' required/>' +
+                        '       <input type=\'number\' name=\'idPaciente\' class=\'form-control\' min="1" value=\'<?php echo $arrayConsultaExamen["idPacienteFK"] ?>\' <?php if ($_SESSION["rolUsuarioNavegando"] == 3) {
+                                                                                                                                                                            echo "readonly";
+                                                                                                                                                                        } ?> required/>' +
                         '   </div>' +
                         '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
                         '       <label for=\'valor\'>Valor (en pesos)</label>' +

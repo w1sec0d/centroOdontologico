@@ -64,11 +64,6 @@
                     <i class='fas fa-syringe fa-fw'></i> Exámenes de Laboratorio
                 </a>
             </li>
-            <?php
-            if ($_SESSION["rolUsuarioNavegando"] == 1 or $_SESSION["rolUsuarioNavegando"] == 0) {
-                echo ("<li class='nav-item dropdown d-flex align-items-center' id='reports'><a class='nav-link dropdown-toggle' href='#' id='navbarDropdownMenuLink' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'><i class='fas fa-chart-bar fa-fw'></i> Reportes </a><div class='dropdown-menu' aria-labelledby='navbarDropdownMenuLink'><a class='dropdown-item' href='#'>Citas por médico</a><a class='dropdown-item' href='#'>Asistencia pacientes</a><a class='dropdown-item' href='#'>Historia Clínica</a><a class='dropdown-item' href='#'>Estado de Citas</a></div></li>");
-            };
-            ?>
             <li class='nav-item d-flex align-items-center' id="boton-cerrarSesion">
                 <a class='nav-link' href="../controller/controller.php?logout=true">
                     <i class='fas fa-sign-out-alt fa-fw'></i> Cerrar sesion
