@@ -76,7 +76,7 @@ if (isset($_REQUEST["tablaCrud"])) {
                 $passwordUsuario = $_REQUEST["passwordUsuario"];
                 $rolUsuario = $_REQUEST["rolUsuario"];
 
-                $insertUsuario = "INSERT INTO USUARIO(idUsuario, nombreUsuario, apellidoUsuario, correoUsuario, telefonoUsuario, direccionUsuario, passwordUsuario, rolUsuario, estadoUsuario) VALUES ('$idUsuario', '$nombreUsuario', '$apellidoUsuario', '$correoUsuario', '$telefonoUsuario', '$direccionUsuario', '$passwordUsuario', '$rolUsuario', true);";
+                $insertUsuario = "CALL REGISTRAR_USUARIO('$idUsuario', '$nombreUsuario', '$apellidoUsuario', '$correoUsuario', '$telefonoUsuario', '$direccionUsuario', '$passwordUsuario', '$rolUsuario', true);";
                 $resultadoInsertUsuario = mysqli_query($conection, $insertUsuario);
                 if ($resultadoInsertUsuario) {
                     switch ($rolUsuario) {
@@ -123,7 +123,7 @@ if (isset($_REQUEST["tablaCrud"])) {
                 if ($rolUsuario != $antiguoRolUsuario) {
                     $nuevoRolUsuario = true;
                 }
-                $updateUsuario = "UPDATE USUARIO SET nombreUsuario = '$nombreUsuario', apellidoUsuario = '$apellidoUsuario', correoUsuario = '$correoUsuario', telefonoUsuario = '$telefonoUsuario', direccionUsuario = '$direccionUsuario',passwordUsuario = '$passwordUsuario', rolUsuario = '$rolUsuario' WHERE idUsuario = '$idUsuario'";
+                $updateUsuario = "CALL ACTUALIZAR_USUARIO('$idUsuario','$nombreUsuario','$apellidoUsuario','$correoUsuario','$telefonoUsuario','$direccionUsuario','$passwordUsuario','$rolUsuario',true)";
                 $resultadoUpdateUsuario = mysqli_query($conection, $updateUsuario);
 
                 if ($resultadoUpdateUsuario) {

@@ -537,6 +537,7 @@ SELECT * FROM PACIENTE;
 SELECT * FROM VISTA_CONSULTA_MEDICA;	
 SELECT * FROM AGENDA;
 SELECT * FROM AGENDA_MEDICA;
+SELECT * FROM USUARIO WHERE idUsuario = '2' AND rolUsuario = 'Paciente';
 
 -- Procedimientos almacenados
 
@@ -555,6 +556,19 @@ DELIMITER ;
 
 call REGISTRAR_USUARIO(65156554780,'Hob','Delpiero','riedoffelling@gmail.com','62621589','Cll 34 #45-34','124luo','Paciente',true);
 
+-- ACTUALIZAR USUARIO
+DELIMITER //
+CREATE PROCEDURE ACTUALIZAR_USUARIO(
+    IN nuevoIdUsuario NVARCHAR(12),IN nuevoNombreUsuario NVARCHAR(50),IN nuevoApellidoUsuario NVARCHAR(50),IN nuevoCorreoUsuario NVARCHAR(50),
+    IN nuevoTelefonoUsuario NVARCHAR(20),IN nuevoDireccionUsuario NVARCHAR(50),IN nuevoPasswordUsuario NVARCHAR(20),IN nuevoRolUsuario NVARCHAR(20),
+    IN nuevoEstadoUsuario BIT
+)
+BEGIN
+    UPDATE USUARIO SET nombreUsuario = nuevoNombreUsuario,apellidoUsuario = nuevoApellidoUsuario,correoUsuario = nuevoCorreoUsuario,telefonoUsuario = nuevoTelefonoUsuario,direccionUsuario = nuevoDireccionUsuario,passwordUsuario = nuevoPasswordUsuario,rolUsuario = nuevoRolUsuario,estadoUsuario = nuevoEstadoUsuario WHERE idUsuario = nuevoIdUsuario;
+END //
+DELIMITER ;
+-- CALL ACTUALIZAR_USUARIO('1193116959','Carl0s','xd','fdf@gmail','324324','C3','1234','Paciente',true);
+-- SELECT * FROM USUARIO WHERE idUsuario = '1193116959';
 
 -- REGISTRAR MÉDICO
 DELIMITER //
