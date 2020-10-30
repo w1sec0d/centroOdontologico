@@ -564,11 +564,23 @@ CREATE PROCEDURE ACTUALIZAR_USUARIO(
     IN nuevoEstadoUsuario BIT
 )
 BEGIN
-    UPDATE USUARIO SET nombreUsuario = nuevoNombreUsuario,apellidoUsuario = nuevoApellidoUsuario,correoUsuario = nuevoCorreoUsuario,telefonoUsuario = nuevoTelefonoUsuario,direccionUsuario = nuevoDireccionUsuario,passwordUsuario = nuevoPasswordUsuario,rolUsuario = nuevoRolUsuario,estadoUsuario = nuevoEstadoUsuario WHERE idUsuario = nuevoIdUsuario;
+    UPDATE USUARIO SET nombreUsuario = nuevoNombreUsuario,apellidoUsuario = nuevoApellidoUsuario,correoUsuario = nuevoCorreoUsuario,
+    telefonoUsuario = nuevoTelefonoUsuario,direccionUsuario = nuevoDireccionUsuario,passwordUsuario = nuevoPasswordUsuario,rolUsuario = nuevoRolUsuario,
+    estadoUsuario = nuevoEstadoUsuario WHERE idUsuario = nuevoIdUsuario;
 END //
 DELIMITER ;
 -- CALL ACTUALIZAR_USUARIO('1193116959','Carl0s','xd','fdf@gmail','324324','C3','1234','Paciente',true);
 -- SELECT * FROM USUARIO WHERE idUsuario = '1193116959';
+
+-- CONSULTAR USUARIO
+DELIMITER //
+CREATE PROCEDURE CONSULTAR_USUARIO()
+BEGIN
+   SELECT * FROM USUARIO WHERE estadoUsuario = true;
+END //
+DELIMITER ;
+
+CALL CONSULTAR_USUARIO();
 
 -- REGISTRAR MÉDICO
 DELIMITER //
@@ -582,6 +594,8 @@ BEGIN
     nuevoEstadoMedico,nuevoIdMedico);
 END //
 DELIMITER ;
+
+SELECT * FROM USUARIO;
 CALL REGISTRAR_MEDICO(65156554780,'Hob','Delpiero',62621589,'riedoffelling@gmail.com','Medico general',15568965,true);
 
 -- REGISTRAR PACIENTE

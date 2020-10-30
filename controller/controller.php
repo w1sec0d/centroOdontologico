@@ -5,7 +5,7 @@ if (isset($_REQUEST["login"])) {        //En caso de hacer login
     $_SESSION["idUsuario"] = $_REQUEST["idUsuario"];
     $_SESSION["passwordUsuario"] = $_REQUEST["passwordUsuario"];
     /* Consulta si los datos ingresados son correctos */
-    $consultaLogin = "SELECT idUsuario, nombreUsuario, rolUsuario FROM USUARIO WHERE idUsuario = " . $_SESSION["idUsuario"] . " && passwordUsuario = " . $_SESSION["passwordUsuario"] . "";
+    $consultaLogin = "SELECT idUsuario, nombreUsuario, rolUsuario FROM USUARIO WHERE estadoUsuario = true, idUsuario = " . $_SESSION["idUsuario"] . " && passwordUsuario = " . $_SESSION["passwordUsuario"] . "";
     $resultadoConsultaLogin = mysqli_query($conection, $consultaLogin);
     if ($resultadoConsultaLogin) {
         $arrayConsultaLogin = $resultadoConsultaLogin->fetch_assoc();
