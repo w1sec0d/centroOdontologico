@@ -4,8 +4,10 @@ require_once '../model/database.php';   //Conecta con la BD
 if (isset($_REQUEST["login"])) {        //En caso de hacer login
     $_SESSION["idUsuario"] = $_REQUEST["idUsuario"];
     $_SESSION["passwordUsuario"] = $_REQUEST["passwordUsuario"];
+    $id = $_SESSION["idUsuario"];
+    $password = $_SESSION["passwordUsuario"];
     /* Consulta si los datos ingresados son correctos */
-    $consultaLogin = "SELECT idUsuario, nombreUsuario, rolUsuario FROM USUARIO WHERE estadoUsuario = true AND idUsuario = " . $_SESSION["idUsuario"] . " && passwordUsuario = " . $_SESSION["passwordUsuario"] . "";
+    $consultaLogin = "CALL CONSULTAR_USUARIO('$id','$password')";
     $resultadoConsultaLogin = mysqli_query($conection, $consultaLogin);
     if ($resultadoConsultaLogin) {
         $arrayConsultaLogin = $resultadoConsultaLogin->fetch_assoc();

@@ -705,11 +705,11 @@ switch ($_REQUEST["tablaCrud"]) { //Estbalece que se está gestinando
                         '   </div>' +
                         '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
                         '       <label for=\'nombreUsuario\'>Nombre</label>' +
-                        '       <input type=\'text\' name=\'nombreUsuario\' class=\'form-control\' required pattern=\'[A-Za-z]\'/>' +
+                        '       <input type=\'text\' name=\'nombreUsuario\' class=\'form-control\' required pattern=\'[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]{2,48}\'/>' +
                         '   </div>' +
                         '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
                         '       <label for=\'apellidoUsuario\'>Apellido</label>' +
-                        '       <input type=\'text\' name=\'apellidoUsuario\' class=\'form-control\' required pattern=\'[A-Za-z]\'>' +
+                        '       <input type=\'text\' name=\'apellidoUsuario\' class=\'form-control\' required pattern=\'[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]{2,48}\'>' +
                         '   </div>' +
                         '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
                         '       <label for=\'correoUsuario\'>Correo</label>' +
@@ -863,11 +863,11 @@ switch ($_REQUEST["tablaCrud"]) { //Estbalece que se está gestinando
                         '   </div>' +
                         '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
                         '       <label for=\'apellidoUsuario\'>Apellido</label>' +
-                        '       <input type=\'text\' name=\'apellidoUsuario\' class=\'form-control\' value=\'<?php echo $apellidoUsuario ?>\' required pattern=\'[A-Za-z]\'>' +
+                        '       <input type=\'text\' name=\'apellidoUsuario\' class=\'form-control\' value=\'<?php echo $apellidoUsuario ?>\' required pattern=\'[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]{2,48}\'>' +
                         '   </div>' +
                         '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
                         '       <label for=\'correoUsuario\'>Correo</label>' +
-                        '       <input type=\'email\' name=\'correoUsuario\' class=\'form-control\' value=\'<?php echo $correoUsuario ?>\' required pattern=\'[A-Za-z]\'>' +
+                        '       <input type=\'email\' name=\'correoUsuario\' class=\'form-control\' value=\'<?php echo $correoUsuario ?>\' required pattern=\'[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]{2,48}\'>' +
                         '   </div>' +
                         '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
                         '       <label for=\'telefonoUsuario\'>Teléfono</label>' +
@@ -1042,11 +1042,11 @@ switch ($_REQUEST["tablaCrud"]) { //Estbalece que se está gestinando
                         '   </div>' +
                         '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
                         '       <label for=\'motivo\'>Motivo</label>' +
-                        '       <input type=\'text\' name=\'motivo\' class=\'form-control\' required pattern=\'[A-Za-z]\'/>' +
+                        '       <input type=\'text\' name=\'motivo\' class=\'form-control\' required pattern=\'[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]{2,48}\'/>' +
                         '   </div>' +
                         '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
                         '       <label for=\'enfermedad\'>Enfermedad</label>' +
-                        '       <input type=\'text\' name=\'enfermedad\' class=\'form-control\' required pattern=\'[A-Za-z]\'/>' +
+                        '       <input type=\'text\' name=\'enfermedad\' class=\'form-control\' required pattern=\'[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]{2,48}\'/>' +
                         '   </div>' +
                         '   <div class=\'col-sm-12 col-md-6 form-group\'>' +
                         '       <input type=\'submit\' name=\'crear\' class=\'btn btn-primary btn-lg w-100\' value=\'Registrar\'>' +
@@ -1078,11 +1078,11 @@ switch ($_REQUEST["tablaCrud"]) { //Estbalece que se está gestinando
                         '   </div>' +
                         '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
                         '       <label for=\'motivo\'>Motivo</label>' +
-                        '       <input type=\'text\' name=\'motivo\' class=\'form-control\' value=\'<?php echo $arrayConsultaCita["motivoConsulta"] ?>\' required pattern=\'[A-Za-z]\'/>' +
+                        '       <input type=\'text\' name=\'motivo\' class=\'form-control\' value=\'<?php echo $arrayConsultaCita["motivoConsulta"] ?>\' required pattern=\'[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]{2,48}\'/>' +
                         '   </div>' +
                         '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
                         '       <label for=\'enfermedad\'>Enfermedad</label>' +
-                        '       <input type=\'text\' name=\'enfermedad\' class=\'form-control\' value=\'<?php echo $arrayConsultaCita["enfermedad"] ?>\' required pattern=\'[A-Za-z]\'/>' +
+                        '       <input type=\'text\' name=\'enfermedad\' class=\'form-control\' value=\'<?php echo $arrayConsultaCita["enfermedad"] ?>\' required pattern=\'[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]{2,48}\'/>' +
                         '   </div>' +
                         '   <div class=\'col-sm-12 col-md-6 form-group\'>' +
                         '       <input type=\'submit\' name=\'actualizar\' class=\'btn btn-primary btn-lg w-100\' value=\'Editar Cita\'>' +
@@ -1123,11 +1123,11 @@ switch ($_REQUEST["tablaCrud"]) { //Estbalece que se está gestinando
                         '   </div>' +
                         '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
                         '       <label for=\'antecedentesFamiliares\'>Antecedentes familiares</label>' +
-                        '       <textarea name=\'antecedentesFamiliares\' class=\'form-control\' pattern=\'[A-Za-z]\'></textarea>' +
+                        '       <textarea name=\'antecedentesFamiliares\' class=\'form-control\' pattern=\'[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]{2,48}\'></textarea>' +
                         '   </div>' +
                         '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
                         '       <label for=\'alergias\'>Alergias</label>' +
-                        '       <textarea name=\'alergias\' class=\'form-control\' pattern=\'[A-Za-z]\'></textarea>' +
+                        '       <textarea name=\'alergias\' class=\'form-control\' pattern=\'[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]{2,48}\'></textarea>' +
                         '   </div>' +
                         '   <div class=\'col-sm-12 col-md-6 form-group\'>' +
                         '       <input type=\'submit\' name=\'crear\' class=\'btn btn-primary btn-lg w-100\' value=\'Crear Agenda\'>' +
@@ -1168,11 +1168,11 @@ switch ($_REQUEST["tablaCrud"]) { //Estbalece que se está gestinando
                         '   </div>' +
                         '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
                         '       <label for=\'antecedentesFamiliares\'>Antecedentes familiares</label>' +
-                        '       <textarea name=\'antecedentesFamiliares\' class=\'form-control\' pattern=\'[A-Za-z]\'><?php echo $arrayConsultaHistoria["antecedentesFamiliares"] ?></textarea>' +
+                        '       <textarea name=\'antecedentesFamiliares\' class=\'form-control\' pattern=\'[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]{2,48}\'><?php echo $arrayConsultaHistoria["antecedentesFamiliares"] ?></textarea>' +
                         '   </div>' +
                         '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
                         '       <label for=\'alergias\'>Alergias</label>' +
-                        '       <textarea name=\'alergias\' class=\'form-control\' pattern=\'[A-Za-z]\'><?php echo $arrayConsultaHistoria["alergias"] ?></textarea>' +
+                        '       <textarea name=\'alergias\' class=\'form-control\' pattern=\'[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]{2,48}\'><?php echo $arrayConsultaHistoria["alergias"] ?></textarea>' +
                         '   </div>' +
                         '   <div class=\'col-sm-12 col-md-6 form-group\'>' +
                         '       <input type=\'submit\' name=\'actualizar\' class=\'btn btn-primary btn-lg w-100\' value=\'Editar Historia Clínica\'>' +
@@ -1215,7 +1215,7 @@ switch ($_REQUEST["tablaCrud"]) { //Estbalece que se está gestinando
                         '   </div>' +
                         '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
                         '       <label for=\'tipo\'>Tipo de exámen</label>' +
-                        '       <input type=\'text\' name=\'tipo\' class=\'form-control\' required pattern=\'[A-Za-z]\'>' +
+                        '       <input type=\'text\' name=\'tipo\' class=\'form-control\' required pattern=\'[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]{2,48}\'>' +
                         '   </div>' +
                         '   <div class=\'col-sm-12 col-md-6 form-group\'>' +
                         '       <input type=\'submit\' name=\'crear\' class=\'btn btn-primary btn-lg w-100\' value=\'Registrar Exámen\'>' +
@@ -1257,7 +1257,7 @@ switch ($_REQUEST["tablaCrud"]) { //Estbalece que se está gestinando
                         '   </div>' +
                         '   <div class=\'col-sm-12 col-md-6 col-lg-4 form-group\'>' +
                         '       <label for=\'tipo\'>Tipo de exámen</label>' +
-                        '       <input type=\'text\' name=\'tipo\' class=\'form-control\' value=\'<?php echo $arrayConsultaExamen["tipoExamen"] ?>\' pattern=\'[A-Za-z]\' required>' +
+                        '       <input type=\'text\' name=\'tipo\' class=\'form-control\' value=\'<?php echo $arrayConsultaExamen["tipoExamen"] ?>\' pattern=\'[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]{2,48}\' required>' +
                         '   </div>' +
                         '   <div class=\'col-sm-12 col-md-6 form-group\'>' +
                         '       <input type=\'submit\' name=\'actualizar\' class=\'btn btn-primary btn-lg w-100\' value=\'Editar Exámen\'>' +
