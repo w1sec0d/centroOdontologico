@@ -1,0 +1,508 @@
+/* Carga las dos fuentes que se van a utilizar en la página */
+
+@font-face {
+    font-family: "Alata";
+    src: url("./fonts/Alata-Regular.ttf");
+}
+
+@font-face {
+    font-family: "Open Sans";
+    src: url("./fonts/OpenSans-Regular.ttf");
+}
+
+html {
+    /* Establece un tamaño base para empezar a hacerlo responsive */
+    font-size: 16px;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Open Sans', sans-serif;
+    text-align: center;
+}
+
+
+/* Personaliza el scrollbar */
+
+body::-webkit-scrollbar {
+    width: 10px;
+    background: #F0F0F0;
+}
+
+body::-webkit-scrollbar-thumb {
+    background: #008dce79;
+    border-radius: 5px;
+}
+
+.hidden {
+    display: none;
+}
+
+h1,
+h2,
+h3 {
+    font-family: 'Alata', sans-serif;
+    font-weight: bold;
+}
+
+
+/* Estilos de navbar */
+
+.navbar {
+    font-weight: bold;
+    padding: 0.5rem;
+    transition: all 0.5s;
+}
+
+.navbar-brand {
+    margin-right: 0.5rem;
+}
+
+.navbar p {
+    display: inline-block;
+    font-size: 1vw;
+}
+
+.dropdown-menu {
+    background: #F8F9FA;
+}
+
+.dropdown-item:hover {
+    background: #e6e7e7;
+}
+
+.dropdown-item:active {
+    color: black;
+    background: #cbcccc;
+}
+
+#boton-cerrarSesion {
+    background: #007bff;
+    border-radius: 20px;
+}
+
+#boton-cerrarSesion a {
+    color: white!important;
+    font-weight: bold;
+}
+
+
+/* Estilos de carousel */
+
+#contenedor-carousel {
+    background: url("../img/fondo.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+#carousel {
+    width: 100%;
+    max-width: 150vh;
+}
+
+
+/* Estilos del texto del carousel*/
+
+.carousel-caption {
+    background: rgba(255, 255, 255, 0.7);
+    color: black;
+    height: fit-content;
+    border-radius: 10px;
+}
+
+.carousel-caption p {
+    margin: 0;
+}
+
+.carousel-caption-resize1,
+.carousel-caption-resize3 {
+    margin: 0;
+}
+
+.carousel-flechas {
+    font-size: 8vw;
+}
+
+.btn {
+    font-size: 20px;
+    margin-top: 2vh;
+    font-weight: bold;
+}
+
+
+/* Estilos de la seccion principal */
+
+#row-principal {
+    background: #F5F5F5;
+    padding-top: 15px;
+    padding-bottom: 30px;
+    border-top: 2px solid rgba(0, 0, 0, 0.2);
+    border-bottom: 2px solid rgba(0, 0, 0, 0.2);
+}
+
+h1 {
+    margin-top: 1.5vh;
+    margin-bottom: 1.5vh;
+}
+
+.card {
+    margin: auto;
+    margin-top: 2vh;
+    margin-bottom: 2vh;
+    max-width: 500px;
+    background: #343A40;
+    color: white;
+}
+
+.card-body {
+    height: 125px;
+}
+
+
+/* Estilos de la sección secunadaria */
+
+#row-secundario {
+    background: url("../img/fondo.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.2);
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
+
+.row-servicios {
+    margin-top: 2vh;
+    margin-bottom: 2vh;
+}
+
+.contenedor-servicio {
+    max-width: 300px;
+    margin: auto;
+    padding: 10px;
+    border-radius: 20px;
+    background: #008ECE;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+}
+
+.contenedor-servicio p {
+    font-size: 2vw;
+    color: white;
+    font-weight: bold;
+    margin: 0;
+}
+
+.contenedor-servicio img {
+    width: 90%;
+}
+
+
+/* Estilos que hacen al mapa responsive */
+
+.mapa {
+    overflow: hidden;
+    padding-bottom: 56.25%;
+    position: relative;
+    height: 0;
+}
+
+.mapa iframe {
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+}
+
+
+/* Estilos de footer y seccion final */
+
+#row-siguenos {
+    background: #F5F5F5;
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
+
+#row-siguenos h1 {
+    font-size: 30px;
+    margin-right: 2vw;
+}
+
+
+/* Da estilo a los botones de redes sociales */
+
+.fa {
+    padding: 20px;
+    font-size: 30px;
+    width: 70px;
+    text-align: center;
+    text-decoration: none;
+    margin: 5px;
+    border-radius: 100%;
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+}
+
+.fa:hover {
+    opacity: 0.7;
+    text-decoration: none;
+    color: white;
+}
+
+.fa-facebook {
+    background: #3B5998;
+    color: white;
+}
+
+.fa-instagram {
+    background: tomato;
+    color: white;
+}
+
+
+/* Estilos Index Modulos*/
+
+#container-index-modulos {
+    background: url('../img/fondo.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    min-height: 100vh;
+}
+
+#container-index-modulos a {
+    color: inherit;
+}
+
+#container-index-modulos a:hover {
+    text-decoration: none;
+    color: inherit;
+}
+
+#row-modulos {
+    min-height: 90vh;
+}
+
+.modulo {
+    margin: auto;
+    margin-top: 2vh;
+    margin-bottom: 2vh;
+    width: 250px;
+    height: 250px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.5);
+    transition: background 1s, transform 1s;
+}
+
+.modulo:hover {
+    transform: scale(1.03);
+    background: #008dce63;
+}
+
+
+/* Estilos modulos */
+
+#container-modulo {
+    min-height: 95vh;
+    background: url("../img/fondo.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.modulo-titulo {
+    color: white;
+    text-shadow: -1px 1px 2px #23430C, 1px 1px 2px #23430C, 1px -1px 0 #23430C, -1px -1px 0 #23430C;
+    font-weight: bold;
+    font-size: 4rem;
+}
+
+
+/* Estilos de las tablas */
+
+#row-tabla {
+    min-height: 500px;
+}
+
+#container-tabla {
+    padding: 10px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.7);
+    margin-bottom: 2vh;
+}
+
+.table-responsive {
+    width: 90vw;
+}
+
+#tablaCrud tbody tr {
+    transition: background 0.5s;
+}
+
+#tablaCrud tbody tr:hover {
+    background-color: rgba(144, 198, 223, 0.747);
+}
+
+.paginate-button:hover {
+    background-color: rgba(144, 198, 223, 0.747)!important;
+}
+
+
+/* Estilo de los botones de las tablas */
+
+.boton {
+    font-weight: bold;
+}
+
+.boton-excel {
+    background: #28A745!important;
+    border: #28A745!important;
+    color: white!important;
+}
+
+.boton-excel:hover {
+    background: #218538!important;
+    border: #218538!important;
+}
+
+.boton-imprimir {
+    background: #fd7e14!important;
+    border: #fd7e14!important;
+    color: white!important;
+}
+
+.boton-imprimir:hover {
+    background: #c96310!important;
+    border: #c96310!important;
+}
+
+.boton-crear {
+    background: #17a2b8!important;
+    border: #17a2b8!important;
+    color: white!important;
+}
+
+.boton-crear:hover {
+    background: #106e7c!important;
+    border: #106e7c!important;
+}
+
+.boton-crear a {
+    color: white;
+    text-decoration: none;
+}
+
+.boton-recuperar {
+    background: #6f42c1!important;
+    border: #6f42c1!important;
+    color: white!important;
+}
+
+.boton-recuperar:hover {
+    background: #5d38a3!important;
+    border: #5d38a3!important;
+}
+
+.boton-recuperar a {
+    color: white;
+    text-decoration: none;
+}
+
+.boton-eliminar {
+    border-radius: 0 5px 5px 0;
+    background: #dc3545;
+    padding: 5px;
+}
+
+.boton-editar {
+    border-radius: 5px 0 0 5px;
+    background: #007bff;
+    padding: 5px;
+}
+
+.boton-citas {
+    background-color: #343A40;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.swal2-confirm,
+.swal2-cancel {
+    margin: 5px;
+}
+
+
+/* Estilos footer */
+
+footer {
+    padding: 5px;
+    color: white;
+}
+
+footer p {
+    margin: 0;
+}
+
+footer a:hover {
+    text-decoration: none;
+    color: #fd7e14;
+}
+
+
+/* Dispositivos muy pequeños (Celulares en portrait, menos de 576px) */
+
+@media (max-width: 575.98px) {
+    .btn {
+        font-size: 3vw;
+    }
+    .contenedor-servicio p {
+        font-size: 5vw;
+    }
+    #row-siguenos h1 {
+        font-size: 20px;
+    }
+}
+
+
+/* Dispositivos muy pequeños (Celulares en landscape, desde 567px) */
+
+@media (min-width: 576px) and (max-width: 767.98px) {
+    .contenedor-servicio p {
+        font-size: 5vw;
+    }
+}
+
+
+/* Dispositivos Medianos (Tablets, desde 768px) */
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+    .contenedor-servicio p {
+        font-size: 5vw;
+    }
+}
+
+
+/*  Dispositivos grandes (desktops, desde 992px) */
+
+@media (min-width: 992px) and (max-width: 1199.98px) {
+    .carousel-flechas {
+        font-size: 50px;
+    }
+}
+
+
+/* Dispositivos muy grandes (Computadores grandes, desde 1200px) */
+
+@media (min-width: 1200px) {
+    .carousel-flechas {
+        font-size: 50px;
+    }
+}
+
+
+/* Arreglos de bugs en ciertos tamaños */
+
+@media (min-width: 760px) and (max-width: 918px) {
+    .card-body {
+        height: 175px;
+    }
+}

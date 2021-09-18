@@ -40,7 +40,7 @@ CREATE TABLE PACIENTE(
     FOREIGN KEY(idUsuarioFK) REFERENCES USUARIO(idUsuario)
 );
 CREATE TABLE HISTORIA_CLINICA(
-	idHistoria NVARCHAR(6) UNIQUE,
+	idHistoria INT AUTO_INCREMENT,
     PRIMARY KEY(idHistoria),
     estatura DOUBLE NOT NULL,
     peso DOUBLE NOT NULL,
@@ -50,32 +50,32 @@ CREATE TABLE HISTORIA_CLINICA(
     FOREIGN KEY(idPacienteFK) REFERENCES PACIENTE(idPaciente)
 );
 CREATE TABLE CONSULTA_MEDICA(
-	idConsulta NVARCHAR(20) UNIQUE,
+	idConsulta INT AUTO_INCREMENT,
     PRIMARY KEY(idConsulta),
     horaConsulta DATETIME NOT NULL,
     motivoConsulta TEXT NOT NULL,
     enfermedad TEXT NOT NULL,
-    idHistoriaFK NVARCHAR(12) UNIQUE,
+    idHistoriaFK INT NOT NULL,
     FOREIGN KEY(idHistoriaFK) REFERENCES HISTORIA_CLINICA(idHistoria)
 );
 CREATE TABLE DIAGNOSTICO(
 	idDiagnostico NVARCHAR(20) UNIQUE,
     PRIMARY KEY(idDiagnostico),
     descripcion TEXT NOT NULL,
-    idConsultaFK NVARCHAR(20),
+    idConsultaFK INT,
     FOREIGN KEY(idConsultaFK) REFERENCES CONSULTA_MEDICA(idConsulta)
 );
 CREATE TABLE EXAMEN(
-	idExamen NVARCHAR(20) UNIQUE,
+	idExamen INT AUTO_INCREMENT,
     PRIMARY KEY(idExamen),
     valor NUMERIC NOT NULL,
     fechaExamen DATE NOT NULL,
     tipoExamen NVARCHAR(50) NOT NULL,
-    idHistoriaFK NVARCHAR(6) UNIQUE,
+    idHistoriaFK INT NOT NULL,
     FOREIGN KEY(idHistoriaFK) REFERENCES HISTORIA_CLINICA(idHistoria)
 );
 CREATE TABLE AGENDA(
-	idAgenda NVARCHAR(4) UNIQUE,
+	idAgenda INT AUTO_INCREMENT,
     PRIMARY KEY(idAgenda),
     fechaAgenda DATE NOT NULL,
     horaAgenda DATETIME NOT NULL,
@@ -88,11 +88,10 @@ CREATE TABLE AGENDA(
 );
 
 /*Registros de ejemplo*/
-SELECT * FROM USUARIO;
 
 -- Usuarios
 INSERT INTO USUARIO(idUsuario,nombreUsuario,apellidoUsuario,correoUsuario,telefonoUsuario,direccionUsuario,passwordUsuario,rolUsuario,estadoUsuario)
-VALUES (119311659,'Carlos','Ramirez','cadavid4003@gmail.com',3002146746,'Carrera 87 #48-50 Sur',12345,'Paciente',true),
+VALUES (1193116959,'Carlos','Ramirez','cadavid4003@gmail.com',3002146746,'Carrera 87 #48-50 Sur',12345,'Paciente',true),
 (896579845,'Julian','Contreras','justanemail@gmail.com',3256589784,'Carrera 57 #89-51',988648,'Medico',true),
 (659268459,'Sofia','Hernandez','hanna245@gmail.com',3125692458,'Carrera 85 #35-59','mypass','Paciente',true),
 (986539647,'Juan','Ramirez','jacar@gmail.com',3112584658,'Carrera 87 #48-50 Sur',12345,'Paciente',true),
@@ -156,7 +155,7 @@ VALUES (985687400,'Pepito','Alcachofa',3103109283,'pau@medic.com','Ortodoncista'
 ('659888745', 'Julia', 'Paz', '9878856988', 'Liebre23@gmail.com','Medico General','56456665',true,'659888745'),
 ('669858897', 'Ramiro', 'Osorio', '2455487895', 'Lowbeatbox@gmail.com','Medico General','5886684',true,'669858897'),
 ('223365987', 'Camilo', 'Lampreda', '23555478784', 'passionwriter@gmail.com','Medico General','845322',true,'223365987'),
-('112121547', 'Julian', 'Newton', '5548896536', 'shrodingerSro@gmail.com','Medico General','54566654',true,'112121547'),
+('112121547', 'Julian', 'Sambrano', '5548896536', 'shrodingerSro@gmail.com','Medico General','54566654',true,'112121547'),
 ('454587896', 'Nilen', 'Pastrana', '6569887545', 'weirdguy@gmail.com','Medico General','5511114',true,'454587896'),
 ('235565779', 'Violeta', 'Contreras', '8985564578', 'pianotheme@gmail.com','Medico General','6112154',true,'235565779'),
 ('685487895', 'Daniela', 'Gomez', '6988545487', 'sweetDeadly@gmail.com','Medico General','6622478',true, '685487895'),
@@ -186,7 +185,7 @@ VALUES (116598748,'Laura','Callejo','google2331@gmail.com',3596895748,'Carrera 6
 INSERT INTO PACIENTE(idPaciente,nombrePaciente,apellidoPaciente,direccionPaciente,telefonoPaciente,fechaNacimiento,estadoPaciente,idUsuarioFK)
 VALUES('116598748','Laura','Callejo','Carrera 67 #18-50B',3596895748,'2004-01-29',true,116598748),
 ('225698359','Camilo','Ramirez','Carrera 2 #53-50 Sur','3269896599','1967-10-28',true,'225698359'),
-('119311659','Carlos','Ramirez','Carrera 87 #48-50 Sur','3002146746','2003-07-15',true,'119311659'),
+('1193116959','Carlos','Ramirez','Carrera 87 #48-50 Sur','3002146746','2003-07-15',true,'1193116959'),
 ('179498639','Felipe','Caro','Calle 87 #29-37','3256948759','2012-08-20',true,'179498639'),
 ('659268459','Sofia','Hernandez','Carrera 85 #35-59','3125692458','2004-04-16',true,'659268459'),
 ('659326587', 'Juan', 'Paz', 'Carrera 42 Bis #98-65', '3215689787','1999-12-31',true,'659326587'),
@@ -209,12 +208,11 @@ VALUES('116598748','Laura','Callejo','Carrera 67 #18-50B',3596895748,'2004-01-29
 (132135458,'Ken','Cadena','Cll 55 #88-71',515431531,'2010-09-10',false,132135458),
 (223165456,'Merry','Perez','Cra 14 #45-12',54211242,'2007-04-25',true,223165456),
 (324544458,'Daniel','Blandon','Cll 58 #46-13',4256564,'2004-07-14',true,324544458);
--- SELECT idUsuario,nombreUsuario,apellidoUsuario,direccionUsuario,telefonoUsuario,estadoUsuario,idUsuario FROM USUARIO WHERE rolUsuario = 'Paciente' && nombreUsuario != 'Camilo'&& nombreUsuario != 'Laura';
-/*HISTORIA CLINICA*/
 
+-- HISTORIA CLINICA
 INSERT INTO HISTORIA_CLINICA(idHistoria,estatura,peso,antecedentesFamiliares,alergias,idPacienteFK) VALUES
 (1,1.8,65,'Ninguno','Polvo',116598748),
-(2,1.56,70,'Valvula bicuspide','Miel',119311659),
+(2,1.56,70,'Valvula bicuspide','Miel',1193116959),
 (3,1.54,50,'Ansiedad','Aceite vegetal',132135458),
 (4,1.90,55.6,'Ninguno','Comida de gato',179498639),
 (5,1.15,40,'Depresión','Ninguna',210101175),
@@ -268,7 +266,6 @@ INSERT INTO CONSULTA_MEDICA(idConsulta,horaConsulta,motivoConsulta,enfermedad,id
 (25,'2014-11-14 17:50:23','Ortodoncia','Ninguna',25);
 
 -- DIAGNOSTICO
-
 INSERT INTO DIAGNOSTICO(idDiagnostico,descripcion,idConsultaFK) VALUES
 (1,'Mitosis Cronica',1),
 (2,'Ortodoncia completa',2),
@@ -327,22 +324,22 @@ INSERT INTO EXAMEN(idExamen,valor,fechaExamen,tipoExamen,idHistoriaFK) VALUES
 -- Agenda
 INSERT INTO AGENDA(idAgenda,fechaAgenda,horaAgenda,consultorio,estadoAgenda,idMedicoFK,idPacienteFK)VALUES
 (1,'2004-01-29','2004-01-29 13:23:44','20',true,112121547,116598748),
-(2,'2003-07-15','2003-07-15 10:01:29','14',true,200459678,119311659),
-(3,'2010-09-10','2010-09-10 09:00:50','01',true,215478365,132135458),
+(2,'2003-07-15','2003-07-15 10:01:29','14',true,200459678,1193116959),
+(3,'2010-09-10','2010-09-10 09:00:50','01',true,215478365,null),
 (4,'2012-08-20','2012-08-20 07:54:47','12',true,223365987,179498639),
 (5,'1920-05-28','1920-05-28 13:14:14','25',true,223565578,210101175),
-(6,'2020-03-12','2020-03-12 14:41:25','01',true,235565779,212114775),
+(6,'2020-03-12','2020-03-12 14:41:25','01',true,235565779,null),
 (7,'1960-12-31','1960-12-31 17:14:14','02',true,248756278,213213544),
 (8,'2007-04-25','2007-04-25 20:10:47','25',true,325987658,223165456),
 (9,'1967-10-28','1967-10-28 19:50:36','40',true,336597845,225698359),
 (10,'2004-07-14','2004-07-14 20:40:28','20',true,359684447,324544458),
-(11,'2001-11-30','2001-11-30 11:20:36','01',true,377895685,331321211),
+(11,'2001-11-30','2001-11-30 11:20:36','01',true,377895685,null),
 (12,'1980-04-17','1980-04-17 14:24:59','02',true,397548628,332165452),
 (13,'1970-04-14','1970-04-14 15:40:54','03',true,454587896,343545557),
 (14,'1990-05-20','1990-05-20 14:41:40','05',true,546378912,489879846),
 (15,'2017-10-01','2017-10-01 13:04:15','06',true,650138984,531124545),
 (16,'1998-01-11','1998-01-11 09:40:58','08',true,655884798,532135453),
-(17,'1980-11-20','1980-11-20 07:20:10','09',true,658957246,546546787),
+(17,'1980-11-20','1980-11-20 07:20:10','09',true,658957246,null),
 (18,'2004-04-27','2004-04-27 17:50:23','10',true,659226598,651321324),
 (19,'2007-07-26','2007-07-26 08:05:15','05',true,659888745,654154544),
 (20,'2004-04-16','2004-04-16 22:30:14','15',true,669858897,659268459),
@@ -352,14 +349,25 @@ INSERT INTO AGENDA(idAgenda,fechaAgenda,horaAgenda,consultorio,estadoAgenda,idMe
 (24,'1960-08-08','1960-08-08 08:50:24','18',true,975684102,985674827),
 (25,'1989-07-24','1989-07-24 17:10:14','20',true,985687400,986539647);
 
--- VISTA DE NÚMEROS DE REGISTROS
-SELECT COUNT(idUsuario) FROM USUARIO; 
-SELECT COUNT(idMedico) FROM MEDICO;
-SELECT COUNT(idPaciente) FROM PACIENTE;
-SELECT COUNT(idHistoria) FROM HISTORIA_CLINICA;
-SELECT COUNT(idDiagnostico) FROM DIAGNOSTICO;
-SELECT COUNT(idExamen) FROM EXAMEN;
-SELECT COUNT(idAgenda) FROM AGENDA;
+-- Registros para realizar pruebas
+
+INSERT INTO `consultorio`.`USUARIO` (`idUsuario`, `nombreUsuario`, `apellidoUsuario`, `correoUsuario`, `telefonoUsuario`, `direccionUsuario`, `passwordUsuario`, `rolUsuario`, `estadoUsuario`) VALUES ('0', 'Admin', 'Admin', 'administrador@gmail.com', '324234324234', 'Carrera 34 #43-23 S', '12345', 'Admin', true);
+INSERT INTO `consultorio`.`USUARIO` (`idUsuario`, `nombreUsuario`, `apellidoUsuario`, `correoUsuario`, `telefonoUsuario`, `direccionUsuario`, `passwordUsuario`, `rolUsuario`, `estadoUsuario`) VALUES ('1', 'Secretaria', 'Alcachofa', 'secretaria@gmail.com', '3564984808', 'Calle 24', '12345', 'Secretaria', true);
+INSERT INTO `consultorio`.`USUARIO` (`idUsuario`, `nombreUsuario`, `apellidoUsuario`, `correoUsuario`, `telefonoUsuario`, `direccionUsuario`, `passwordUsuario`, `rolUsuario`, `estadoUsuario`) VALUES ('2', 'Medico', 'Caicedo', 'medico@gmail.com', '3265488945', 'Calle 24', '12345', 'Medico', true);
+INSERT INTO `consultorio`.`MEDICO` (`idMedico`, `nombreMedico`, `apellidoMedico`, `telefonoMedico`, `correoMedico`, `especialidadMedico`, `tarjetaProfesional`, `estadoMedico`, `idUsuarioFK`) VALUES ('2', 'Medico', 'Caicedo', '3265488945', 'medico@gmail.com', 'Ortodoncista', '23423423', true, '2');
+INSERT INTO `consultorio`.`USUARIO` (`idUsuario`, `nombreUsuario`, `apellidoUsuario`, `correoUsuario`, `telefonoUsuario`, `direccionUsuario`, `passwordUsuario`, `rolUsuario`, `estadoUsuario`) VALUES ('3', 'Paciente', 'David', 'paciente@gmail.com', '2645646598', 'Calle 24', '12345', 'Paciente', true);
+INSERT INTO `consultorio`.`PACIENTE` (`idPaciente`, `nombrePaciente`, `apellidoPaciente`, `direccionPaciente`, `telefonoPaciente`, `fechaNacimiento`, `estadoPaciente`, `idUsuarioFK`) VALUES ('3', 'Paciente', 'David', 'paciente@gmail.com', '2645646598', '2003-12-30', true, '3');
+INSERT INTO `consultorio`.`historia_clinica` (`estatura`, `peso`, `antecedentesFamiliares`, `alergias`, `idPacienteFK`) VALUES ('1.4', '49', 'Ninguno', 'Ninguno ', '3');
+
+
+-- CONSULTA DE NÚMERO DE REGISTROS (COUNT)
+SELECT COUNT(idUsuario) AS "CANTIDAD DE USUARIOS" FROM USUARIO; 
+SELECT COUNT(idMedico) AS "CANTIDAD DE MÉDICOS" FROM MEDICO;
+SELECT COUNT(idPaciente) AS "CANTIDAD DE PACIENTES" FROM PACIENTE;
+SELECT COUNT(idHistoria) AS "CANTIDAD DE HISTORIAS CLÍNICAS" FROM HISTORIA_CLINICA;
+SELECT COUNT(idDiagnostico) AS "CANTIDAD DE DIAGNÓSTICOS" FROM DIAGNOSTICO;
+SELECT COUNT(idExamen) AS "CANTIDAD DE EXÁMENES" FROM EXAMEN;
+SELECT COUNT(idAgenda) AS "CANTIDAD DE AGENDAS" FROM AGENDA;
 
 -- REPLACE
 SELECT REPLACE('Carlos','C','P');
@@ -369,9 +377,10 @@ SELECT REPLACE('Julio','o','a');
 -- SELECT
 SELECT * FROM USUARIO;
 SELECT * FROM PACIENTE;
-SELECT * FROM AGENDA;
-SELECT * FROM EXAMEN;
 SELECT * FROM MEDICO;
+SELECT * FROM CONSULTA_MEDICA;
+SELECT * FROM EXAMEN;
+SELECT * FROM AGENDA;
 
 SELECT * FROM USUARIO WHERE nombreUsuario = 'Carlos' AND apellidoUsuario = 'Ramirez';
 SELECT * FROM USUARIO WHERE nombreUsuario = 'Luz' AND apellidoUsuario = 'Muñoz';
@@ -402,11 +411,13 @@ SELECT idUsuario, nombreUsuario FROM USUARIO WHERE rolUsuario = 'Paciente' AND n
 SELECT SUM(valor) as 'Total Examenes' FROM EXAMEN;
 SELECT AVG(peso) as 'Peso Promedio' FROM HISTORIA_CLINICA;
 SELECT AVG(estatura) as 'Altura Promedio' FROM HISTORIA_CLINICA;
+SELECT * FROM HISTORIA_CLINICA WHERE PESO >= all(SELECT MAX(PESO) FROM HISTORIA_CLINICA);
 
 -- LIKE y NOT LIKE
 SELECT * FROM EXAMEN WHERE tipoExamen LIKE '%Radiografia%';
 SELECT * FROM HISTORIA_CLINICA WHERE antecedentesFamiliares LIKE '%Ansiedad%';
 SELECT estatura,peso FROM HISTORIA_CLINICA WHERE alergias LIKE '%Aceite%';
+SELECT * FROM USUARIO WHERE rolUsuario NOT LIKE 'Medico';
 
 -- HAVING 
 SELECT COUNT(idMedico) as 'Número de Medicos',especialidadMedico FROM MEDICO GROUP BY especialidadMedico HAVING COUNT(idMedico) <= 3 ORDER BY COUNT(idMedico) DESC;
@@ -414,9 +425,10 @@ SELECT COUNT(idUsuario) as 'Número de Usuarios', nombreUsuario FROM USUARIO GRO
 SELECT COUNT(idExamen) as 'Número de Exámenes', tipoExamen FROM EXAMEN GROUP BY tipoExamen HAVING COUNT(idExamen) > 1 ORDER BY COUNT(idExamen) DESC;
 SELECT COUNT(idUsuario) as 'Número de Usuarios', apellidoUsuario FROM USUARIO GROUP BY apellidoUsuario HAVING COUNT(idUsuario) > 1 ORDER BY COUNT(idUsuario) DESC;
 SELECT COUNT(idHistoria) as 'Número de antecedentes',antecedentesFamiliares FROM HISTORIA_CLINICA GROUP BY antecedentesFamiliares HAVING COUNT(idHistoria) > 1 ORDER BY COUNT(idHistoria) DESC;
+SELECT COUNT(idUsuario), rolUsuario FROM USUARIO GROUP BY rolUsuario HAVING COUNT(idUsuario) >= 2;
 
 -- GROUP BY
-SELECT especialidadMedico as 'Especialidades de Medicos' FROM MEDICO GROUP BY especialidadMedico ORDER BY especialidadMedico;
+SELECT count(especialidadMedico), especialidadMedico FROM MEDICO GROUP BY especialidadMedico ORDER BY especialidadMedico;
 SELECT nombreUsuario as 'Nombres de usuarios' FROM USUARIO GROUP BY nombreUsuario ORDER BY nombreUsuario;
 SELECT alergias FROM HISTORIA_CLINICA GROUP BY alergias ORDER BY alergias;
 SELECT descripcion FROM DIAGNOSTICO GROUP BY descripcion ORDER BY descripcion;
@@ -445,8 +457,7 @@ SELECT * FROM DIAGNOSTICO ORDER BY idDiagnostico;
 SELECT * FROM EXAMEN ORDER BY idExamen;
 SELECT * FROM HISTORIA_CLINICA ORDER BY idHistoria;
 SELECT * FROM AGENDA ORDER BY fechaAgenda DESC;
-
--- SELECT nombrePaciente as Nombre, apellidoPaciente as Apellido, fechaNacimiento as 'Fecha de Nacimiento', TIMESTAMPDIFF(YEAR, fechaNacimiento, NOW()) as Edad FROM PACIENTE;
+SELECT nombrePaciente as Nombre, apellidoPaciente as Apellido, fechaNacimiento as 'Fecha de Nacimiento', TIMESTAMPDIFF(YEAR, fechaNacimiento, NOW()) as Edad FROM PACIENTE;
 
 -- SUBCONSULTAS
 
@@ -491,12 +502,12 @@ INSERT INTO `consultorio`.`nuevos_usuarios` (`idUsuario`, `nombreUsuario`, `apel
 INSERT INTO `consultorio`.`nuevos_usuarios` (`idUsuario`, `nombreUsuario`, `apellidoUsuario`, `correoUsuario`, `telefonoUsuario`, `direccionUsuario`, `passwordUsuario`, `rolUsuario`, `estadoUsuario`) VALUES ('1155468668', 'Alen', 'Dylan', '22321dasd@gmail.com', '4052268', 'Carrera 23', '232nkml', 'Paciente', true);
 
 -- Agrega los datos de la tabla creada anteriormente a la tabla usuarios
-SELECT * FROM USUARIO UNION SELECT * FROM NUEVOS_USUARIOS;
+SELECT * FROM USUARIO UNION ALL SELECT * FROM NUEVOS_USUARIOS;
 DROP TABLE NUEVOS_USUARIOS;
 
 -- VISTAS
 CREATE OR REPLACE VIEW VISTA_MEDICO_PACIENTES AS
-SELECT p.idPaciente as ID, p.nombrePaciente as Nombre, p.apellidoPaciente as apellido, p.telefonoPaciente as Telefono, p.fechaNacimiento as 'Fecha de Nacimiento', h.peso AS Peso, h.estatura AS Estatura, h.antecedentesFamiliares AS 'Antecedentes Familiares', h.alergias as Alergias FROM PACIENTE as p 
+SELECT p.idPaciente as ID, p.nombrePaciente as Nombre, p.apellidoPaciente as apellido, p.telefonoPaciente as Telefono, p.fechaNacimiento as 'Fecha de Nacimiento', TIMESTAMPDIFF(YEAR,p.fechaNacimiento,NOW()) AS "EDAD", h.peso AS Peso, h.estatura AS Estatura, h.antecedentesFamiliares AS 'Antecedentes Familiares', h.alergias as Alergias FROM PACIENTE as p 
 INNER JOIN HISTORIA_CLINICA AS h ON p.idPaciente = h.idPacienteFK;
 
 SELECT * FROM VISTA_MEDICO_PACIENTES;
@@ -511,6 +522,22 @@ SELECT fechaAgenda as Fecha, horaAgenda as Hora, consultorio AS Consultorio FROM
 
 SELECT * FROM VISTA_MEDICO_215478365;
 
+CREATE OR REPLACE VIEW AGENDA_MEDICA AS
+SELECT idAgenda, horaAgenda as "Fecha y hora agenda", fechaAgenda, TIME(horaAgenda) as horaAgenda, consultorio, estadoAgenda, idPaciente, nombrePaciente, idMedico, nombreMedico FROM (SELECT A.idAgenda, A.fechaAgenda,A.horaAgenda,A.consultorio,A.estadoAgenda,P.idPaciente,CONCAT(P.nombrePaciente," ",P.apellidoPaciente) AS nombrePaciente, idMedicoFK FROM AGENDA as A LEFT JOIN PACIENTE as P ON A.idPacienteFK = P.idPaciente) AS AGENDA_PACIENTE LEFT JOIN (SELECT idMedico,CONCAT(nombreMedico, " ",apellidoMedico) as "nombreMedico" FROM MEDICO) AS MEDICO ON AGENDA_PACIENTE.idMedicoFK = MEDICO.idMedico;
+
+CREATE OR REPLACE VIEW VISTA_EXAMEN AS
+SELECT SUBCONSULTA.*, CONCAT(PACIENTE.nombrePaciente," ",PACIENTE.apellidoPaciente) as nombrePaciente FROM (SELECT EXAMEN.*,HISTORIA_CLINICA.idPacienteFK FROM EXAMEN INNER JOIN HISTORIA_CLINICA ON EXAMEN.idHistoriaFK = HISTORIA_CLINICA.idHistoria) AS SUBCONSULTA INNER JOIN PACIENTE ON SUBCONSULTA.idPacienteFK = PACIENTE.idPaciente;
+
+CREATE OR REPLACE VIEW VISTA_CONSULTA_MEDICA AS
+SELECT SUBCONSULTA.*,CONCAT(nombrePaciente," ", apellidoPaciente) as nombrePaciente FROM (SELECT CONSULTA_MEDICA.*, HISTORIA_CLINICA.idPacienteFK FROM CONSULTA_MEDICA INNER JOIN HISTORIA_CLINICA ON CONSULTA_MEDICA.idHistoriaFK = HISTORIA_CLINICA.idHistoria) AS SUBCONSULTA INNER JOIN PACIENTE ON SUBCONSULTA.idPacienteFK = PACIENTE.idPaciente;
+
+SELECT * FROM VISTA_EXAMEN;
+SELECT * FROM MEDICO;
+SELECT * FROM PACIENTE;
+SELECT * FROM VISTA_CONSULTA_MEDICA;	
+SELECT * FROM AGENDA;
+SELECT * FROM AGENDA_MEDICA;
+SELECT * FROM USUARIO WHERE idUsuario = '2' AND rolUsuario = 'Paciente';
 
 -- Procedimientos almacenados
 
@@ -523,12 +550,39 @@ CREATE PROCEDURE REGISTRAR_USUARIO(
 )
 BEGIN
     INSERT INTO usuario(idUsuario,nombreUsuario,apellidoUsuario,correoUsuario,telefonoUsuario,direccionUsuario,passwordUsuario,rolUsuario,estadoUsuario)
-    VALUES (nuevoIdUsuario,nuevoNombreUsuario,nuevoApellidoUsuario,nuevoCorreoUsuario,nuevoTelefonoUsuario,nuevoDireccionUsuario,nuevoPasswordUsuario,
-    nuevoRolUsuario,nuevoEstadoUsuario);
+    VALUES (nuevoIdUsuario,nuevoNombreUsuario,nuevoApellidoUsuario,nuevoCorreoUsuario,nuevoTelefonoUsuario,nuevoDireccionUsuario,nuevoPasswordUsuario,nuevoRolUsuario,nuevoEstadoUsuario);
 END //
 DELIMITER ;
-call REGISTRAR_USUARIO(65156554780,'Hob','Delpiero','riedoffelling@gmail.com',62621589,'Cll 34 #45-34','124luo','Paciente',true);
 
+call REGISTRAR_USUARIO(65156554780,'Hob','Delpiero','riedoffelling@gmail.com','62621589','Cll 34 #45-34','124luo','Paciente',true);
+
+-- ACTUALIZAR USUARIO
+DELIMITER //
+CREATE PROCEDURE ACTUALIZAR_USUARIO(
+    IN nuevoIdUsuario NVARCHAR(12),IN nuevoNombreUsuario NVARCHAR(50),IN nuevoApellidoUsuario NVARCHAR(50),IN nuevoCorreoUsuario NVARCHAR(50),
+    IN nuevoTelefonoUsuario NVARCHAR(20),IN nuevoDireccionUsuario NVARCHAR(50),IN nuevoPasswordUsuario NVARCHAR(20),IN nuevoRolUsuario NVARCHAR(20),
+    IN nuevoEstadoUsuario BIT
+)
+BEGIN
+    UPDATE USUARIO SET nombreUsuario = nuevoNombreUsuario,apellidoUsuario = nuevoApellidoUsuario,correoUsuario = nuevoCorreoUsuario,
+    telefonoUsuario = nuevoTelefonoUsuario,direccionUsuario = nuevoDireccionUsuario,passwordUsuario = nuevoPasswordUsuario,rolUsuario = nuevoRolUsuario,
+    estadoUsuario = nuevoEstadoUsuario WHERE idUsuario = nuevoIdUsuario;
+END //
+DELIMITER ;
+-- CALL ACTUALIZAR_USUARIO('1193116959','Carl0s','xd','fdf@gmail','324324','C3','1234','Paciente',true);
+-- SELECT * FROM USUARIO WHERE idUsuario = '1193116959';
+
+-- CONSULTAR USUARIO
+DELIMITER //
+CREATE PROCEDURE CONSULTAR_USUARIO(
+	IN idUsuarioConsulta NVARCHAR(12),
+    IN passwordConsulta NVARCHAR(20)
+)
+BEGIN
+   SELECT * FROM USUARIO WHERE estadoUsuario = true AND idUsuario = idUsuarioConsulta AND passwordUsuario = passwordConsulta;
+END //
+DELIMITER ;
+CALL CONSULTAR_USUARIO('1193116959','1234');
 
 -- REGISTRAR MÉDICO
 DELIMITER //
@@ -542,6 +596,8 @@ BEGIN
     nuevoEstadoMedico,nuevoIdMedico);
 END //
 DELIMITER ;
+
+SELECT * FROM USUARIO;
 CALL REGISTRAR_MEDICO(65156554780,'Hob','Delpiero',62621589,'riedoffelling@gmail.com','Medico general',15568965,true);
 
 -- REGISTRAR PACIENTE
@@ -556,8 +612,8 @@ BEGIN
     nuevoEstadoPaciente,nuevoIdPaciente);
 END //
 DELIMITER ;
-CALL REGISTRAR_USUARIO(5645688741010,'Nach','Juglar','anotherpoet@gmail.com',2054861,'Cll 4','lzma','Paciente',true);
-CALL REGISTRAR_PACIENTE(5645688741010,'Nach','Juglar','Cll 4',2054861,'2003-04-15',true);
+CALL REGISTRAR_USUARIO(564568874,'Nach','Juglar','anotherpoet@gmail.com',2054861,'Cll 4','lzma','Paciente',true);
+CALL REGISTRAR_PACIENTE(564568874,'Nach','Juglar','Cll 4',2054861,'2003-04-15',true);
 
 CREATE TABLE USUARIO_INACTIVO(
 	idUsuario NVARCHAR(12) UNIQUE,
@@ -636,14 +692,3 @@ DROP TRIGGER MEDICO_BD;
 DROP TABLE PACIENTE_INACTIVO;
 DROP TABLE MEDICO_INACTIVO;
 DROP TABLE USUARIO_INACTIVO;
-
--- Registros para realizar pruebas
-
-INSERT INTO `consultorio`.`USUARIO` (`idUsuario`, `nombreUsuario`, `apellidoUsuario`, `correoUsuario`, `telefonoUsuario`, `direccionUsuario`, `passwordUsuario`, `rolUsuario`, `estadoUsuario`) VALUES ('001', 'Secretaria', 'Alcachofa', 'granadmon@gmail.com', '3564984808', 'Calle 24', '12345', 'Secretaria', true);
-INSERT INTO `consultorio`.`USUARIO` (`idUsuario`, `nombreUsuario`, `apellidoUsuario`, `correoUsuario`, `telefonoUsuario`, `direccionUsuario`, `passwordUsuario`, `rolUsuario`, `estadoUsuario`) VALUES ('002', 'Medico', 'Caicedo', 'granmedico@gmail.com', '3265488945', 'Calle 24', '12345', 'Medico', true);
-INSERT INTO `consultorio`.`USUARIO` (`idUsuario`, `nombreUsuario`, `apellidoUsuario`, `correoUsuario`, `telefonoUsuario`, `direccionUsuario`, `passwordUsuario`, `rolUsuario`, `estadoUsuario`) VALUES ('003', 'Paciente', 'David', 'granpaciente@gmail.com', '2645646598', 'Calle 24', '12345', 'Paciente', true);
-
--- Usuario Administrador
-
-INSERT INTO `consultorio`.`usuario` (`idUsuario`, `nombreUsuario`, `apellidoUsuario`, `correoUsuario`, `telefonoUsuario`, `direccionUsuario`, `passwordUsuario`, `rolUsuario`, `estadoUsuario`) VALUES ('000', 'Admin', 'Admin', 'administrador@gmail.com', '324234324234', 'Carrera 34 #43-23 S', '12345', 'Admin', b'1');
-

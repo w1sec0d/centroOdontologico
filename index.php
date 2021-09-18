@@ -202,7 +202,11 @@
                 <i class="fas fa-shoe-prints"></i>
                 ¡Siguenos!
             </h1>
+<<<<<<< HEAD
             <br style="">
+=======
+            <br>
+>>>>>>> 01bb4497a3834ccf83061d8c6081de56485cf2df
             <a href="https://www.facebook.com/Centro-odontologico-mundo-oral-1400646953307029" class="fa fa-facebook" target="_BLANK"></a>
             <a href="https://www.instagram.com/dradianahermida/" class="fa fa-instagram" target="_BLANK"></a>
         </div>
@@ -219,7 +223,11 @@
         </footer>
     </div>
     <script>
+<<<<<<< HEAD
         window.onload = function() { //Cuando el documento carg, se ejecuta el código
+=======
+        window.onload = function() { //Cuando el documento carga, se ejecuta el código
+>>>>>>> 01bb4497a3834ccf83061d8c6081de56485cf2df
             function resizeText() {
                 jQuery(".carousel-caption-resize1").fitText(1.2);
                 jQuery(".carousel-caption-resize2").fitText(2);
