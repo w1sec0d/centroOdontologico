@@ -17,9 +17,16 @@
     <!-- Carga SweetAlert -->
     <script src="../assets/libraries/sweetAlert.js"></script>
 
+    <!-- Carga FitText -->
+    <script src="../assets/libraries/jquery.fittext.js"></script>
+
+    <!-- Carga FontAwesome-->
     <script src="https://kit.fontawesome.com/482fb72b25.js" crossorigin="anonymous"></script>
+
     <!-- Carga Favicon y estilos -->
-    <link rel="icon" href="../assets/img/brandIcon.ico">
-    <link rel="stylesheet" href="../assets/css/mainStyle.css">
-    <title>Inicio de sesión - Centro odontológico Mundo Oral</title>
+    <link rel="icon" href="../assets/img/icono.ico">
+    <link rel="stylesheet" href="../assets/css/estiloPrincipal.css">
+    <title>Centro odontológico Mundo Oral</title>
 </head>
+
+<body>

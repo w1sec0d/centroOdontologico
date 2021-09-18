@@ -1,7 +1,6 @@
 <?php
 require_once '../model/database.php';
 if (isset($_REQUEST["login"])) {        //En caso de hacer login
-    session_start();
     $_SESSION["idUsuario"] = $_REQUEST["idUsuario"];
     $_SESSION["passwordUsuario"] = $_REQUEST["passwordUsuario"];
     $query = "SELECT rolUsuario FROM USUARIO WHERE idUsuario = " . $_SESSION["idUsuario"] . " && passwordUsuario = " . $_SESSION["passwordUsuario"] . "";
